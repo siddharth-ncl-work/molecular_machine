@@ -1,0 +1,6 @@
+[submodule "lib/basic_operations"]
+	path = lib/basic_operations
+	url = git@github.com:ss-ghule/basic_operations.git
+[submodule "lib/io_chem"]
+	path = lib/io_chem
+	url = git@github.com:ss-ghule/io_chem.git
