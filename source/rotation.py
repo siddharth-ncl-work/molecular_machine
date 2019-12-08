@@ -20,8 +20,8 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size,part1='ring',part2
     prev_frame_cords=curr_frame_cords.copy()
   return net_rotation
 
-def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='abs',method='r+t',part1_atom_list=[],part2_atom_list=[]):
-  assert curr_frame_no>=start_frame_no,'Invalid Frame Numbers'
+def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='abs',method='rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
+  assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_cords,frame_no_pos=2)
   frame2_cords=io.readFileMd(file,frame2_cords,frame_no_pos=2)
   return _getRotation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
@@ -37,7 +37,7 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs'
     _atom_list=atom_list
        
   if type=='abs':
-    if method=='atomic_r_t':
+    if method=='rot_atomic_r_t':
       rotation=atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
     elif method=='atomc_t_r':
       pass
@@ -54,7 +54,7 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs'
       print('Please give an appropriate method')
   return rotation
 
-def atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
     _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
   elif part=='track':

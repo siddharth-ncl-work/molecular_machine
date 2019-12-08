@@ -127,7 +127,7 @@ def energy_atomic_r_t(frame1_cords,frame2_cords,part1='ring',part2='track',type=
   return RKE
 
 #Translational Energy
-def getAvgTKE(file,start_frame_no,end_frame_no,step_size,part1='ring',part2='track',type='abs',method='atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
+def getAvgTKE(file,start_frame_no,end_frame_no,step_size,part1='ring',part2='track',type='abs',method='energy_trans_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=2)
@@ -149,15 +149,15 @@ def getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='abs',method
 def _getTKE(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs',method='r+t',part1_atom_list=[],part2_atom_list=[]):
   RKE=0
 
-  if method=='energy_atomic_angle':
-    RKE=energy_atomic_angle(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
-  elif method=='energy_atomc_r_t':
-    part1_rotation=atomic_r_t(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
+  if method=='energy_trans_atomic_r_t':
+    TKE=energy_trans_atomic_angle(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
+  elif method=='energy_trans_com':
+    TKE=energy_tran_com(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
   else:
     print('Please give an appropriate method')
-  return RKE
+  return TKE
 
-def energy_atomic_angle(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs',part1_atom_list=[],part2_atom_list=[]):
+def energy_trans_atomic_r_t(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs',part1_atom_list=[],part2_atom_list=[]):
 
   if part1=='ring':
     _part1_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
@@ -165,4 +165,66 @@ def energy_atomic_angle(frame1_cords,frame2_cords,part1='ring',part2='track',typ
     _part1_atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
   else:
     assert len(part1_atom_list)!=0,'atoms_list should not be empty'
+    _part1_atom_list=part1_atom_list
+
+  if type=='abs':
+    _translation=translation.trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=_part1_atom_list)
+    v=_translation/(config.simulation_time_step*config.femto)
+    m=getTotalMass(frame1_cords,atom_list=_part1_atom_list)
+    TKE=0.5*m*pow(v,2)
+    elif type=='rel'
+      if part2=='ring':
+      _part2_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    elif part2=='track':
+      _part2_atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+    else:
+      assert len(part2_atom_list)!=0,'atoms_list should not be empty'
+      _part2_atom_list=part2_atom_list
+    part1_translation=translation.trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=_part1_atom_list)
+    part2_translation=translation.trans_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=_part2_atom_list)
+    _translation=part2_translation-part1_translation
+    v=_translation/(config.simulation_time_step*config.femto)
+    m=getTotalMass(frame1_cords,atom_list=_part1_atom_list)
+    TKE=0.5*m*pow(v,2)
+  return TKE
+
+def energy_trans_com(frame1_cords,frame2_cords,part1='ring',part2='track',type='abs',part1_atom_list=[],part2_atom_list=[]):
+  if part1=='ring':
+    _part1_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part1=='track':
+    _part1_atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(part1_atom_list)!=0,'atoms_list should not be empty'
+    _part1_atom_list=part1_atom_list
+
+  if type=='abs':
+    _translation=translation.trans_com(frame1_cords,frame2_cords,part=part1,atom_list=_part1_atom_list)
+    v=_translation/(config.simulation_time_step*config.femto)
+    m=getTotalMass(frame1_cords,atom_list=_part1_atom_list)
+    TKE=0.5*m*pow(v,2)
+    elif type=='rel'
+      if part2=='ring':
+      _part2_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    elif part2=='track':
+      _part2_atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+    else:
+      assert len(part2_atom_list)!=0,'atoms_list should not be empty'
+      _part2_atom_list=part2_atom_list
+    part1_translation=translation.trans_com(frame1_cords,frame2_cords,part=part1,atom_list=_part1_atom_list)
+    part2_translation=translation.trans_com(frame1_cords,frame2_cords,part=part2,atom_list=_part2_atom_list)
+    _translation=part2_translation-part1_translation
+    v=_translation/(config.simulation_time_step*config.femto)
+    m=getTotalMass(frame1_cords,atom_list=_part1_atom_list)
+    TKE=0.5*m*pow(v,2)
+  return TKE
+  
+
+def getTotalMass(cords,atom_list=None)
+  if atom_list==None:
+    atom_list=list(cords['atom_no'].values)
+  for atom_no in atom_list:
+    mass=atomic_mass_dict[cords[cords['atom_no']==atom_no]['atom'].values[0]]
+    total_mass+=mass
+  return total_mass
+
 
