@@ -8,7 +8,7 @@ def task0():
  
 def task1():
   file=open(config.test_file_path)  
-  _rotation=rotation.getRotation(file,config.t1_frame1_no,config.t1_frame2_no,part1='track')
+  _rotation=rotation.getRotation(file,config.t1_frame1_no,config.t1_frame2_no,part1='track',type='absolute',method='rot_atomic_r_t')
   print(_rotation)
 
 def task2():
@@ -42,14 +42,17 @@ def task7():
   print(_translation)
 
 def task8():
-  file=open(config.test_file_path)
-  _energy=energy.getTKE(file,config.t8_frame1_no,config.t8_frame2_no,type='absolute',method='energy_trans_com')
+  with open(config.test_file_path) as file:
+    _energy=energy.getRKE(file,config.t8_frame1_no,config.t8_frame2_no,type='absolute',method='energy_rot_atomic_r_t')
   print(_energy)
 
+def task9():
+  with open(config.test_file_path) as file:
+    _energy=energy.getTKE(file,config.t9_frame1_no,config.t9_frame2_no,type='absolute',method='energy_trans_com')
+    print(_energy)
 
 
-
-tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8}
+tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8,'9':task9}
 
 for task_no in config.tasks.split('+'):
   tasks[task_no]()

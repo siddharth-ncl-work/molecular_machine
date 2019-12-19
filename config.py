@@ -13,12 +13,11 @@ track_end_atom_no=153
 
 axis='x'
 
-simulation_time_step=5
-femto=1e-15 
-angstrom=1e-10
-amu=1.6605e-27
+simulation_time_step=5 #in femto
 
-tasks='0+1+2+3+4+5+6+7+8'
+frame_no_pos=2
+
+tasks='0+1+2+3+4+5+6+7+8+9'
 
 #TASK 0 
 #Calculate absolute rotation of ring between two frames
@@ -61,8 +60,11 @@ t7_frame1_no=0
 t7_frame2_no=1
 
 #TASK 8
-#Calculate absolute translation of ring  between two frames
+#Calculate absolute RKE of ring
 t8_frame1_no=0
-t8_frame2_no=1
+t8_frame2_no=5
 
-
+#TASK 9
+#Calculate absolute TKE of ring
+t9_frame1_no=0
+t9_frame2_no=5
