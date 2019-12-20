@@ -1,3 +1,5 @@
+__version__=1.0.0
+
 data_dir_path='/home/vanka/ruchi/output_only'
 system_name='system3'
 file_name='system2_21_11_19_v1.xyz'
