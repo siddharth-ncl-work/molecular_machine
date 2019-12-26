@@ -10,7 +10,7 @@ def _shiftOrigin(cords,origin):
 
   return new_cords
 
-def shiftOrigin(frame1_cords,frame2_cords):
+def shiftOrigin(frame1_cords,frame2_cords,quantity='rotation'):
   atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1) 
   com1=physics.getCom(frame1_cords,atom_list=atom_list) 
   com2=physics.getCom(frame2_cords,atom_list=atom_list)
@@ -19,9 +19,12 @@ def shiftOrigin(frame1_cords,frame2_cords):
   trans_axis[1]=com2[1]-com1[1]
   trans_axis[2]=com2[2]-com1[2]
   
-  new_frame1_cords=_shiftOrigin(frame1_cords,com1)
-  new_frame2_cords=_shiftOrigin(frame2_cords,com2)
-
+  if quantity=='rotation':
+    new_frame1_cords=_shiftOrigin(frame1_cords,com1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,com2)
+  elif quantity=='translation':
+    new_frame1_cords=_shiftOrigin(frame1_cords,com1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,com1)
   if config.axis=='x':
     ax=[1,0,0]
   elif config.axis=='y':

@@ -89,7 +89,7 @@ def ringTrackTwoFrames():
   df=rotation.rotateAlongAxis(frame1_track_cords_df,x,math.radians(rpy[0]))
   df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
   df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
-  frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,distance)
+  frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,distance+1)
   #frame2
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
    

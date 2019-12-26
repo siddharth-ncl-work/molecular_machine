@@ -143,5 +143,5 @@ def getNetRotation():
 #getRPYAngles()
 #rot_atomic_r_t_2()
 #getRotation()
-getRotationMultiFrame()
+#getRotationMultiFrame()
 getNetRotation()

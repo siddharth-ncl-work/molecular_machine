@@ -89,24 +89,68 @@ def getTranslationTwoFrames():
   file_path='test_systems/ring_track_two_frames.xyz'
   frame1_no=0
   frame2_no=1
+
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com')
   file.close()
   print(f'Ring Absolute Translation = {_translation}')
 
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method='rot_atomic_r_t_2')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method='trans_com')
   file.close()
   print(f'Track Absolute Translation = {_translation}')
 
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method='rot_atomic_r_t_2')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method='trans_com')
   file.close()
   print(f'Ring Relative Translation = {_translation}')
+
+def getTranslationMultiFrame():
+  file_path='test_systems/ring_track_multi_frame.xyz'
+  frame1_no=50
+  frame2_no=51
+
+  file=open(file_path,'r')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com')
+  file.close()
+  print(f'Ring Absolute Translation = {_translation}')
+
+  file=open(file_path,'r')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method='trans_com')
+  file.close()
+  print(f'Track Absolute Translation = {_translation}')
+
+  file=open(file_path,'r')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method='trans_com')
+  file.close()
+  print(f'Ring Relative Translation = {_translation}')
+  
+def getNetTranslation():
+  file_path='test_systems/ring_track_multi_frame.xyz'
+  start_frame_no=0
+  end_frame_no=99
+
+  file=open(file_path,'r')
+  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Net absolute ring translation = {net_ring_translation}')
+
+  file=open(file_path,'r')
+  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Net absolute track translation = {net_ring_translation}')
+
+  file=open(file_path,'r')
+  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Net ring translation = {net_ring_translation}')
+
 
 
 #translateAlongAxis()
 #getAtomicDisplacement()
-trans_atomic_r_t()
-trans_com()
-getTranslationTwoFrames()
+#trans_atomic_r_t()
+#trans_com()
+#getTranslationTwoFrames()
+#getTranslationMultiFrame()
+getNetTranslation()
