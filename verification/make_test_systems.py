@@ -165,5 +165,5 @@ if __name__=='__main__':
   #ringCords()
   #trackCords()
   #ringTrackAtOrigin()
-  #ringTrackTwoFrames()
-  ringTrackMultiFrame()
+  ringTrackTwoFrames()
+  #ringTrackMultiFrame()

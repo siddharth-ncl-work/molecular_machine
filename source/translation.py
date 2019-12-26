@@ -51,7 +51,7 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       print('Please provide an appropriate method')
   return translation
 
-#trans_atomic_r_t is wrong method to calculate translation
+#trans_atomic_r_t is not a suitable method to calculate translation
 def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_translation=0
   avg_part_translation=0
