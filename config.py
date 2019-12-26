@@ -1,17 +1,17 @@
-__version__=1.0.0
+__version__='1.0.0'
 
 data_dir_path='/home/vanka/ruchi/output_only'
 system_name='system3'
 file_name='system2_21_11_19_v1.xyz'
 
-test_file_path='/home/vanka/ruchi/output_only/system3/ring_track_dl_at_sulfer_end.xyz'
+test_file_path='verification/test_systems/ring_track_multi_frame.xyz'#'/home/vanka/ruchi/output_only/system3/ring_track_dl_at_sulfer_end.xyz'
 
 #GENERAL PARAMETERS
-ring_start_atom_no=0
-ring_end_atom_no=63
+ring_start_atom_no=0#0
+ring_end_atom_no=19#63
 
-track_start_atom_no=64
-track_end_atom_no=153
+track_start_atom_no=20#64
+track_end_atom_no=37#153
 
 axis='x'
 
@@ -39,7 +39,7 @@ t2_frame2_no=1
 #TASK 3
 #Calculate net absolute rotation of ring  between two frames
 t3_frame1_no=0
-t3_frame2_no=1
+t3_frame2_no=10
 
 #TASK 4
 #Calculate net relative rotation of ring  between two frames

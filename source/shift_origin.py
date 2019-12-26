@@ -1,6 +1,6 @@
 from lib.basic_operations import physics,vector
-from source import rotation
 import config
+
 
 def _shiftOrigin(cords,origin):
   new_cords=cords.copy()
@@ -10,19 +10,17 @@ def _shiftOrigin(cords,origin):
 
   return new_cords
 
-
 def shiftOrigin(frame1_cords,frame2_cords):
   atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1) 
   com1=physics.getCom(frame1_cords,atom_list=atom_list) 
   com2=physics.getCom(frame2_cords,atom_list=atom_list)
-  origin=com1
   trans_axis=[0.0,0.0,0.0]
   trans_axis[0]=com2[0]-com1[0]
   trans_axis[1]=com2[1]-com1[1]
   trans_axis[2]=com2[2]-com1[2]
-
-  new_frame1_cords=_shiftOrigin(frame1_cords,origin)
-  new_frame2_cords=_shiftOrigin(frame2_cords,origin)
+  
+  new_frame1_cords=_shiftOrigin(frame1_cords,com1)
+  new_frame2_cords=_shiftOrigin(frame2_cords,com2)
 
   if config.axis=='x':
     ax=[1,0,0]
@@ -33,20 +31,20 @@ def shiftOrigin(frame1_cords,frame2_cords):
   axis=vector.getCrossProduct(trans_axis,ax)
   theta=vector.getAngleR(trans_axis,ax)
   
-  new_frame1_cords=rotation.rotateAlongAxis(new_frame1_cords,axis,theta)
-  new_frame2_cords=rotation.rotateAlongAxis(new_frame2_cords,axis,theta)
+  new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
+  new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
   if config.axis=='x':
-    ax=[0,1,1]
+    ref_axis=[0,1,1]
   elif config.axis=='y':
-    ax=[1,0,1]
+    ref_axis=[1,0,1]
   elif config.axis=='z':
-    ax=[1,1,0]
+    ref_axis=[1,1,0]
   com=physics.getCom(new_frame1_cords)
-  axis=vector.getCrossProduct(com,ax)
+  #axis=vector.getCrossProduct(com,ax)
   theta=vector.getAngleR(axis,ax)
 
-  new_frame1_cords=rotation.rotateAlongAxis(new_frame1_cords,axis,theta)
-  new_frame2_cords=rotation.rotateAlongAxis(new_frame2_cords,axis,theta)
+  new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,ax,theta)
+  new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,ax,theta)
 
   return (new_frame1_cords,new_frame2_cords)

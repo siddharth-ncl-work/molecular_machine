@@ -1,13 +1,15 @@
+import math
 from math import cos,sin,acos,asin
 import numpy as np
+from scipy import stats
 
 from lib.io_chem import io
 from lib.basic_operations import vector
-from source.shift_origin import shiftOrigin
+from source import shift_origin
 import config
 
 
-def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
+def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   net_rotation=0
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
@@ -20,17 +22,19 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',par
     prev_frame_cords=curr_frame_cords.copy()
   return net_rotation
 
-def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
+def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
   return _getRotation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
 
-def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
+def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   rotation=0
   if type=='absolute':
     if method=='rot_atomic_r_t':
       rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
+    elif method=='rot_atomic_r_t_2':
+      rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_atomc_t_r':
       print('to be implemented in future')
     else:
@@ -40,12 +44,17 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       part1_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
+    if method=='rot_atomic_r_t_2':
+      part1_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
     else:
       print('Please provide an appropriate method')
   return rotation
 
+#rot_atomic_r_t is not suitable for track
 def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=0
   if part=='ring':
@@ -61,7 +70,7 @@ def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
   for atom_no in _atom_list:
     frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]  
@@ -70,12 +79,44 @@ def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     #translate cords of prev_frame
     part_rotation+=atom_rotation[axis]
   avg_part_rotation=part_rotation/len(_atom_list)
-  return avg_part_rotation
+  return math.degrees(avg_part_rotation)
 
 def atomic_t_r(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   pass
   #translate cords of prev_frame
   #getRPYAngles with new prev_frame_cords
+
+def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  atom_rotation_list=[]
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  for atom_no in _atom_list:
+    frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
+    frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
+    frame1_atom_cords[axis]=0
+    frame2_atom_cords[axis]=0
+    atom_rotation=vector.getAngleR(frame1_atom_cords,frame2_atom_cords)
+    sign=vector.getCrossProduct(frame1_atom_cords,frame2_atom_cords)[axis]
+    if sign<0:
+      sign=-1
+    else:
+      sign=1 
+    atom_rotation_list.append(sign*atom_rotation)
+  mode_part_rotation=stats.mode(atom_rotation_list)[0]
+  #avg_part_rotation=part_rotation/len(_atom_list)
+  return math.degrees(mode_part_rotation)
 
 def getRotMat(axis,theta):
   R=np.zeros((3,3))

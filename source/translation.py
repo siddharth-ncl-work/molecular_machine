@@ -51,6 +51,7 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       print('Please provide an appropriate method')
   return translation
 
+#trans_atomic_r_t is wrong method to calculate translation
 def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_translation=0
   avg_part_translation=0
@@ -72,11 +73,9 @@ def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]  
     #getRPYAngles with new prev_frame_cords
     #translate cords of prev_frame
-    mag1=vector.getMag(frame1_atom_cords)
-    mag2=vector.getMag(frame2_atom_cords)
-    trans_vec=(mag2-mag1)*vector.getUnitVec(frame2_atom_cords)
+    trans_vec=getAtomicDisplacement(frame1_atom_cords,frame2_atom_cords)
     part_translation+=trans_vec[axis]
-  avg_part_translation=net_translation/len(_atom_list)
+  avg_part_translation=part_translation/len(_atom_list)
   return avg_part_translation*constants.angstrom
 
 def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
@@ -101,3 +100,21 @@ def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=2
   return translation[axis]*constants.angstrom
 
+def translateAlongAxis(cords,axis,distance):
+  new_cords=cords.copy()
+  _axis=vector.getUnitVec(axis)
+  translation_vector=[0,0,0]
+  translation_vector[0]=distance*_axis[0]
+  translation_vector[1]=distance*_axis[1]
+  translation_vector[2]=distance*_axis[2]
+  new_cords['x']=new_cords['x']+translation_vector[0]
+  new_cords['y']=new_cords['y']+translation_vector[1]
+  new_cords['z']=new_cords['z']+translation_vector[2]  
+  return new_cords
+ 
+def getAtomicDisplacement(v1,v2):
+  mag1=vector.getMag(v1)
+  mag2=vector.getMag(v2)
+  trans_vec=(mag2-mag1)*vector.getUnitVec(v2) 
+  return trans_vec
+ 
