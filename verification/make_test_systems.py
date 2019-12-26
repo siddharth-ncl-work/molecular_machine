@@ -66,51 +66,92 @@ def ringTrackAtOrigin():
   #atom_list[0]=atom_list[-1]='n'
   createSystem(cords_list,atom_list,file_path,add_axes=False)
   
-def ringTrackTwoFrames():
+def ringTrackTwoFramesIdeal():
+  output_file_path='test_systems/ring_track_two_frames_ideal.xyz'
+  output_file=file=open(output_file_path,'w')
   x=[1,0,0]
-  y=[0,1,0]
-  z=[0,0,1]
   ringTrackAtOrigin()
 
-  rpy=[45,0,0]
-  distance=2.56
+  ring_theta=45
+  track_theta=35
+  ring_distance=2
+  track_distance=1
 
   input_system_file_path='test_systems/ring_track_at_origin.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
   #ring
   frame1_ring_cords_df=frame1_initial_cords_df[frame1_initial_cords_df['atom_no'].isin(range(config.ring_start_atom_no,config.ring_end_atom_no+1))]
-  df=rotation.rotateAlongAxis(frame1_ring_cords_df,x,math.radians(rpy[0]))
-  df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
-  df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
-  frame2_initial_ring_cords_df=translation.translateAlongAxis(df,x,distance)
+  df=rotation.rotateAlongAxis(frame1_ring_cords_df,x,math.radians(ring_theta)) 
+  frame2_initial_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
   #track
   frame1_track_cords_df=frame1_initial_cords_df[frame1_initial_cords_df['atom_no'].isin(range(config.track_start_atom_no,config.track_end_atom_no+1))]
-  df=rotation.rotateAlongAxis(frame1_track_cords_df,x,math.radians(rpy[0]))
-  df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
-  df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
-  frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,distance+1)
+  df=rotation.rotateAlongAxis(frame1_track_cords_df,x,math.radians(track_theta))
+  frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,track_distance)
+  #frame2
+  frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
+
+  #transform both frames
+  axis=[1,1,1]
+  theta=45.24
+  distance=1.67
+  frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
+  frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
+  frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)
+  frame2_final_cords_df=translation.translateAlongAxis(frame2_final_cords_df,axis,distance)
+
+  io.writeFileMd(output_file,frame1_final_cords_df,0,frame_no_pos=config.frame_no_pos)
+  io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
+  output_file.close()
+
+def ringTrackTwoFramesNonIdeal():
+  output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  output_file=file=open(output_file_path,'w')
+  x=[1,0,0]
+  y=[0,1,0]
+  z=[0,0,1]
+  ringTrackAtOrigin()
+
+  ring_rpy=[45,0,0]
+  track_rpy=[0,0,10.5]
+  ring_distance=2
+  track_distance=1
+
+  input_system_file_path='test_systems/ring_track_at_origin.xyz'
+  input_system_cords_df=io.readFile(input_system_file_path)
+  frame1_initial_cords_df=input_system_cords_df.copy()
+  #ring
+  frame1_ring_cords_df=frame1_initial_cords_df[frame1_initial_cords_df['atom_no'].isin(range(config.ring_start_atom_no,config.ring_end_atom_no+1))]
+  df=rotation.rotateAlongAxis(frame1_ring_cords_df,x,math.radians(ring_rpy[0]))
+  df=rotation.rotateAlongAxis(df,y,math.radians(ring_rpy[1]))
+  df=rotation.rotateAlongAxis(df,z,math.radians(ring_rpy[2]))
+  frame2_initial_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
+  #track
+  frame1_track_cords_df=frame1_initial_cords_df[frame1_initial_cords_df['atom_no'].isin(range(config.track_start_atom_no,config.track_end_atom_no+1))]
+  df=rotation.rotateAlongAxis(frame1_track_cords_df,x,math.radians(track_rpy[0]))
+  df=rotation.rotateAlongAxis(df,y,math.radians(track_rpy[1]))
+  df=rotation.rotateAlongAxis(df,z,math.radians(track_rpy[2]))
+  frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,track_distance)
   #frame2
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
    
   #transform both frames
-  axis=[-1,2,-2]
-  theta=0
-  distance=0
+  axis=[1,1,1]
+  theta=45.24
+  distance=1.67
   frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
   frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)
   frame2_final_cords_df=translation.translateAlongAxis(frame2_final_cords_df,axis,distance)
   
-  file=open('test_systems/ring_track_two_frames.xyz','w')
-  io.writeFileMd(file,frame1_final_cords_df,0,frame_no_pos=config.frame_no_pos)
-  io.writeFileMd(file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
-  file.close()
+  io.writeFileMd(output_file,frame1_final_cords_df,0,frame_no_pos=config.frame_no_pos)
+  io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
+  output_file.close()
 
-def ringTrackMultiFrame():
+def ringTrackMultiFrameIdeal():
+  output_file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  output_file=open(output_file_path,'w')
   x=[1,0,0]
-  y=[0,1,0]
-  z=[0,0,1]
   ringTrackAtOrigin()
 
   total_frames=100
@@ -125,7 +166,6 @@ def ringTrackMultiFrame():
 
   input_system_file_path='test_systems/ring_track_at_origin.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
-  file=open('test_systems/ring_track_multi_frame.xyz','w')
   for curr_frame_no in range(total_frames):
     #ring
     input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(range(config.ring_start_atom_no,config.ring_end_atom_no+1))]
@@ -147,23 +187,24 @@ def ringTrackMultiFrame():
     distance=1.67
     curr_frame_cords_df=rotation.rotateAlongAxis(curr_frame_cords_df,axis,math.radians(theta))
     curr_frame_cords_df=translation.translateAlongAxis(curr_frame_cords_df,axis,distance)
-    io.writeFileMd(file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
+    io.writeFileMd(output_file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
 
     ring_theta+=ring_d_theta
     ring_distance+=ring_d_distance
     track_theta+=track_d_theta
     track_distance+=track_d_distance
-  file.close()
+  output_file.close()
     
+def ringTrackMultiFrameNonIdeal():
+  pass
 
-if __name__=='__main__':
-  #oneAtomSystem()  
 
-
-  #multiAtomSystem()
-  #rpyOneAtomSystem()
-  #ringCords()
-  #trackCords()
-  #ringTrackAtOrigin()
-  ringTrackTwoFrames()
-  #ringTrackMultiFrame()
+#oneAtomSystem()  
+#multiAtomSystem()
+#rpyOneAtomSystem()
+#ringCords()
+#trackCords()
+#ringTrackAtOrigin()
+#ringTrackTwoFramesIdeal()
+ringTrackTwoFramesNonIdeal()
+#ringTrackMultiFrameIdeal()

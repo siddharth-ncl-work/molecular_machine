@@ -69,6 +69,7 @@ def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,quantity='translation')
   for atom_no in _atom_list:
     frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]  
@@ -87,7 +88,7 @@ def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   else:
     assert len(atom_list)!=0,'atoms_list should not be empty'
     _atom_list=atom_list
-  #frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,quantity='translation') 
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,quantity='translation') 
   com1=physics.getCom(frame1_cords,atom_list=_atom_list) 
   com2=physics.getCom(frame2_cords,atom_list=_atom_list)
   translation=[0.0,0.0,0.0]

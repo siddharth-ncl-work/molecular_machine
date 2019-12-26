@@ -37,16 +37,16 @@ def getOneAtomRPYAngles():
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
+  rpy=[12,-9,4.5]
   initial_cords=[5.2,4,0]
   print(initial_cords)
   atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
   initial_df=pd.DataFrame.from_dict(atom_data)
-  df=rotation.rotateAlongAxis(initial_df,x,math.radians(0))
-  df=rotation.rotateAlongAxis(df,y,math.radians(0))
-  final_df=rotation.rotateAlongAxis(df,z,math.radians(0))
+  df=rotation.rotateAlongAxis(initial_df,x,math.radians(rpy[0]))
+  df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+  final_df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
   final_cords=final_df[['x','y','z']].values[0]
   print(final_cords)
-
   rpy=rotation.getRPYAngles(initial_cords,final_cords)
   rpy_d=map(math.degrees,rpy)
   for angle in rpy_d:
@@ -57,31 +57,40 @@ def getOneAtomRPYAngles():
   print(df[['x','y','z']].values[0])
  
 #rot_atomic_r_t is not suitable for track 
-def rot_atomic_r_t():
+def rot_atomic_r_t(ideal=True):
   frame1_no=0
   frame2_no=1
-  file=open('test_systems/ring_track_two_frames.xyz','r')
-  
+  if ideal:
+    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
+  else:
+    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos) 
   file.close()
   _rotation=rotation.rot_atomic_r_t(frame1_cords_df,frame2_cords_df,part='ring')
   print(_rotation)
 
-def rot_atomic_r_t_2():
+def rot_atomic_r_t_2(ideal=True):
   frame1_no=0
   frame2_no=1
-  file=open('test_systems/ring_track_two_frames.xyz','r')
+  if ideal:
+    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
+  else:
+    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
   file.close()
   _rotation=rotation.rot_atomic_r_t_2(frame1_cords_df,frame2_cords_df,part='ring')
   print(_rotation)
 
-def getRotationTwoFrames():
-  file_path='test_systems/ring_track_two_frames.xyz'
+def getRotationTwoFrames(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_two_frames_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
   frame1_no=0
   frame2_no=1
+
   file=open(file_path,'r')
   _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2')
   file.close()
@@ -97,10 +106,14 @@ def getRotationTwoFrames():
   file.close()
   print(f'Ring Relative Rotation = {_rotation}')
 
-def getRotationMultiFrame():
-  file_path='test_systems/ring_track_multi_frame.xyz'
+def getRotationMultiFrame(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
   frame1_no=50
   frame2_no=52
+
   file=open(file_path,'r')
   _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2')
   file.close()
@@ -117,11 +130,13 @@ def getRotationMultiFrame():
   print(f'Ring Relative Rotation = {_rotation}')
 
 
-def getNetRotation():
-  file_path='test_systems/ring_track_multi_frame.xyz'
+def getNetRotation(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
   start_frame_no=0
   end_frame_no=99
-
  
   file=open(file_path,'r')
   net_ring_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
@@ -142,6 +157,6 @@ def getNetRotation():
 #rotateAlongAxis() 
 #getRPYAngles()
 #rot_atomic_r_t_2()
-#getRotation()
+getRotationTwoFrames(ideal=False)
 #getRotationMultiFrame()
-getNetRotation()
+#getNetRotation()

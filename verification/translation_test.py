@@ -63,30 +63,37 @@ def getAtomicDisplacement():
   df=translation.translateAlongAxis(df,trans_vec,distance)
   print(df[['x','y','z']].values[0])
  
-def trans_atomic_r_t():
-  file=open('test_systems/ring_track_two_frames.xyz','r')
+def trans_atomic_r_t(ideal=True):
+  if ideal:
+    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
+  else:
+    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
   frame1_no=0
   frame2_no=1
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  #frame1_cords_df,frame2_cords_df=shift_origin.shiftOrigin(frame1_cords_df,frame2_cords_df)
   _translation=translation.trans_atomic_r_t(frame1_cords_df,frame2_cords_df) 
   file.close()
   print(_translation)
 
-def trans_com():
-  file=open('test_systems/ring_track_two_frames.xyz','r')
+def trans_com(ideal=True):
+  if ideal:
+    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
+  else:
+    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
   frame1_no=0
   frame2_no=1
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  #frame1_cords_df,frame2_cords_df=shift_origin.shiftOrigin(frame1_cords_df,frame2_cords_df)
   _translation=translation.trans_com(frame1_cords_df,frame2_cords_df)
   file.close()
   print(_translation)
 
-def getTranslationTwoFrames():
-  file_path='test_systems/ring_track_two_frames.xyz'
+def getTranslationTwoFrames(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_two_frames_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
   frame1_no=0
   frame2_no=1
 
@@ -105,8 +112,12 @@ def getTranslationTwoFrames():
   file.close()
   print(f'Ring Relative Translation = {_translation}')
 
-def getTranslationMultiFrame():
-  file_path='test_systems/ring_track_multi_frame.xyz'
+def getTranslationMultiFrame(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+
   frame1_no=50
   frame2_no=51
 
@@ -125,8 +136,11 @@ def getTranslationMultiFrame():
   file.close()
   print(f'Ring Relative Translation = {_translation}')
   
-def getNetTranslation():
-  file_path='test_systems/ring_track_multi_frame.xyz'
+def getNetTranslation(ideal=True):
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else: 
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
   start_frame_no=0
   end_frame_no=99
 
@@ -146,11 +160,10 @@ def getNetTranslation():
   print(f'Net ring translation = {net_ring_translation}')
 
 
-
 #translateAlongAxis()
 #getAtomicDisplacement()
 #trans_atomic_r_t()
 #trans_com()
 #getTranslationTwoFrames()
 #getTranslationMultiFrame()
-getNetTranslation()
+#getNetTranslation()

@@ -113,10 +113,11 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
       sign=-1
     else:
       sign=1 
+    #print(math.degrees(sign*atom_rotation))
     atom_rotation_list.append(sign*atom_rotation)
-  mode_part_rotation=stats.mode(atom_rotation_list)[0]
-  #avg_part_rotation=part_rotation/len(_atom_list)
-  return math.degrees(mode_part_rotation)
+  #part_rotation=stats.mode(atom_rotation_list)[0]
+  part_rotation=np.average(atom_rotation_list)
+  return math.degrees(part_rotation)
 
 def getRotMat(axis,theta):
   R=np.zeros((3,3))
