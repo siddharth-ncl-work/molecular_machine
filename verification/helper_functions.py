@@ -24,7 +24,6 @@ def createSystem(cords_list,atom_list,file_path,add_axes=False):
   data={'atom':_atom_list,'atom_no':atom_no_list,'x':x_list,'y':y_list,'z':z_list}
   df=pd.DataFrame.from_dict(data)
   io.writeFile(file_path,df)
-  print(df)
 
 def getAxes():
   axes_cords_list=[[0,0,0],[1,0,0],[0,1.5,0],[0,0,1.5]]

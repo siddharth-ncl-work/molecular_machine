@@ -83,7 +83,8 @@ def rot_atomic_r_t_2(ideal=True):
   _rotation=rotation.rot_atomic_r_t_2(frame1_cords_df,frame2_cords_df,part='ring')
   print(_rotation)
 
-def getRotationTwoFrames(ideal=True):
+def getRotationTwoFrames(ideal=True,method='rot_atomic_r_t_2'):
+  print(f'ideal = {ideal}\nmethod = {method}')
   if ideal:
     file_path='test_systems/ring_track_two_frames_ideal.xyz'
   else:
@@ -92,17 +93,17 @@ def getRotationTwoFrames(ideal=True):
   frame2_no=1
 
   file=open(file_path,'r')
-  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2')
+  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
   file.close()
   print(f'Ring Absolute Rotation = {_rotation}')
 
   file=open(file_path,'r')
-  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method='rot_atomic_r_t_2')
+  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
   file.close()
   print(f'Track Absolute Rotation = {_rotation}')
  
   file=open(file_path,'r')
-  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method='rot_atomic_r_t_2')
+  _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
   file.close()
   print(f'Ring Relative Rotation = {_rotation}')
 
@@ -157,6 +158,6 @@ def getNetRotation(ideal=True):
 #rotateAlongAxis() 
 #getRPYAngles()
 #rot_atomic_r_t_2()
-getRotationTwoFrames(ideal=False)
+getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_2')
 #getRotationMultiFrame()
 #getNetRotation()
