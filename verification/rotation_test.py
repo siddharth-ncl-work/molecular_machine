@@ -158,6 +158,6 @@ def getNetRotation(ideal=True):
 #rotateAlongAxis() 
 #getRPYAngles()
 #rot_atomic_r_t_2()
-getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_2')
+getRotationTwoFrames(ideal=False,method='rot_mol_plane_2')
 #getRotationMultiFrame()
 #getNetRotation()

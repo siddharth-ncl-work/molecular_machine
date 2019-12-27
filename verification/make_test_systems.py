@@ -104,7 +104,7 @@ def ringTrackTwoFramesIdeal():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[40,0,0]):
+def ringTrackTwoFramesNonIdeal(ring_rpy=[90,0,0],track_rpy=[-10,0,0]):
   output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
   output_file=file=open(output_file_path,'w')
   x=[1,0,0]

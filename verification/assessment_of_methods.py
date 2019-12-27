@@ -97,16 +97,36 @@ def plot2(x,y,method='test',part='ring',rotation_axis=0,constant_axis=1,constant
   plt.savefig('output/assessment_'+method+'/'+title+'.png')
   #plt.show()
 
-
+'''
 assessRotationMethodSingleAxis(method='rot_atomic_r_t')
-assessRotationMethodSingleAxis(method='rot_atomic_r_t_2')
-
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
-
+'''
+'''
+assessRotationMethodSingleAxis(method='rot_atomic_r_t_2')
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t_2',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t_2',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis(method='rot_atomic_r_t_2',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
+'''
+'''
+method='rot_atomic_r_t_3'
+assessRotationMethodSingleAxis(method=method)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
+'''
+'''
+method='rot_mol_plane_1'
+assessRotationMethodSingleAxis(method=method)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
+'''
 
+method='rot_mol_plane_2'
+assessRotationMethodSingleAxis(method=method)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
+assessRotationMethodDoubleAxis(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
 
