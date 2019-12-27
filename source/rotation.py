@@ -44,7 +44,7 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       part1_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
-    if method=='rot_atomic_r_t_2':
+    elif method=='rot_atomic_r_t_2':
       part1_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
@@ -149,9 +149,9 @@ def getRPYAngles(v1,v2,axis='x'):
   theta=vector.getAngleR(v1,v2)
   R=getRotMat(s,theta)
   if axis=='x':
-    rpy[1]=asin(-1*R[2][0])
-    rpy[0]=asin(R[2][1]/cos(rpy[1]))
-    rpy[2]=asin(R[1][0]/cos(rpy[1]))
+    rpy[1]=asin(fixArcDomain(-1*R[2][0]))
+    rpy[0]=asin(fixArcDomain(R[2][1]/cos(rpy[1])))
+    rpy[2]=asin(fixArcDomain(R[1][0]/cos(rpy[1])))
   elif axis=='y':
     rpy[2]=asin(-1*R[0][1])
     rpy[1]=asin(R[0][2]/cos(rpy[2]))
@@ -164,3 +164,10 @@ def getRPYAngles(v1,v2,axis='x'):
     print('To be implemented')
   return rpy
 
+def fixArcDomain(v):
+  if v<-1:  
+    return -1
+  elif v>1:
+    return 1
+  else:
+    return v
