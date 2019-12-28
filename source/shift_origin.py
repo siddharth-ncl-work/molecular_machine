@@ -37,14 +37,17 @@ def shiftOrigin(frame1_cords,frame2_cords,quantity='rotation'):
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
+  com=physics.getCom(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
+    com[0]=0
   elif config.axis=='y':
     ref_axis=[1,0,1]
+    com[1]=0
   elif config.axis=='z':
     ref_axis=[1,1,0]
-  com=physics.getCom(new_frame1_cords)
-  #axis=vector.getCrossProduct(com,ax)
+    com[2]=0
+  #axis=vector.getCrossProduct(com,ref_axis)
   theta=vector.getAngleR(axis,ax)
 
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,ax,theta)

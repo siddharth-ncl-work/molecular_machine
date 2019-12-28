@@ -31,10 +31,10 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
   if type=='absolute':
     if method=='trans_atomic_r_t':
       translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
-    elif method=='trans_atomic_t_r':
-      print('to be implemented')
     elif method=='trans_com':
       translation=trans_com(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='trans_atomic_t_r':
+      print('to be implemented')
     else:
       print('Please provide an appropriate method')
   elif type=='relative':
@@ -42,12 +42,12 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       part1_translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_translation-part2_translation
-    elif method=='trans_atomic_t_r':
-      print('to be implemented')
     elif method=='trans_com':
       part1_translation=trans_com(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_translation=trans_com(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       translation=part1_translation-part2_translation
+    elif method=='trans_atomic_t_r':
+      print('to be implemented') 
     else:
       print('Please provide an appropriate method')
   return translation

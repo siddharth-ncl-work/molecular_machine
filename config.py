@@ -4,7 +4,7 @@ data_dir_path='/home/vanka/ruchi/output_only'
 system_name='system3'
 file_name='system2_21_11_19_v1.xyz'
 
-test_file_path='verification/test_systems/ring_track_multi_frame.xyz'#'/home/vanka/ruchi/output_only/system3/ring_track_dl_at_sulfer_end.xyz'
+test_file_path='verification/test_systems/ring_track_multi_frame_ideal.xyz'#'/home/vanka/ruchi/output_only/system3/ring_track_dl_at_sulfer_end.xyz'
 
 #GENERAL PARAMETERS
 ring_start_atom_no=0#0

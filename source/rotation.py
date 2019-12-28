@@ -35,7 +35,13 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
     elif method=='rot_atomic_r_t_2':
       rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
-    elif method=='rot_atomc_t_r':
+    elif method=='rot_atomic_r_t_3':
+      rotation=rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_mol_plane_1':
+      rotation=rot_mol_plane_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_mol_plane_2':
+      rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_atomic_t_r':
       print('to be implemented in future')
     else:
       print('Please provide an appropriate method')
@@ -47,6 +53,18 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
     elif method=='rot_atomic_r_t_2':
       part1_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
+    elif method=='rot_atomic_r_t_3':
+      part1_rotation=rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
+    elif method=='rot_mol_plane_1':
+      part1_rotation=rot_mol_plane_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_mol_plane_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
+    elif method=='rot_mol_plane_2':
+      part1_rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
@@ -102,11 +120,11 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=2
   atom_rotation_list=[]
   frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords[config.axis]=0
+  frame2_cords[config.axis]=0 
   for atom_no in _atom_list:
     frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
-    frame1_atom_cords[axis]=0
-    frame2_atom_cords[axis]=0
     atom_rotation=vector.getAngleR(frame1_atom_cords,frame2_atom_cords)
     sign=vector.getCrossProduct(frame1_atom_cords,frame2_atom_cords)[axis]
     if sign<0:
@@ -118,6 +136,92 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   #part_rotation=stats.mode(atom_rotation_list)[0]
   part_rotation=np.average(atom_rotation_list)
   return math.degrees(part_rotation)
+
+def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  part_rotation=0
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords[config.axis]=0
+  frame2_cords[config.axis]=0
+  for atom_no in _atom_list:
+    frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
+    frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
+    atom_rotation=getRPYAngles(frame1_atom_cords,frame2_atom_cords,axis=config.axis)
+    #getRPYAngles with new prev_frame_cords
+    #translate cords of prev_frame
+    part_rotation+=atom_rotation[axis]
+  avg_part_rotation=part_rotation/len(_atom_list)
+  return math.degrees(avg_part_rotation)
+
+def rot_mol_plane_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  part_rotation=0
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_part_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
+  frame2_part_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
+  frame1_plane=findMolecularPlane(frame1_part_df)
+  frame2_plane=findMolecularPlane(frame2_part_df)
+  #part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
+  frame1_plane[axis]=0
+  frame2_plane[axis]=0
+  part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
+  return math.degrees(part_rotation)
+
+def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  part_rotation=0
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_part_cords_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
+  frame2_part_cords_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
+  coplanar_atom_no_list=findCoplanarAtoms(frame1_part_cords_df)
+  frame1_coplanar_atom_cords_list=frame1_part_cords_df[frame1_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
+  frame2_coplanar_atom_cords_list=frame2_part_cords_df[frame2_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
+  frame1_plane=vector.getPlaneNormal(frame1_coplanar_atom_cords_list)
+  frame2_plane=vector.getPlaneNormal(frame2_coplanar_atom_cords_list)
+  #print(frame1_plane)
+  #print(frame2_plane)
+  part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
+  #frame1_plane[axis]=0
+  #frame2_plane[axis]=0
+  #part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
+  return math.degrees(part_rotation)
+
 
 def getRotMat(axis,theta):
   R=np.zeros((3,3))
@@ -163,6 +267,38 @@ def getRPYAngles(v1,v2,axis='x'):
   else:
     print('To be implemented')
   return rpy
+
+def findMolecularPlane(df):
+  n=5
+  first_atom_no=df.iloc[1]['atom_no']
+  last_atom_no=df.iloc[-1]['atom_no']
+  p1=df[df['atom_no']==first_atom_no][['x','y','z']].values[0]
+  p2=df[df['atom_no']==first_atom_no+n][['x','y','z']].values[0]
+  p3=df[df['atom_no']==last_atom_no-n][['x','y','z']].values[0]
+  p4=df[df['atom_no']==last_atom_no][['x','y','z']].values[0]
+  v1=p4-p1
+  v2=p3-p2
+  return vector.getCrossProduct(v1,v2)
+ 
+def findCoplanarAtoms(df):
+  error=0.0174533
+  out_atom_no_list=[]
+  atom_no_list=df['atom_no'].values
+  for atom1_no in atom_no_list:
+    for atom2_no in atom_no_list:
+      if atom2_no==atom1_no:
+        continue
+      for atom3_no in atom_no_list:
+        if atom3_no==atom1_no or atom3_no==atom2_no:
+          continue
+        for atom4_no in atom_no_list:
+          if atom4_no==atom1_no or atom4_no==atom2_no or atom4_no==atom3_no:
+            continue
+          p=df[df['atom_no'].isin([atom1_no,atom2_no,atom3_no,atom4_no])][['x','y','z']].values   
+          dihedral_angle=vector.getDihedralAngle(p,unit='radians')
+          if np.abs(dihedral_angle-math.pi)<error or np.abs(dihedral_angle)<error:
+            out_atom_no_list=[atom1_no,atom2_no,atom3_no,atom4_no]
+            return out_atom_no_list
 
 def fixArcDomain(v):
   if v<-1:  
