@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 sys.path.append('..')
 
+import config
 from lib.io_chem import io
 from lib.basic_operations import vector
 

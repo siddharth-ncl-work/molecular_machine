@@ -12,19 +12,19 @@ def _shiftOrigin(cords,origin):
 
 def shiftOrigin(frame1_cords,frame2_cords,quantity='rotation'):
   atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1) 
-  com1=physics.getCom(frame1_cords,atom_list=atom_list) 
-  com2=physics.getCom(frame2_cords,atom_list=atom_list)
+  cog1=physics.getCog(frame1_cords,atom_list=atom_list) 
+  cog2=physics.getCog(frame2_cords,atom_list=atom_list)
   trans_axis=[0.0,0.0,0.0]
-  trans_axis[0]=com2[0]-com1[0]
-  trans_axis[1]=com2[1]-com1[1]
-  trans_axis[2]=com2[2]-com1[2]
+  trans_axis[0]=cog2[0]-cog1[0]
+  trans_axis[1]=cog2[1]-cog1[1]
+  trans_axis[2]=cog2[2]-cog1[2]
   
   if quantity=='rotation':
-    new_frame1_cords=_shiftOrigin(frame1_cords,com1)
-    new_frame2_cords=_shiftOrigin(frame2_cords,com2)
+    new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,cog2)
   elif quantity=='translation':
-    new_frame1_cords=_shiftOrigin(frame1_cords,com1)
-    new_frame2_cords=_shiftOrigin(frame2_cords,com1)
+    new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,cog1)
   if config.axis=='x':
     ax=[1,0,0]
   elif config.axis=='y':
@@ -37,16 +37,16 @@ def shiftOrigin(frame1_cords,frame2_cords,quantity='rotation'):
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
-  com=physics.getCom(new_frame1_cords) 
+  cog=physics.getCog(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
-    com[0]=0
+    cog[0]=0
   elif config.axis=='y':
     ref_axis=[1,0,1]
-    com[1]=0
+    cog[1]=0
   elif config.axis=='z':
     ref_axis=[1,1,0]
-    com[2]=0
+    cog[2]=0
   #axis=vector.getCrossProduct(com,ref_axis)
   theta=vector.getAngleR(axis,ax)
 

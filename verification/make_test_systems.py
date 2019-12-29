@@ -55,7 +55,7 @@ def trackCords():
   return track_cords_list
  
 def ringTrackAtOriginIdeal():
-  file_path='test_systems/ring_track_at_origin.xyz'
+  file_path='test_systems/ring_track_at_origin_ideal.xyz'
   ring_cords_list=ringCords()
   track_cords_list=trackCords()
   cords_list=[]
@@ -66,6 +66,21 @@ def ringTrackAtOriginIdeal():
   #atom_list[0]=atom_list[-1]='n'
   createSystem(cords_list,atom_list,file_path,add_axes=False)
   
+def ringTrackAtOriginNonIdeal():
+  file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
+  ring_cords_list=ringCords()
+  track_cords_list=trackCords()
+  cords_list=[]
+  atom_list=[]
+  cords_list.extend(ring_cords_list)
+  cords_list.extend(track_cords_list)
+  atom_list=len(cords_list)*['c']
+  total_ring_atoms=len(ring_cords_list)
+  total_track_atoms=len(track_cords_list)
+  atom_list[:total_ring_atoms//2]=['na']*(total_ring_atoms//2)
+  atom_list[-total_track_atoms//2:]=['s']*(total_track_atoms//2)
+  createSystem(cords_list,atom_list,file_path,add_axes=False)
+
 def ringTrackTwoFramesIdeal():
   output_file_path='test_systems/ring_track_two_frames_ideal.xyz'
   output_file=file=open(output_file_path,'w')
@@ -77,7 +92,7 @@ def ringTrackTwoFramesIdeal():
   ring_distance=2
   track_distance=1
 
-  input_system_file_path='test_systems/ring_track_at_origin.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_ideal.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
   #ring
@@ -104,20 +119,20 @@ def ringTrackTwoFramesIdeal():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdeal(ring_rpy=[90,0,0],track_rpy=[-10,0,0]):
+def ringTrackTwoFramesNonIdeal(ring_rpy=[40,0,0],track_rpy=[30,0,0]):
   output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
   output_file=file=open(output_file_path,'w')
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
-  ringTrackAtOriginIdeal()
+  ringTrackAtOriginNonIdeal()
 
   #ring_rpy=[0,0,100.5]
   #track_rpy=[0,0,100.5]
   ring_distance=2
   track_distance=1
 
-  input_system_file_path='test_systems/ring_track_at_origin.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
   #ring
@@ -152,19 +167,19 @@ def ringTrackMultiFrameIdeal():
   output_file_path='test_systems/ring_track_multi_frame_ideal.xyz'
   output_file=open(output_file_path,'w')
   x=[1,0,0]
-  ringTrackAtOrigin()
+  ringTrackAtOriginNonIdeal()
 
   total_frames=100
   ring_theta=0
-  ring_distance=0
-  ring_d_theta=1.5
-  ring_d_distance=0.1
   track_theta=0
+  ring_d_theta=1
+  track_d_theta=-0.5
+  ring_distance=0
   track_distance=0
-  track_d_theta=-0.75
+  ring_d_distance=0.1
   track_d_distance=-0.05
 
-  input_system_file_path='test_systems/ring_track_at_origin.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   for curr_frame_no in range(total_frames):
     #ring
@@ -208,4 +223,4 @@ if __name__=='__main__':
   #ringTrackAtOrigin()
   #ringTrackTwoFramesIdeal()
   ringTrackTwoFramesNonIdeal()
-  #ringTrackMultiFrameIdeal()
+  ringTrackMultiFrameIdeal()

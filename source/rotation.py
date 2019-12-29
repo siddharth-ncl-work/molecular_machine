@@ -41,6 +41,8 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       rotation=rot_mol_plane_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_mol_plane_2':
       rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_hybrid_1':
+      rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
     else:
@@ -65,6 +67,10 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
     elif method=='rot_mol_plane_2':
       part1_rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
+    elif method=='rot_hybrid_1':
+      part1_rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
@@ -159,8 +165,6 @@ def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
     atom_rotation=getRPYAngles(frame1_atom_cords,frame2_atom_cords,axis=config.axis)
-    #getRPYAngles with new prev_frame_cords
-    #translate cords of prev_frame
     part_rotation+=atom_rotation[axis]
   avg_part_rotation=part_rotation/len(_atom_list)
   return math.degrees(avg_part_rotation)
@@ -188,7 +192,7 @@ def rot_mol_plane_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   #part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   frame1_plane[axis]=0
   frame2_plane[axis]=0
-  part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
+  part_rotation=getRPYAngles(frame1_plane,frame2_plane)[axis]
   return math.degrees(part_rotation)
 
 def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
@@ -214,14 +218,24 @@ def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   frame2_coplanar_atom_cords_list=frame2_part_cords_df[frame2_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
   frame1_plane=vector.getPlaneNormal(frame1_coplanar_atom_cords_list)
   frame2_plane=vector.getPlaneNormal(frame2_coplanar_atom_cords_list)
-  #print(frame1_plane)
-  #print(frame2_plane)
   part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
-  #frame1_plane[axis]=0
-  #frame2_plane[axis]=0
-  #part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
+  '''
+  RPY gives accurate results when vector are perpendicular to the axis of rotation
+  RPY gives both positive and negative values
+  Following angle calulation will give only positive values 
+  frame1_plane[axis]=0
+  frame2_plane[axis]=0
+  part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
+  '''
   return math.degrees(part_rotation)
 
+def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  if part=='ring':
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+  elif part=='track':
+    return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
+  else:
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
 def getRotMat(axis,theta):
   R=np.zeros((3,3))
