@@ -83,6 +83,161 @@ def getMI():
     print(f'{part} MI = {MI}')
 
 
-get_dist_pt_line()
-getMI()
+#RKE
+def getRKETwoFrames(ideal=False,method='energy_rot_hybrid_1'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_two_frames_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  frame1_no=0
+  frame2_no=1
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Ring Absolute RKE = {RKE}')
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Track Absolute RKE = {RKE}')
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
+  file.close()
+  print(f'Ring Relative RKE = {RKE}')
+
+def getRKEMultiFrame(ideal=True,method='energy_rot_hybrid_1'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+  frame1_no=50
+  frame2_no=52
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Ring Absolute RKE = {RKE}')
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Track Absolute RKE = {RKE}')
+
+  file=open(file_path,'r')
+  RKE=energy.getRKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
+  file.close()
+  print(f'Ring Relative RKE = {RKE}')
+
+def getAvgRKE(ideal=True,method='energy_rot_hybrid_1'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+  start_frame_no=0
+  end_frame_no=99
+
+  file=open(file_path,'r')
+  avg_RKE=energy.getAvgRKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Average absolute ring RKE = {avg_RKE}')
+
+  file=open(file_path,'r')
+  avg_RKE=energy.getAvgRKE(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Average absolute track RKE = {avg_RKE}')
+
+  file=open(file_path,'r')
+  avg_RKE=energy.getAvgRKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Net ring relative RKE = {avg_RKE}')
+
+
+#TKE
+def getTKETwoFrames(ideal=False,method='energy_trans_com'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_two_frames_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  frame1_no=0
+  frame2_no=1
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Ring Absolute TKE = {TKE}')
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Track Absolute TKE = {TKE}')
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
+  file.close()
+  print(f'Ring Relative TKE = {TKE}')
+
+def getTKEMultiFrame(ideal=True,method='energy_trans_com'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+  frame1_no=50
+  frame2_no=52
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Ring Absolute TKE = {TKE}')
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
+  file.close()
+  print(f'Track Absolute TKE = {TKE}')
+
+  file=open(file_path,'r')
+  TKE=energy.getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
+  file.close()
+  print(f'Ring Relative TKE = {TKE}')
+
+def getAvgTKE(ideal=True,method='energy_trans_com'):
+  print(f'ideal = {ideal}\nmethod = {method}')
+  if ideal:
+    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+  else:
+    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+  start_frame_no=0
+  end_frame_no=99
+
+  file=open(file_path,'r')
+  avg_TKE=energy.getAvgTKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Average absolute ring TKE = {avg_TKE}')
+
+  file=open(file_path,'r')
+  avg_TKE=energy.getAvgTKE(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Average absolute track TKE = {avg_TKE}')
+
+  file=open(file_path,'r')
+  avg_TKE=energy.getAvgTKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method=method,part1_atom_list=[],part2_atom_list=[])
+  file.close()
+  print(f'Net ring relative TKE = {avg_TKE}')
+
+
+#get_dist_pt_line()
+#getMI()
+getRKETwoFrames()
+getRKEMultiFrame()
+getAvgRKE()
+
+getTKETwoFrames()
+getTKEMultiFrame()
+getAvgTKE()
 

@@ -94,7 +94,7 @@ def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   for atom_no in _atom_list:
     frame1_atom_cords=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]  
@@ -104,11 +104,6 @@ def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     part_rotation+=atom_rotation[axis]
   avg_part_rotation=part_rotation/len(_atom_list)
   return math.degrees(avg_part_rotation)
-
-def atomic_t_r(frame1_cords,frame2_cords,part='ring',atom_list=[]):
-  pass
-  #translate cords of prev_frame
-  #getRPYAngles with new prev_frame_cords
 
 def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
@@ -125,7 +120,7 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   elif config.axis=='z':
     axis=2
   atom_rotation_list=[]
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   frame1_cords[config.axis]=0
   frame2_cords[config.axis]=0 
   for atom_no in _atom_list:
@@ -158,7 +153,7 @@ def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   frame1_cords[config.axis]=0
   frame2_cords[config.axis]=0
   for atom_no in _atom_list:
@@ -184,7 +179,7 @@ def rot_mol_plane_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   frame1_part_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
   frame2_part_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
   frame1_plane=findMolecularPlane(frame1_part_df)
@@ -210,7 +205,7 @@ def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   frame1_part_cords_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
   frame2_part_cords_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
   coplanar_atom_no_list=findCoplanarAtoms(frame1_part_cords_df)
@@ -236,6 +231,11 @@ def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+
+def atomic_t_r(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  pass
+  #translate cords of prev_frame
+  #getRPYAngles with new prev_frame_cords
 
 def getRotMat(axis,theta):
   R=np.zeros((3,3))

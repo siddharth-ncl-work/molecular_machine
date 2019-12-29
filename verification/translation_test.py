@@ -89,7 +89,7 @@ def trans_com(ideal=True):
   file.close()
   print(_translation)
 
-def getTranslationTwoFrames(ideal=True):
+def getTranslationTwoFrames(ideal=False):
   if ideal:
     file_path='test_systems/ring_track_two_frames_ideal.xyz'
   else:
@@ -166,4 +166,4 @@ def getNetTranslation(ideal=True):
 #trans_com()
 #getTranslationTwoFrames()
 #getTranslationMultiFrame()
-#getNetTranslation()
+getNetTranslation()

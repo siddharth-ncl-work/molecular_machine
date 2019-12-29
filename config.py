@@ -15,7 +15,7 @@ track_end_atom_no=37#153
 
 axis='x'
 
-simulation_time_step=5 #in femto
+simulation_time_step=0.5 #in femto
 
 frame_no_pos=2
 

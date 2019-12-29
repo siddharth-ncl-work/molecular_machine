@@ -145,19 +145,19 @@ def getNetRotation(ideal=True):
   print(f'Net absolute ring rotation = {net_ring_rotation}')
  
   file=open(file_path,'r')
-  net_ring_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
+  net_track_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
   file.close()
-  print(f'Net absolute track rotation = {net_ring_rotation}')
+  print(f'Net absolute track rotation = {net_track_rotation}')
 
   file=open(file_path,'r')
   net_ring_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
   file.close()
-  print(f'Net ring rotation = {net_ring_rotation}')
+  print(f'Net ring relative rotation = {net_ring_rotation}')
 
     
 #rotateAlongAxis() 
 #getRPYAngles()
 #rot_atomic_r_t_2()
-#getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_2')
-getRotationMultiFrame()
-#getNetRotation()
+#getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_3')
+#getRotationMultiFrame()
+getNetRotation()
