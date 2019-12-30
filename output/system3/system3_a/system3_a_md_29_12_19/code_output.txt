@@ -1,0 +1,86 @@
+2019-12-30 11:50:14.926017
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 70.85191014849386 degrees
+--------------------
+
+2019-12-30 11:51:55.219580
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 70.85191014849386 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 99.3811905119618 %
+Ring avg relative RKE = 9.633454958797571e-15 J
+Ring avg relative TKE = 5.998391949606461e-17 J
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.7199813324941972e-10 m
+--------------------
+
+2019-12-30 11:55:29.038615
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -11.511638959067422 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 99.0794004107432 %
+Ring avg relative RKE = 3.609821326105376e-16 J
+Ring avg relative TKE = 3.3540776552203877e-18 J
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.987115980203189e-10 m
+--------------------
+
+2019-12-30 12:04:26.094021
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -0.880100899282617 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 98.86599991447369 %
+Ring avg relative RKE = 2.9241994370771823e-16 J
+Ring avg relative TKE = 3.3540776552203877e-18 J
+--------------------
+
+2019-12-30 12:07:58.574562
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -21.272583407730995 degrees
+--------------------
+
+2019-12-30 12:22:27.577015
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -45.27863638497965 degrees
+--------------------
+
+2019-12-30 12:25:43.197568
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -0.880100899282617 degrees
+--------------------
+
+2019-12-30 12:27:22.625484
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -11.511638959067422 degrees
+--------------------
+
+2019-12-30 12:28:48.014713
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 49.13457589162889 degrees
+--------------------
+
+2019-12-30 12:29:34.346169
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -49.80997881508022 degrees
+--------------------
+
+2019-12-30 12:37:49.395700
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 173.2827551398605 degrees
+--------------------
+
+2019-12-30 12:54:10.402980
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+

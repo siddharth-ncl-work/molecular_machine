@@ -131,29 +131,32 @@ def getRotationMultiFrame(ideal=True):
   print(f'Ring Relative Rotation = {_rotation}')
 
 
-def getNetRotation(ideal=True):
+def getNetRotation(ideal=True,method='rot_hybrid_1'):
   if ideal:
     file_path='test_systems/ring_track_multi_frame_ideal.xyz'
   else:
     file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
   start_frame_no=0
   end_frame_no=99
- 
+  step_size=10
+
   file=open(file_path,'r')
-  net_ring_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
+  net_ring_rotation,data=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=step_size,part1='ring',part2='track',type='absolute',method='rot_hybrid_1',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net absolute ring rotation = {net_ring_rotation}')
- 
+  print(data)
+
   file=open(file_path,'r')
-  net_track_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
+  net_track_rotation,data=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=step_size,part1='track',part2='track',type='absolute',method='rot_hybrid_1',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net absolute track rotation = {net_track_rotation}')
+  print(data)
 
   file=open(file_path,'r')
-  net_ring_rotation=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[])
+  net_ring_rotation,data=rotation.getNetRotation(file,start_frame_no,end_frame_no,step_size=step_size,part1='ring',part2='track',type='relative',method='rot_hybrid_1',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net ring relative rotation = {net_ring_rotation}')
-
+  print(data)
     
 #rotateAlongAxis() 
 #getRPYAngles()

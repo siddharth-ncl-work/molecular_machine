@@ -143,22 +143,25 @@ def getNetTranslation(ideal=True):
     file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
   start_frame_no=0
   end_frame_no=99
+  step_size=10
 
   file=open(file_path,'r')
-  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  net_ring_translation,data=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=step_size,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net absolute ring translation = {net_ring_translation}')
+  print(data)
 
   file=open(file_path,'r')
-  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='track',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  net_ring_translation,data=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=step_size,part1='track',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net absolute track translation = {net_ring_translation}')
+  print(data)
 
   file=open(file_path,'r')
-  net_ring_translation=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='relative',method='trans_com',part1_atom_list=[],part2_atom_list=[])
+  net_ring_translation,data=translation.getNetTranslation(file,start_frame_no,end_frame_no,step_size=step_size,part1='ring',part2='track',type='relative',method='trans_com',part1_atom_list=[],part2_atom_list=[])
   file.close()
   print(f'Net ring translation = {net_ring_translation}')
-
+  print(data)
 
 #translateAlongAxis()
 #getAtomicDisplacement()

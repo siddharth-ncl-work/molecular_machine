@@ -1,4 +1,6 @@
 import math
+from tqdm import tqdm
+
 from lib.io_chem import io
 from lib.basic_operations import vector,physics,constants,atomic_mass
 from source import rotation,translation
@@ -9,17 +11,20 @@ import config
 def getAvgRKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='energy_rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
   avg_RKE=0
   net_RKE=0
+  data={'frame_no':[],'RKE':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
-  for curr_frame_no in range(start_frame_no+1,end_frame_no+1,step_size):
+  for curr_frame_no in tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size)):
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     RKE=_getRKE(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
     net_RKE+=RKE
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
+    data['frame_no'].append(curr_frame_no)
+    data['RKE'].append(RKE)
   avg_RKE=net_RKE/len(range(start_frame_no,end_frame_no+1,step_size))
-  return avg_RKE
+  return (avg_RKE,data)
 
 def getRKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='energy_rot_atomic_r_t',part1_atom_list=[],part2_atom_list=[]):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
@@ -167,17 +172,20 @@ def energy_rot_hybrid_1(frame1_cords,frame2_cords,part1='ring',part2='track',typ
 def getAvgTKE(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='energy_trans_com',part1_atom_list=[],part2_atom_list=[]):
   avg_TKE=0
   net_TKE=0
+  data={'frame_no':[],'TKE':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
-  for curr_frame_no in range(start_frame_no+1,end_frame_no+1,step_size):
+  for curr_frame_no in tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size)):
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     TKE=_getTKE(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
     net_TKE+=TKE
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
+    data['frame_no'].append(curr_frame_no)
+    data['TKE'].append(TKE)
   avg_TKE=net_TKE/len(range(start_frame_no,end_frame_no+1,step_size))
-  return avg_TKE
+  return (avg_TKE,data)
 
 def getTKE(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='energy_trans_com',part1_atom_list=[],part2_atom_list=[]):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'

@@ -2,6 +2,7 @@ import math
 from math import cos,sin,acos,asin
 import numpy as np
 from scipy import stats
+from tqdm import tqdm
 
 from lib.io_chem import io
 from lib.basic_operations import vector
@@ -11,16 +12,19 @@ import config
 
 def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   net_rotation=0
+  data={'frame_no':[],'rotation':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
-  for curr_frame_no in range(start_frame_no+1,end_frame_no+1,step_size):
+  for curr_frame_no in tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size)):
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     rotation=_getRotation(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
     net_rotation+=rotation    
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
-  return net_rotation
+    data['frame_no'].append(curr_frame_no)
+    data['rotation'].append(rotation)
+  return (net_rotation,data)
 
 def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
@@ -226,11 +230,11 @@ def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
 
 def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+    return rot_atomic_r_t(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
     return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
   else:
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+    return rot_atomic_r_t(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
 def atomic_t_r(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   pass

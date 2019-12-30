@@ -1,5 +1,6 @@
 from math import cos,sin,acos,asin
 import numpy as np
+from tqdm import tqdm
 
 from lib.io_chem import io
 from lib.basic_operations import vector,physics,constants
@@ -9,16 +10,19 @@ import config
 
 def getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[]):
   net_translation=0
+  data={'frame_no':[],'translation':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
-  for curr_frame_no in range(start_frame_no+1,end_frame_no+1,step_size):
+  for curr_frame_no in tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size)):
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     translation=_getTranslation(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
     net_translation+=translation    
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
-  return net_translation
+    data['frame_no'].append(curr_frame_no)
+    data['translation'].append(translation)
+  return (net_translation,data)
 
 def getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[]):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
