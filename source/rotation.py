@@ -35,8 +35,8 @@ def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolu
 def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
   rotation=0
   if type=='absolute':
-    if method=='rot_atomic_r_t':
-      rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
+    if method=='rot_atomic_r_t_1':
+      rotation=rot_atomic_r_t_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
     elif method=='rot_atomic_r_t_2':
       rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_atomic_r_t_3':
@@ -47,14 +47,18 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       rotation=rot_mol_plane_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_hybrid_1':
       rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_hybrid_2':
+      rotation=rot_hybrid_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_hybrid_3':
+      rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
     else:
       print('Please provide an appropriate method')
   elif type=='relative':
-    if method=='rot_atomic_r_t':
-      part1_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
-      part2_rotation=rot_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+    if method=='rot_atomic_r_t_1':
+      part1_rotation=rot_atomic_r_t_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_atomic_r_t_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_r_t_2':
       part1_rotation=rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
@@ -76,6 +80,14 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       part1_rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_hybrid_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
+    elif method=='rot_hybrid_2':
+      part1_rotation=rot_hybrid_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_hybrid_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
+    elif method=='rot_hybrid_3':
+      part1_rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
     else:
@@ -83,7 +95,7 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
   return rotation
 
 #rot_atomic_r_t is not suitable for track
-def rot_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+def rot_atomic_r_t_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=0
   if part=='ring':
     _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
@@ -235,6 +247,22 @@ def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
   else:
     return rot_atomic_r_t(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+
+def rot_hybrid_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  if part=='ring':
+    return rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring')
+  elif part=='track':
+    return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
+  else:
+    return rot_atomic_r_t_2(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+
+def rot_hybrid_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  if part=='ring':
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+  elif part=='track':
+    return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
+  else:
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
 def atomic_t_r(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   pass
