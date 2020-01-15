@@ -200,13 +200,35 @@ def rot_mol_plane_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   frame2_part_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
   frame1_plane=findMolecularPlane(frame1_part_df)
   frame2_plane=findMolecularPlane(frame2_part_df)
-  #part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
-  frame1_plane[axis]=0
-  frame2_plane[axis]=0
-  part_rotation=getRPYAngles(frame1_plane,frame2_plane)[axis]
+  part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   return math.degrees(part_rotation)
 
 def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  part_rotation=0
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
+  frame1_part_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
+  frame2_part_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
+  frame1_plane=findMolecularPlane(frame1_part_df)
+  frame2_plane=findMolecularPlane(frame2_part_df)
+  frame1_plane[axis]=0
+  frame2_plane[axis]=0
+  part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
+  return math.degrees(part_rotation)
+
+def rot_mol_plane_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=0
   if part=='ring':
     _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
@@ -242,9 +264,9 @@ def rot_mol_plane_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
 
 def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
-    return rot_atomic_r_t(frame1_cords,frame2_cords,part='ring')
+    return rot_atomic_r_t_1(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
-    return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
+    return rot_mol_plane_1(frame1_cords,frame2_cords,part='track')
   else:
     return rot_atomic_r_t(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
@@ -260,7 +282,7 @@ def rot_hybrid_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
-    return rot_mol_plane_2(frame1_cords,frame2_cords,part='track')
+    return rot_mol_plane_3(frame1_cords,frame2_cords,part='track')
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
