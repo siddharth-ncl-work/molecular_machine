@@ -84,3 +84,21 @@ TASK0 COMPLETE
 Ring Net Relative Rotaion = 190.51464297259986 degrees
 --------------------
 
+2020-01-05 14:45:50.302928
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+
+2020-01-05 14:54:09.392480
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+
+2020-01-06 15:04:43.615265
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -72.2064409759072 degrees
+--------------------
+

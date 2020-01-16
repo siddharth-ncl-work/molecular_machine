@@ -112,7 +112,7 @@ def plot(x,y,output_dir_path='',title='',ylabel=''):
   #plt.xlim(0,10)
   plt.savefig(output_dir_path+'/'+'_'.join(title.split())+'.png')
   plt.show()
-
+  print(y)
 
 tasks={'0':task0,'1':task1,'2':task2}
 init()

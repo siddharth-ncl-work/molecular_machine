@@ -37,8 +37,8 @@ def getOneAtomRPYAngles():
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
-  rpy=[12,-9,4.5]
-  initial_cords=[5.2,4,0]
+  rpy=[0,60,0]
+  initial_cords=[1,0,1]
   print(initial_cords)
   atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
   initial_df=pd.DataFrame.from_dict(atom_data)
@@ -55,7 +55,7 @@ def getOneAtomRPYAngles():
   df=rotation.rotateAlongAxis(df,y,rpy[1])
   df=rotation.rotateAlongAxis(df,z,rpy[2])  
   print(df[['x','y','z']].values[0])
- 
+
 #rot_atomic_r_t is not suitable for track 
 def rot_atomic_r_t(ideal=True):
   frame1_no=0
@@ -159,8 +159,8 @@ def getNetRotation(ideal=True,method='rot_hybrid_1'):
   print(data)
     
 #rotateAlongAxis() 
-#getRPYAngles()
+getOneAtomRPYAngles()
 #rot_atomic_r_t_2()
 #getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_3')
 #getRotationMultiFrame()
-getNetRotation()
+#getNetRotation()

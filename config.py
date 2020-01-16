@@ -15,7 +15,7 @@ track_end_atom_no=37#153
 
 start_frame_no=0
 end_frame_no=10000
-step_size=10
+step_size=100
 
 simulation_time_step=0.5 #in femto
 frame_no_pos=2
