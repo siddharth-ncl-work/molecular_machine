@@ -3,22 +3,22 @@ import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 import pickle
 import sys
-sys.path.append('..')
+sys.path.extend(['.','..'])
 
 from source import rotation
 import make_test_systems
 
 
-def assessRotationMethodSingleAxis(method='rot_atomic_r_t',step_size=10):
+def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
-  for part in ['ring','track']:
-    for axis in range(3):
+  for part in ['track']:
+    for axis in range(1,2):
       rpy=[0,0,0]
       x=[]
       y=[]
-      for theta in range(-360,360,step_size):
+      for theta in range(60,61,step_size):
         rpy[axis]=theta
         if part=='ring':
           make_test_systems.ringTrackTwoFramesNonIdeal(ring_rpy=rpy,track_rpy=zero_rpy)
@@ -117,7 +117,7 @@ def plot1(x,y,method='test',part='ring',axis=0,assessment_type=''):
   plt.ylim(-360, 360)
   #plt.xlim(0,10)
   plt.savefig('output/assessment_'+method+'/'+part+'/'+title+'.png')
-  #plt.show()
+  plt.show()
  
 def plot2(x,y,method='test',part='ring',rotation_axis=0,constant_axis=1,constant_theta=10,assessment_type=''):
   if rotation_axis==0:
@@ -167,6 +167,9 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',axis=0,asse
   pickle.dump(fig, open('output/assessment_'+method+'/'+part+'/'+title+'.fig.pickle', 'wb'))
   plt.show()
 
+method='rot_hybrid_3'
+assessRotationMethodSingleAxis(method=method)
+
 '''
 method='rot_atomic_r_t'
 assessRotationMethodSingleAxis(method=method)
@@ -202,14 +205,14 @@ assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,cons
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
 
-'''
+
 method='rot_hybrid_1'
 assessRotationMethodSingleAxis(method=method)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
 
-'''
+
 #ring double axis(rot_atomic_r_t_3)
 assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=1,step_size=10,parts=['ring'])
 assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=2,step_size=10,parts=['ring'])

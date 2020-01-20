@@ -63,7 +63,6 @@ def ringTrackAtOriginIdeal():
   cords_list.extend(ring_cords_list)
   cords_list.extend(track_cords_list)
   atom_list=len(cords_list)*['c']
-  #atom_list[0]=atom_list[-1]='n'
   createSystem(cords_list,atom_list,file_path,add_axes=False)
   
 def ringTrackAtOriginNonIdeal():
@@ -119,16 +118,15 @@ def ringTrackTwoFramesIdeal():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdeal(ring_rpy=[40,0,0],track_rpy=[30,0,0]):
+def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[0,90,0]):
   output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
-  output_file=file=open(output_file_path,'w')
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
   ringTrackAtOriginNonIdeal()
 
-  #ring_rpy=[0,0,100.5]
-  #track_rpy=[0,0,100.5]
+  print(ring_rpy)
+  print(track_rpy)
   ring_distance=2
   track_distance=1
 
@@ -151,14 +149,16 @@ def ringTrackTwoFramesNonIdeal(ring_rpy=[40,0,0],track_rpy=[30,0,0]):
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
    
   #transform both frames
+  
   axis=[1,1,1]
-  theta=45.24
-  distance=1.67
+  theta=0.0001
+  distance=0
   frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
   frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)
   frame2_final_cords_df=translation.translateAlongAxis(frame2_final_cords_df,axis,distance)
   
+  output_file=open(output_file_path,'w')
   io.writeFileMd(output_file,frame1_final_cords_df,0,frame_no_pos=config.frame_no_pos)
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
@@ -223,4 +223,4 @@ if __name__=='__main__':
   #ringTrackAtOrigin()
   #ringTrackTwoFramesIdeal()
   ringTrackTwoFramesNonIdeal()
-  ringTrackMultiFrameIdeal()
+  #ringTrackMultiFrameIdeal()

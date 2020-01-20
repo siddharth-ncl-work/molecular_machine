@@ -38,7 +38,8 @@ def getOneAtomRPYAngles():
   y=[0,1,0]
   z=[0,0,1]
   rpy=[0,60,0]
-  initial_cords=[1,0,1]
+  initial_cords=[-3.14563190e-16,  8.90589436e-01,  4.54808153e-01]
+  print(rpy)
   print(initial_cords)
   atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
   initial_df=pd.DataFrame.from_dict(atom_data)
