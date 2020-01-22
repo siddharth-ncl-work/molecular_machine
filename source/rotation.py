@@ -251,6 +251,8 @@ def rot_mol_plane_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   frame2_coplanar_atom_cords_list=frame2_part_cords_df[frame2_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
   frame1_plane=vector.getPlaneNormal(frame1_coplanar_atom_cords_list)
   frame2_plane=vector.getPlaneNormal(frame2_coplanar_atom_cords_list)
+  print(frame1_plane)
+  print(frame2_plane)
   part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   '''
   RPY gives accurate results when vector are perpendicular to the axis of rotation
@@ -366,6 +368,8 @@ def findCoplanarAtoms(df):
           dihedral_angle=vector.getDihedralAngle(p,unit='radians')
           if np.abs(dihedral_angle-math.pi)<error or np.abs(dihedral_angle)<error:
             out_atom_no_list=[atom1_no,atom2_no,atom3_no,atom4_no]
+            print(dihedral_angle)
+            print(out_atom_no_list)
             return out_atom_no_list
 
 def fixArcDomain(v):

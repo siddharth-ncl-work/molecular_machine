@@ -151,7 +151,7 @@ def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[0,90,0]):
   #transform both frames
   
   axis=[1,1,1]
-  theta=0.0001
+  theta=0
   distance=0
   frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))

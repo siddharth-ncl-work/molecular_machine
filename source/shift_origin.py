@@ -7,7 +7,6 @@ def _shiftOrigin(cords,origin):
   new_cords['x']=new_cords['x']-origin[0]
   new_cords['y']=new_cords['y']-origin[1]
   new_cords['z']=new_cords['z']-origin[2]
-
   return new_cords
 
 def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
@@ -41,18 +40,18 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
-  cog=physics.getCog(new_frame1_cords) 
+  whole_frame_cog=physics.getCog(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
-    cog[0]=0
+    whole_frame_cog[0]=0
   elif config.axis=='y':
     ref_axis=[1,0,1]
-    cog[1]=0
+    whole_frame_cog[1]=0
   elif config.axis=='z':
     ref_axis=[1,1,0]
-    cog[2]=0
+    whole_frame_cog[2]=0
   #axis=vector.getCrossProduct(com,ref_axis)
-  theta=vector.getAngleR(axis,ax)
+  theta=vector.getAngleR(whole_frame_cog,ref_axis)
 
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,ax,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,ax,theta)

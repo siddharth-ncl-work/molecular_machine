@@ -14,11 +14,11 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
   frame2_no=1
   zero_rpy=[0,0,0]
   for part in ['track']:
-    for axis in range(1,2):
+    for axis in range(2,3):
       rpy=[0,0,0]
       x=[]
       y=[]
-      for theta in range(60,61,step_size):
+      for theta in range(-360,360,step_size):
         rpy[axis]=theta
         if part=='ring':
           make_test_systems.ringTrackTwoFramesNonIdeal(ring_rpy=rpy,track_rpy=zero_rpy)
@@ -166,6 +166,7 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',axis=0,asse
   ax.set_zlabel('Expcted/Predicted X Rotation')
   pickle.dump(fig, open('output/assessment_'+method+'/'+part+'/'+title+'.fig.pickle', 'wb'))
   plt.show()
+
 
 method='rot_hybrid_3'
 assessRotationMethodSingleAxis(method=method)
