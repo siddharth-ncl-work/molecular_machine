@@ -51,10 +51,14 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       rotation=rot_hybrid_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_hybrid_3':
       rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='rot_hybrid_3_1':
+      rotation=rot_hybrid_3_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
+      return
     else:
       print('Please provide an appropriate method')
+      return
   elif type=='relative':
     if method=='rot_atomic_r_t_1':
       part1_rotation=rot_atomic_r_t_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
@@ -88,10 +92,16 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
       part1_rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_rotation=rot_hybrid_3(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_rotation-part2_rotation
+    elif method=='rot_hybrid_3_1':
+      part1_rotation=rot_hybrid_3_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_rotation=rot_hybrid_3_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      rotation=part1_rotation-part2_rotation
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
+      return
     else:
       print('Please provide an appropriate method')
+      return
   return rotation
 
 #rot_atomic_r_t is not suitable for track
@@ -402,8 +412,6 @@ def findCoplanarAtoms(df):
           dihedral_angle=vector.getDihedralAngle(p,unit='radians')
           if np.abs(dihedral_angle-math.pi)<error or np.abs(dihedral_angle)<error:
             out_atom_no_list=[atom1_no,atom2_no,atom3_no,atom4_no]
-            print(dihedral_angle)
-            print(out_atom_no_list)
             return out_atom_no_list
 
 def fixArcDomain(v):

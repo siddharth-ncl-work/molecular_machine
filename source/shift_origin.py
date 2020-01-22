@@ -52,7 +52,6 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     whole_frame_cog[2]=0
   axis=vector.getCrossProduct(whole_frame_cog,ref_axis)
   theta=vector.getAngleR(whole_frame_cog,ref_axis)
-  print(axis)
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
 
