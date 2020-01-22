@@ -251,10 +251,6 @@ def rot_mol_plane_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   frame2_coplanar_atom_cords_list=frame2_part_cords_df[frame2_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
   frame1_plane=vector.getPlaneNormal(frame1_coplanar_atom_cords_list)
   frame2_plane=vector.getPlaneNormal(frame2_coplanar_atom_cords_list)
-  print(frame1_coplanar_atom_cords_list)
-  print(frame2_coplanar_atom_cords_list)
-  print(frame1_plane)
-  print(frame2_plane)
   part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   '''
   RPY gives accurate results when vector are perpendicular to the axis of rotation
@@ -264,6 +260,34 @@ def rot_mol_plane_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   frame2_plane[axis]=0
   part_rotation=vector.getAngleR(frame1_plane,frame2_plane)
   '''
+  return math.degrees(part_rotation)
+
+def rot_mol_plane_3_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  part_rotation=0
+  if part=='ring':
+    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  elif part=='track':
+    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
+  frame1_part_cords_df=frame1_cords[frame1_cords['atom_no'].isin(_atom_list)]
+  frame2_part_cords_df=frame2_cords[frame2_cords['atom_no'].isin(_atom_list)]
+  coplanar_atom_no_list=findCoplanarAtoms(frame1_part_cords_df)
+  frame1_coplanar_atom_cords_list=frame1_part_cords_df[frame1_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
+  frame2_coplanar_atom_cords_list=frame2_part_cords_df[frame2_part_cords_df['atom_no'].isin(coplanar_atom_no_list)][['x','y','z']].values[:-1]
+  frame1_plane=vector.getPlaneNormal(frame1_coplanar_atom_cords_list)
+  frame2_plane=vector.getPlaneNormal(frame2_coplanar_atom_cords_list)
+  frame1_plane[axis]=0
+  frame2_plane[axis]=0
+  part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   return math.degrees(part_rotation)
 
 def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
@@ -287,6 +311,14 @@ def rot_hybrid_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
     return rot_mol_plane_3(frame1_cords,frame2_cords,part='track')
+  else:
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+
+def rot_hybrid_3_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  if part=='ring':
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+  elif part=='track':
+    return rot_mol_plane_3_1(frame1_cords,frame2_cords,part='track')
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 

@@ -13,12 +13,12 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
-  for part in ['track']:
-    for axis in range(1,2):
+  for part in ['ring','track']:
+    for axis in range(3):
       rpy=[0,0,0]
       x=[]
       y=[]
-      for theta in range(60,61,step_size):
+      for theta in range(-360,361,step_size):
         rpy[axis]=theta
         if part=='ring':
           make_test_systems.ringTrackTwoFramesNonIdeal(ring_rpy=rpy,track_rpy=zero_rpy)
@@ -31,7 +31,7 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
         x.append(theta)
         y.append(_rotation)
         print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
-      #plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis')
+      plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis')
 
 def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=10):
   assert rotation_axis!=constant_axis,'Rotation axis should not be same constant axis'
@@ -67,14 +67,14 @@ def assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t',axis=1,step_size=12
   Z_expected=[]
   Z_predicted=[]
   for part in parts:
-    for theta_axis in range(-360,360,step_size):
+    for theta_axis in range(-100,100,step_size):
       rpy=[0,0,0]
       rpy[axis]=theta_axis
       x=[]
       theta_axis_list=[]
       z_expected=[]
       z_predicted=[]
-      for theta_x in range(-360,360,step_size):
+      for theta_x in range(-100,100,step_size):
         rpy[0]=theta_x
         if part=='ring':
           make_test_systems.ringTrackTwoFramesNonIdeal(ring_rpy=rpy,track_rpy=zero_rpy)
@@ -168,8 +168,8 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',axis=0,asse
   plt.show()
 
 
-method='rot_hybrid_3'
-assessRotationMethodSingleAxis(method=method)
+#method='rot_hybrid_3'
+#assessRotationMethodSingleAxis(method=method)
 
 '''
 method='rot_atomic_r_t'
@@ -205,9 +205,9 @@ assessRotationMethodSingleAxis(method=method)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
+'''
 
-
-method='rot_hybrid_1'
+method='rot_hybrid_3'
 assessRotationMethodSingleAxis(method=method)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
@@ -215,9 +215,9 @@ assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,cons
 
 
 #ring double axis(rot_atomic_r_t_3)
-assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=1,step_size=10,parts=['ring'])
-assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=2,step_size=10,parts=['ring'])
+#assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=1,step_size=10,parts=['ring'])
+#assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t_3',axis=2,step_size=10,parts=['ring'])
 #track double axis(rot_mol_plane_2)
-assessRotationMethodDoubleAxis3d(method='rot_mol_plane_2',axis=1,step_size=10,parts=['track'])
-assessRotationMethodDoubleAxis3d(method='rot_mol_plane_2',axis=2,step_size=10,parts=['track'])
-'''
+assessRotationMethodDoubleAxis3d(method=method,axis=1,step_size=10,parts=['track'])
+assessRotationMethodDoubleAxis3d(method=method,axis=2,step_size=10,parts=['track'])
+
