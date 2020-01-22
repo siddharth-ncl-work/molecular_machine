@@ -50,10 +50,10 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
   elif config.axis=='z':
     ref_axis=[1,1,0]
     whole_frame_cog[2]=0
-  #axis=vector.getCrossProduct(com,ref_axis)
+  axis=vector.getCrossProduct(whole_frame_cog,ref_axis)
   theta=vector.getAngleR(whole_frame_cog,ref_axis)
-
-  new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,ax,theta)
-  new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,ax,theta)
+  print(axis)
+  new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
+  new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
 
   return (new_frame1_cords,new_frame2_cords)

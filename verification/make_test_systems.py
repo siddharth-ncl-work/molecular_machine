@@ -148,11 +148,10 @@ def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[0,90,0]):
   #frame2
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
    
-  #transform both frames
-  
-  axis=[1,1,1]
-  theta=0
-  distance=0
+  #transform both frames 
+  axis=[1.2,42,-6]
+  theta=-140.5
+  distance=4.67
   frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
   frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)

@@ -14,11 +14,11 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
   frame2_no=1
   zero_rpy=[0,0,0]
   for part in ['track']:
-    for axis in range(2,3):
+    for axis in range(1,2):
       rpy=[0,0,0]
       x=[]
       y=[]
-      for theta in range(-360,360,step_size):
+      for theta in range(60,61,step_size):
         rpy[axis]=theta
         if part=='ring':
           make_test_systems.ringTrackTwoFramesNonIdeal(ring_rpy=rpy,track_rpy=zero_rpy)
@@ -31,7 +31,7 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10):
         x.append(theta)
         y.append(_rotation)
         print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
-      plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis')
+      #plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis')
 
 def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=10):
   assert rotation_axis!=constant_axis,'Rotation axis should not be same constant axis'
