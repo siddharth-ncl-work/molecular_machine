@@ -201,7 +201,6 @@ assessRotationMethodSingleAxis(method=method)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
-'''
 
 method='rot_hybrid_3'
 assessRotationMethodSingleAxis(method=method)
@@ -218,3 +217,13 @@ assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,cons
 assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
 assessRotationMethodDoubleAxis3d(method=method,axis=1,step_size=10,parts=['ring','track'])
 assessRotationMethodDoubleAxis3d(method=method,axis=2,step_size=10,parts=['ring','track'])
+'''
+method='rot_part_atomic_r_t_3'
+assessRotationMethodSingleAxis(method=method)
+assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=25)
+assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=70)
+assessRotationMethodDoubleAxis2d(method=method,step_size=10,rotation_axis=0,constant_axis=1,constant_theta=-45)
+assessRotationMethodDoubleAxis3d(method=method,axis=1,step_size=10,parts=['ring','track'])
+assessRotationMethodDoubleAxis3d(method=method,axis=2,step_size=10,parts=['ring','track'])
+
+

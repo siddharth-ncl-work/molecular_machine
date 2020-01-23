@@ -29,7 +29,7 @@ tasks='0+1+2'
 
 
 #FUTURE TASKS:
-# 1. rot_track_atomic_r_t_1: Implement new method for track rotation in which track rotation is calcuated using the atoms near/inside ring
+# 1. rot_part_atomic_r_t_3: Implement new method for track rotation in which track rotation is calcuated using the atoms near/inside the ring
 # 2. Verify on rigid real ring and track
 # 3. Identify and verify method which works on real systems
 # 4. Triple axis test
