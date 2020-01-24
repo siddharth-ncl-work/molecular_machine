@@ -30,8 +30,6 @@ tasks='0'
 
 
 #FUTURE TASKS:
-# 1. rot_part_atomic_r_t_3: Implement new method for track rotation in which track rotation is calcuated using the atoms near/inside the ring
-# 2. Verify on rigid real ring and track
-# 3. Identify and verify method which works on real systems
-# 4. Triple axis test
+# 1. Thinks about other RPY components. Maybe a good method will have small P,Y components
+# 2. Make code run faster for data generation
 
