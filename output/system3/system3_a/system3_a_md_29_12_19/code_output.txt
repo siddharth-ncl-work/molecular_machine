@@ -102,3 +102,67 @@ TASK0 COMPLETE
 Ring Net Relative Rotaion = -72.2064409759072 degrees
 --------------------
 
+2020-01-24 08:19:08.359963
+step size = 10
+2020-01-24 08:19:56.510317
+step size = 10
+2020-01-24 08:20:29.793321
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 8.632134904848386e-11 m
+--------------------
+
+2020-01-24 08:23:45.901221
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -31.735529457957668 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 7.854135413498408e-11 m
+--------------------
+
+2020-01-24 08:24:36.583613
+step size = 1
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.33524405916207 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 8.715501626900596e-11 m
+--------------------
+
+2020-01-24 08:48:20.937974
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -63.43333090314124 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.2883558495028066e-09 m
+--------------------
+
+2020-01-24 08:52:30.374919
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -79.42014657520882 degrees
+--------------------
+
+2020-01-24 08:59:44.723093
+step size = 1
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -71.99887769842007 degrees
+--------------------
+
+2020-01-24 10:52:09.160900
+step size = 1
+2020-01-24 10:52:51.033576
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -178.88558141876123 degrees
+--------------------
+
