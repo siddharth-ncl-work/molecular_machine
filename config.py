@@ -14,7 +14,7 @@ track_start_atom_no=64#64#20
 track_end_atom_no=153#153#37
 
 start_frame_no=0
-end_frame_no=100000#272849
+end_frame_no=1000#272849
 step_size=10
 
 r=2

@@ -37,25 +37,24 @@ def getOneAtomRPYAngles():
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
-  rpy=[0,60,0]
+  rpy=[30,60,40]
   initial_cords=[-3.14563190e-16,  8.90589436e-01,  4.54808153e-01]
-  print(rpy)
-  print(initial_cords)
+  print(f'Input RPY = {rpy} Degrees')
+  print(f'Initial coordinates = {initial_cords}')
   atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
   initial_df=pd.DataFrame.from_dict(atom_data)
   df=rotation.rotateAlongAxis(initial_df,x,math.radians(rpy[0]))
   df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
   final_df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
   final_cords=final_df[['x','y','z']].values[0]
-  print(final_cords)
-  rpy=rotation.getRPYAngles(initial_cords,final_cords)
-  rpy_d=map(math.degrees,rpy)
-  for angle in rpy_d:
-    print(angle)
-  df=rotation.rotateAlongAxis(initial_df,x,rpy[0])
-  df=rotation.rotateAlongAxis(df,y,rpy[1])
-  df=rotation.rotateAlongAxis(df,z,rpy[2])  
-  print(df[['x','y','z']].values[0])
+  print(f'Final coordinates = {final_cords}')
+  rpy=rotation.getRPYAngles(initial_cords,final_cords,unit='degrees')
+  print(f'RPY angle from code = {rpy} degrees')
+  df=rotation.rotateAlongAxis(initial_df,x,math.radians(rpy[0]))
+  df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+  df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
+  _final_cords=df[['x','y','z']].values[0]  
+  print(f'Final coordinate using rpy on initial cords = {_final_cords}')
 
 #rot_atomic_r_t is not suitable for track 
 def rot_atomic_r_t(ideal=True):
@@ -202,10 +201,10 @@ def rot_part_atomic_r_t_3():
   print(f'track rotation ={_rotation}')
 
 #rotateAlongAxis() 
-#getOneAtomRPYAngles()
+getOneAtomRPYAngles()
 #rot_atomic_r_t_2()
 #getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_3')
 #getRotationMultiFrame()
 #getNetRotation()
 #getNearestAtomList()
-rot_part_atomic_r_t_3()
+#rot_part_atomic_r_t_3()

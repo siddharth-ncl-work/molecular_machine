@@ -384,7 +384,7 @@ def rotateAlongAxis(cords,axis,theta):
   new_cords[['x','y','z']]=np.matmul(_cords,R.T)
   return new_cords
 
-def getRPYAngles(v1,v2,axis='x'):
+def getRPYAngles(v1,v2,axis='x',unit='radians'):
   rpy=np.zeros(3)
   s=vector.getCrossProduct(v1,v2) 
   s=vector.getUnitVec(s)
@@ -404,7 +404,10 @@ def getRPYAngles(v1,v2,axis='x'):
     rpy[2]=asin(R[1][0]/cos(rpy[0]))
   else:
     print('To be implemented')
-  return rpy
+  if unit=='randians':
+    return rpy
+  elif unit=='degrees':
+    return list(map(math.degrees,rpy))
 
 def findMolecularPlane(df):
   n=5
