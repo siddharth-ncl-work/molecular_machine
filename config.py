@@ -17,6 +17,7 @@ start_frame_no=0
 end_frame_no=10000
 step_size=100
 
+r=2
 simulation_time_step=0.5 #in femto
 frame_no_pos=2
 rotation_method='rot_hybrid_1'

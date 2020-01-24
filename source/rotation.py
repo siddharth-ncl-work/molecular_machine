@@ -5,7 +5,7 @@ from scipy import stats
 from tqdm import tqdm
 
 from lib.io_chem import io
-from lib.basic_operations import vector
+from lib.basic_operations import vector,physics
 from source import shift_origin
 import config
 
@@ -310,9 +310,19 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
-    #get track part near ring
-    track_part_atom_list=getNearestAtomList()
-    return rot_mol_plane_3_1(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
+    track_atom_list=range(config.track_start_atom_no,config.track_end_atom_no)
+    ring_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    trans_axis=[0,0,0]
+    cog1=physics.getCog(frame1_cords,atom_list=ring_atom_list)
+    cog2=physics.getCog(frame2_cords,atom_list=ring_atom_list)
+    trans_axis[0]=cog2[0]-cog1[0]
+    trans_axis[1]=cog2[1]-cog1[1]
+    trans_axis[2]=cog2[2]-cog1[2] 
+    nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.r)
+    track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
+    print(nearest_atom_list)
+    print(track_part_atom_list)
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
@@ -430,8 +440,27 @@ def findCoplanarAtoms(df):
             out_atom_no_list=[atom1_no,atom2_no,atom3_no,atom4_no]
             return out_atom_no_list
 
-def getNearestAtomList():
-  pass
+def getNearestAtomList(df,point,direction,distance):
+  atom_list=[]
+  direction=vector.getUnitVec(direction)
+  for index,row in df.iterrows():
+    p=[0,0,0]
+    atom_cords=row[['x','y','z']].values
+    p[0]=atom_cords[0]-point[0]
+    p[1]=atom_cords[1]-point[1]
+    p[2]=atom_cords[2]-point[2]
+    projection=vector.getDotProduct(direction,p)
+    if isZero(p):
+      continue
+    if np.abs(round(projection,6))<=distance:
+      atom_list.append(row['atom_no'])
+  return atom_list
+
+def isZero(l):
+  for i in l:
+    if round(i,6)!=0:
+      return False
+  return True
 
 def fixArcDomain(v):
   if v<-1:  

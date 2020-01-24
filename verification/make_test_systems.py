@@ -118,7 +118,7 @@ def ringTrackTwoFramesIdeal():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[0,90,0]):
+def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
   output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -150,8 +150,8 @@ def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[0,90,0]):
    
   #transform both frames 
   axis=[-10.2,-42,-6]
-  theta=0
-  distance=0
+  theta=60.5
+  distance=5.3
   frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
   frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)

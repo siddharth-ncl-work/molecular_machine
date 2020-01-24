@@ -5,7 +5,7 @@ sys.path.append('..')
 
 import config
 from lib.io_chem import io
-from lib.basic_operations import vector
+from lib.basic_operations import vector,physics
 from source import rotation,shift_origin
 from helper_functions import createSystem,getIntersectionPoints
 
@@ -158,10 +158,54 @@ def getNetRotation(ideal=True,method='rot_hybrid_1'):
   file.close()
   print(f'Net ring relative rotation = {net_ring_rotation}')
   print(data)
-    
+
+def getNearestAtomList():
+  c=8
+  r=2
+  track_atom_list=range(config.track_start_atom_no,config.track_end_atom_no)
+  #single frame
+  file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
+  cords=io.readFile(file_path)
+  atom_list=rotation.getNearestAtomList(cords,[c,0,0],[1,0,0],r)
+  print(atom_list)
+  atom_list=filter(lambda x:x in track_atom_list,atom_list)
+  print(list(atom_list))
+  #two frames  
+  file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  with open(file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,0,frame_no_pos=config.frame_no_pos)
+    frame2_cords=io.readFileMd(file,1,frame_no_pos=config.frame_no_pos)
+  trans_axis=[0,0,0]
+  ring_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  cog1=physics.getCog(frame1_cords,atom_list=ring_atom_list)
+  cog2=physics.getCog(frame2_cords,atom_list=ring_atom_list)
+  trans_axis[0]=cog2[0]-cog1[0]
+  trans_axis[1]=cog2[1]-cog1[1]
+  trans_axis[2]=cog2[2]-cog1[2]
+  trans_axis_uv=vector.getUnitVec(trans_axis)
+  cog1[0]=cog1[0]+c*trans_axis_uv[0]
+  cog1[1]=cog1[1]+c*trans_axis_uv[1]
+  cog1[2]=cog1[2]+c*trans_axis_uv[2]
+  atom_list=rotation.getNearestAtomList(frame1_cords,cog1,trans_axis,r)
+  print(atom_list)
+  atom_list=filter(lambda x:x in track_atom_list,atom_list)
+  print(list(atom_list))
+
+def rot_part_atomic_r_t_3():
+  file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  with open(file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,0,frame_no_pos=config.frame_no_pos)
+    frame2_cords=io.readFileMd(file,1,frame_no_pos=config.frame_no_pos)
+  _rotation=rotation.rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+  print(f'ring rotation ={_rotation}')
+  _rotation=rotation.rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='track')
+  print(f'track rotation ={_rotation}')
+
 #rotateAlongAxis() 
-getOneAtomRPYAngles()
+#getOneAtomRPYAngles()
 #rot_atomic_r_t_2()
 #getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_3')
 #getRotationMultiFrame()
 #getNetRotation()
+#getNearestAtomList()
+rot_part_atomic_r_t_3()
