@@ -9,20 +9,20 @@ from source import rotation,translation
 from helper_functions import createSystem,getRingDf,getTrackDf
 
 
-def oneAtomSystem():
-  file_path='test_systems/one_atom_system.xyz'
+def oneAtomSystemArtificial():
+  file_path='test_systems/one_atom_system_artificial_system.xyz'
   cords_list=[[3,0,0]]
   atom_list=['c']
   createSystem(cords_list,atom_list,file_path,add_axes=False)
 
-def multiAtomSystem():
-  file_path='test_systems/multi_atom_system.xyz'
+def multiAtomSystemArtificial():
+  file_path='test_systems/multi_atom_system_artificial_system.xyz'
   cords_list=[[3,3,0],[-6,5,-7]]
   atom_list=['c','c']
   createSystem(cords_list,atom_list,file_path,add_axes=False)
  
-def ringCords():
-  file_path='test_systems/ring.xyz'
+def ringCordsArtificial():
+  file_path='test_systems/ring_artificial_system.xyz'
   n=20
   r=5
   initial_cords=[0,r,0]
@@ -37,8 +37,8 @@ def ringCords():
   createSystem(ring_cords_list,ring_atom_list,file_path,add_axes=False)
   return ring_cords_list 
   
-def trackCords():
-  file_path='test_systems/track.xyz'
+def trackCordsArtificial():
+  file_path='test_systems/track_artificial_system.xyz'
   n=18
   initial_cords=[0,0,0]
   track_cords_list=[initial_cords]
@@ -54,10 +54,10 @@ def trackCords():
   createSystem(track_cords_list,ring_atom_list,file_path,add_axes=False)
   return track_cords_list
  
-def ringTrackAtOriginIdeal():
-  file_path='test_systems/ring_track_at_origin_ideal.xyz'
-  ring_cords_list=ringCords()
-  track_cords_list=trackCords()
+def ringTrackAtOriginIdealArtificial():
+  file_path='test_systems/ring_track_at_origin_ideal_artificial_system.xyz'
+  ring_cords_list=ringCordsArtificial()
+  track_cords_list=trackCordsArtificial()
   cords_list=[]
   atom_list=[]
   cords_list.extend(ring_cords_list)
@@ -65,10 +65,10 @@ def ringTrackAtOriginIdeal():
   atom_list=len(cords_list)*['c']
   createSystem(cords_list,atom_list,file_path,add_axes=False)
   
-def ringTrackAtOriginNonIdeal():
-  file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
-  ring_cords_list=ringCords()
-  track_cords_list=trackCords()
+def ringTrackAtOriginNonIdealArtificial():
+  file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
+  ring_cords_list=ringCordsArtificial()
+  track_cords_list=trackCordsArtificial()
   cords_list=[]
   atom_list=[]
   cords_list.extend(ring_cords_list)
@@ -80,18 +80,18 @@ def ringTrackAtOriginNonIdeal():
   atom_list[-total_track_atoms//2:]=['s']*(total_track_atoms//2)
   createSystem(cords_list,atom_list,file_path,add_axes=False)
 
-def ringTrackTwoFramesIdeal():
-  output_file_path='test_systems/ring_track_two_frames_ideal.xyz'
+def ringTrackTwoFramesIdealArtificial():
+  output_file_path='test_systems/ring_track_two_frames_ideal_artificial_system.xyz'
   output_file=file=open(output_file_path,'w')
   x=[1,0,0]
-  ringTrackAtOriginIdeal()
+  ringTrackAtOriginIdealArtificial()
 
   ring_theta=45
   track_theta=35
   ring_distance=2
   track_distance=1
 
-  input_system_file_path='test_systems/ring_track_at_origin_ideal.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
   #ring
@@ -118,19 +118,19 @@ def ringTrackTwoFramesIdeal():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
-  output_file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
+  output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
-  ringTrackAtOriginNonIdeal()
+  ringTrackAtOriginNonIdealArtificial()
 
   print(ring_rpy)
   print(track_rpy)
   ring_distance=2
   track_distance=1
 
-  input_system_file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
   #ring
@@ -162,8 +162,8 @@ def ringTrackTwoFramesNonIdeal(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackMultiFrameIdeal():
-  output_file_path='test_systems/ring_track_multi_frame_ideal.xyz'
+def ringTrackMultiFrameIdealArtificial():
+  output_file_path='test_systems/ring_track_multi_frame_ideal_artificial_system.xyz'
   output_file=open(output_file_path,'w')
   x=[1,0,0]
   ringTrackAtOriginNonIdeal()
@@ -178,7 +178,7 @@ def ringTrackMultiFrameIdeal():
   ring_d_distance=0.1
   track_d_distance=-0.05
 
-  input_system_file_path='test_systems/ring_track_at_origin_non_ideal.xyz'
+  input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   for curr_frame_no in range(total_frames):
     #ring
@@ -209,17 +209,20 @@ def ringTrackMultiFrameIdeal():
     track_distance+=track_d_distance
   output_file.close()
     
-def ringTrackMultiFrameNonIdeal():
+def ringTrackMultiFrameNonIdealArtificial():
+  pass
+
+def createRingTrackSemiReal(file_path='')
   pass
 
 
 if __name__=='__main__':
-  #oneAtomSystem()  
-  #multiAtomSystem()
-  #rpyOneAtomSystem()
-  #ringCords()
-  #trackCords()
-  #ringTrackAtOrigin()
-  #ringTrackTwoFramesIdeal()
+  #oneAtomSystemArtificial() 
+  #multiAtomSystemArtificial()
+  #rpyOneAtomSystemArtificial()
+  #ringCordsArtificial()
+  #trackCordsArtificial()
+  #ringTrackAtOriginArtificial()
+  #ringTrackTwoFramesIdealArtificial()
   ringTrackTwoFramesNonIdeal()
   #ringTrackMultiFrameIdeal()

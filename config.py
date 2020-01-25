@@ -28,8 +28,16 @@ axis='x'
 
 tasks='0'
 
+'''
+NOTE COMMIT:
+ comment on y,z rotational components: Earlier I thought to include y,z rotational components as well but after thinking for a while, it was realised that its a bit tricky task. So we decided to include y,z rotational components in the next version and focus only on one component(x-axis rotation) in this version. 
+  I though y and z components are the just P and Y components respectively but they are not the same. Here as we calcuate RPY angles between projections perpendicular to x-axis,so P and Y components are always zero. In order to get y and z rotational components we need to calculate RPY angles between projections perpendicular to respective axis. But this raises another question, are x,y and z rotational components obtained by calculating RPY angles between respective projections same as actual RPY angles? In other words if apply these components to a point will transfrom to its final position?
 
-#FUTURE TASKS:
-# 1. Thinks about other RPY components. Maybe a good method will have small P,Y components
-# 2. Make code run faster for data generation
-
+FUTURE TASKS:
+ 1. Think about other RPY components. Maybe a good method will have small P,Y components
+ 2. real system test: rotation vs step_sizse, rotation vs range
+ 3. Make code run faster for data generation
+ 4. cog/com
+ 5. use networkx to get ring and track
+ 6. modify assessment and respective test files to include artificial,semi_real,real systems
+'''

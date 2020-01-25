@@ -404,7 +404,7 @@ def getRPYAngles(v1,v2,axis='x',unit='radians'):
     rpy[2]=asin(R[1][0]/cos(rpy[0]))
   else:
     print('To be implemented')
-  if unit=='randians':
+  if unit=='radians':
     return rpy
   elif unit=='degrees':
     return list(map(math.degrees,rpy))

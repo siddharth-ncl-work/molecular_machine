@@ -168,3 +168,53 @@ Ring Net Relative Rotaion = -178.88558141876123 degrees
 
 2020-01-24 20:48:46.912894
 step size = 10
+2020-01-25 11:18:48.047090
+step size = 10
+2020-01-25 11:19:51.330338
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 11:21:49.761761
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+2020-01-25 11:23:06.313879
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 11:25:30.718548
+step size = 10
+2020-01-25 11:26:11.539646
+step size = 10
+2020-01-25 11:28:14.701473
+step size = 10
+2020-01-25 11:28:30.058102
+step size = 10
+2020-01-25 11:51:28.554582
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 12:00:32.635893
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 12:10:09.640040
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+2020-01-25 20:21:08.116109
+step size = 10
+2020-01-25 20:21:25.791154
+step size = 10
