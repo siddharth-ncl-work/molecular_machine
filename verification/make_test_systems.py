@@ -125,8 +125,6 @@ def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
   z=[0,0,1]
   ringTrackAtOriginNonIdealArtificial()
 
-  print(ring_rpy)
-  print(track_rpy)
   ring_distance=2
   track_distance=1
 
@@ -212,9 +210,6 @@ def ringTrackMultiFrameIdealArtificial():
 def ringTrackMultiFrameNonIdealArtificial():
   pass
 
-def createRingTrackSemiReal(file_path='')
-  pass
-
 
 if __name__=='__main__':
   #oneAtomSystemArtificial() 
@@ -224,5 +219,5 @@ if __name__=='__main__':
   #trackCordsArtificial()
   #ringTrackAtOriginArtificial()
   #ringTrackTwoFramesIdealArtificial()
-  ringTrackTwoFramesNonIdeal()
-  #ringTrackMultiFrameIdeal()
+  ringTrackTwoFramesNonIdealArtificial()
+  #ringTrackMultiFrameIdealArtificial()

@@ -14,13 +14,13 @@ def init(method):
   subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
   subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
   subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_systems')
-  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
-  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+  subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
 
-def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,syste='',parts=['ring','track']):
+def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system=''):
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
@@ -49,10 +49,10 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,syste='',p
           _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
         x.append(theta)
         y.append(_rotation)
-        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
-      plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis')
+        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},single_axis,{system}')
+      plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis',system=system)
 
-def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=10,parts=['ring','track']):
+def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=10,parts=['ring','track'],system=''):
   assert rotation_axis!=constant_axis,'Rotation axis should not be same constant axis'
   frame1_no=0
   frame2_no=1
@@ -82,10 +82,11 @@ def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotati
         _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
       x.append(theta)
       y.append(_rotation)
-      print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
-    plot2(x,y,method=method,part=part,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_theta=constant_theta,assessment_type='double_axis')
+      print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},double_axis,{system}')
+    plot2(x,y,method=method,part=part,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_theta=constant_theta,assessment_type='double_axis',system=system)
 
-def assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t',axis=1,step_size=120,parts=['ring','track']):
+def assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t',rotation_axis=1,constant_axis=2,step_size=120,parts=['ring','track'],system=''):
+  theta_range=range(-50,51,step_size)
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
@@ -94,14 +95,14 @@ def assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t',axis=1,step_size=12
     Y=[]
     Z_expected=[]
     Z_predicted=[]
-    for theta_axis in range(-100,101,step_size):
+    for axis_theta in theta_range:
       rpy=[0,0,0]
-      rpy[axis]=theta_axis
+      rpy[rotation_axis]=axis_theta
       x=[]
       theta_axis_list=[]
       z_expected=[]
       z_predicted=[]
-      for theta_x in range(-100,101,step_size):
+      for theta_x in theta_range:
         rpy[0]=theta_x
         if part=='ring':
           if system=='artificial':
@@ -120,17 +121,18 @@ def assessRotationMethodDoubleAxis3d(method='rot_atomic_r_t',axis=1,step_size=12
         with open(file_path,'r') as file:
           _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
         x.append(theta_x)
-        theta_axis_list.append(theta_axis)
+        theta_axis_list.append(axis_theta)
         z_expected.append(theta_x)
         z_predicted.append(_rotation)
-        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
+        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},double_axis,{system}')
       X.append(x)
       Y.append(theta_axis_list)
       Z_expected.append(z_expected)
       Z_predicted.append(z_predicted)
-    plot3(X,Y,np.array(Z_expected),np.array(Z_predicted),method=method,part=part,axis=axis,assessment_type='double_axis')
+    plot3(X,Y,np.array(Z_expected),np.array(Z_predicted),method=method,part=part,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_axis_theta=0,assessment_type='double_axis',system=system)
 
-def _tripleAxis(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant_axis_theta=0,step_size=120,parts=['ring','track']):
+def _tripleAxis(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant_axis_theta=0,step_size=120,parts=['ring','track'],system=''):
+  theta_range=range(-50,51,step_size)
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
@@ -139,7 +141,7 @@ def _tripleAxis(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant
     Y=[]
     Z_expected=[]
     Z_predicted=[]
-    for rotation_axis_theta in range(-100,101,step_size):
+    for rotation_axis_theta in theta_range:
       rpy=[0,0,0]
       rpy[rotation_axis]=rotation_axis_theta
       rpy[constant_axis]=constant_axis_theta
@@ -147,7 +149,7 @@ def _tripleAxis(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant
       rotation_axis_theta_list=[]
       z_expected=[]
       z_predicted=[]
-      for theta_x in range(-100,101,step_size):
+      for theta_x in theta_range:
         rpy[0]=theta_x
         if part=='ring':
           if system=='artificial':
@@ -169,16 +171,16 @@ def _tripleAxis(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant
         rotation_axis_theta_list.append(rotation_axis_theta)
         z_expected.append(theta_x)
         z_predicted.append(_rotation)
-        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method}')
+        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},triple_axis,{system}')
       X.append(x)
-      Y.append(theta_axis_list)
+      Y.append(rotation_axis_theta_list)
       Z_expected.append(z_expected)
       Z_predicted.append(z_predicted)
-    plot3(X,Y,np.array(Z_expected),np.array(Z_predicted),method=method,part=part,axis=axis,assessment_type='double_axis')
+    plot3(X,Y,np.array(Z_expected),np.array(Z_predicted),method=method,part=part,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_axis_theta=constant_axis_theta,assessment_type='triple_axis',system=system)
 
-def assessRotationMethodTripleAxis3d(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant_axis_theta_range=[],step_size=120,parts=['ring','track']):
+def assessRotationMethodTripleAxis3d(method='rot_atomic_r_t',rotation_axis=1,constant_axis=1,constant_axis_theta_range=[],step_size=120,parts=['ring','track'],system=''):
   for constant_axis_theta in constant_axis_theta_range:
-    _tripleAxis(method=method,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_axis_theta=constant_axis_theta,step_size=step_size,parts=parts):
+    _tripleAxis(method=method,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_axis_theta=constant_axis_theta,step_size=step_size,parts=parts,system=system)
 
 def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system=''):
   if axis==0:
@@ -195,7 +197,7 @@ def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system=''):
   else:
     zero=np.zeros(len(x))
     plt.plot(x,zero)
-  title=method.upper()+'('+part+','+axis+','+assessment_type+','+system')'
+  title=method.upper()+'('+part+','+axis+','+assessment_type+','+system+')'
   plt.title(title)
   plt.xlabel(f'{axis} Rotation(D)')
   plt.ylabel('Predicted X Rotation (D)')
@@ -224,7 +226,7 @@ def plot2(x,y,method='test',part='ring',rotation_axis=0,constant_axis=1,constant
   else:
     zero=np.zeros(len(x))
     plt.plot(x,zero)
-  title=method.upper()+'('+part+','+rotation_axis+','+constant_axis+'='+str(constant_theta)+','+assessment_type+','+system+')'
+  title=method.upper()+'('+part+','+rotation_axis+','+constant_axis+'='+str(constant_theta)+','+assessment_type+','+system+',2d'+')'
   plt.title(title)
   plt.xlabel(f'{rotation_axis} Rotation(D)')
   plt.ylabel('Predicted X Rotation(D)')
@@ -232,45 +234,38 @@ def plot2(x,y,method='test',part='ring',rotation_axis=0,constant_axis=1,constant
   plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   plt.show()
 
-def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',axis=0,assessment_type='',system=''):
-  if axis==0:
-    axis='x'
-  elif axis==1:
-    axis='y'
-  elif axis==2:
-    axis='z'
-  data={'X':X,'Y':Y,'Z_expected':Z,'Z_predicted':Z_predicted}
-  pickle.dump(data,open('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.dat.pkl', 'wb')
+def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_axis=0,constant_axis=0,constant_axis_theta=0,assessment_type='',system=''):
+  axis={0:'x',1:'y',2:'z'}
+  title=method.upper()+'('+part+',x,'+axis[rotation_axis]+','+axis[constant_axis]+'='+str(constant_axis_theta)+','+assessment_type+','+system+',3d'+')'
+  data={'X':X,'Y':Y,'Z_expected':Z_expected,'Z_predicted':Z_predicted}
+  pickle.dump(data,open('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.dat.pkl', 'wb'))
    
-  title=method.upper()+'('+part+',x,'+axis+','+assessment_type+','+system')'
-  for ele in [-60,60]:
-    for azm in range(361,45):
+  for ele in [-10,10,45]:
+    for azm in range(0,181,45):
       fig=plt.figure()
       ax=plt.axes(projection="3d")
       ax.plot_surface(X,Y,Z_expected,cmap='Reds',edgecolor='none')
       ax.plot_surface(X,Y,Z_predicted,cmap='winter',edgecolor='none')
       ax.set_title(title)
-      ax.set_xlabel('X Rotation')
-      ax.set_ylabel(f'{axis} Rotation')
-      ax.set_zlabel('Expcted/Predicted X Rotation')
+      ax.set_xlabel('x Rotation')
+      ax.set_ylabel(f'{axis[rotation_axis]} Rotation')
+      ax.set_zlabel('Expcted/Predicted x Rotation')
       ax.view_init(ele,azm)
-      plt.save('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+      plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   plt.show()
 
 
-
-if __name__='__main__':
-  system_list=['artificial','semi_real']
+if __name__=='__main__':
   method_list=['rot_part_atomic_r_t_3']
-  system_list=['artificial','semi_real']
+  system_list=['artificial']
   step_size=5
   parts=['ring','track']
   for system in system_list:
     for method in method_list:
-      init('test_method')
-      assessRotationMethodSingleAxis(method=method,step_size=step_size,system=system)
-      assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system)
-      assessRotationMethodDoubleAxis2d(method=method,step_size=5,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system)
-      assessRotationMethodDoubleAxis3d(method=method,axis=1,step_size=step_size,parts=parts)
-      assessRotationMethodDoubleAxis3d(method=method,axis=2,step_size=step_size,parts=parts)
-      assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts):
+      init(method)
+      #assessRotationMethodSingleAxis(method=method,step_size=step_size,system=system)
+      #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system)
+      #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system)
+      assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system)
+      assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system)
+      assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system)
