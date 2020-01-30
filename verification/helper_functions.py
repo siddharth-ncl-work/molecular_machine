@@ -60,8 +60,8 @@ def addOrigin(file_path):
   createSystem(cords_list,atom_list,file_path,add_axes=False)  
 
 def getRingDf(df):
-  return df[df['atom_no'].isin(range(config.ring_start_atom_no,config.ring_end_atom_no+1))]
+  return df[df['atom_no'].isin(config.ring_atom_no_list)]
 
 def getTrackDf(df):
-  return df[df['atom_no'].isin(range(config.track_start_atom_no,config.track_end_atom_no+1))]
+  return df[df['atom_no'].isin(config.track_atom_no_list)]
 

@@ -173,9 +173,9 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
 def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=0
   if part=='ring':
-    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    _atom_list=config.ring_atom_no_list
   elif part=='track':
-    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+    _atom_list=config.track_atom_no_list
   else:
     assert len(atom_list)!=0,'atoms_list should not be empty'
     _atom_list=atom_list
@@ -310,15 +310,15 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
   elif part=='track':
-    track_atom_list=range(config.track_start_atom_no,config.track_end_atom_no)
-    ring_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    track_atom_list=config.track_atom_no_list
+    ring_atom_list=config.ring_atom_no_list
     trans_axis=[0,0,0]
     cog1=physics.getCog(frame1_cords,atom_list=ring_atom_list)
     cog2=physics.getCog(frame2_cords,atom_list=ring_atom_list)
     trans_axis[0]=cog2[0]-cog1[0]
     trans_axis[1]=cog2[1]-cog1[1]
     trans_axis[2]=cog2[2]-cog1[2] 
-    nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.r)
+    nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
   else:

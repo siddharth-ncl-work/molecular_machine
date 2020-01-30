@@ -1,33 +1,14 @@
 import sys
 import os
 import subprocess
-from  datetime import datetime
+from datetime import datetime
 import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
 
 import config
-from source import rotation,translation,energy
+from source import rotation,translation,energy,init
 
-input_file_path=None
-output_file_path=None
-output_dir_path=None
-def init():
-  global input_file_path,output_file_path,output_dir_path
-  input_file_path=os.path.join(config.input_parent_dir_path,config.input_system_name,config.input_subsystem_name,config.input_file_name)
-  output_dir_path=os.path.join(config.output_parent_dir_path,config.input_system_name,config.input_subsystem_name,config.input_file_name.split('.')[0])
-  if not os.path.isdir(output_dir_path):
-    print(f'Directory does not exits\nCreating {output_dir_path}')
-    subprocess.run(['mkdir',os.path.join(config.output_parent_dir_path,config.input_system_name)])
-    subprocess.run(['mkdir',os.path.join(config.output_parent_dir_path,config.input_system_name,config.input_subsystem_name)])
-    subprocess.run(['mkdir',os.path.join(config.output_parent_dir_path,config.input_system_name,config.input_subsystem_name,config.input_file_name.split('.')[0])])
-  else:
-    print(f'{output_dir_path} already exits')
-  subprocess.run(['cp','config.py',output_dir_path])
-  output_file_path=os.path.join(output_dir_path,'code_output.txt')
-  with open(output_file_path,'a') as output_file:
-    output_file.write(str(datetime.today())+'\n')
-    output_file.write(f'step size = {config.step_size}\n')
 
 def task0():
   '''
@@ -38,7 +19,7 @@ def task0():
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK0 COMPLETE\n')
     output_file.write(f'Ring Net Relative Rotaion = {ring_net_relative_rotation} degrees\n')
-    output_file.write('-'*20+'\n\n')
+    output_file.write('-'*80+'\n\n')
   rotation_data_file_path=os.path.join(output_dir_path,'rotation_data.csv')
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
@@ -64,7 +45,7 @@ def task1():
     output_file.write(f'Efficiency = {efficiency} %\n')
     output_file.write(f'Ring avg relative RKE = {ring_avg_rel_RKE} J\n')
     output_file.write(f'Ring avg relative TKE = {ring_avg_rel_TKE} J\n')
-    output_file.write('-'*20+'\n\n')
+    output_file.write('-'*80+'\n\n')
   RKE_data_file_path=os.path.join(output_dir_path,'RKE_data.csv')
   TKE_data_file_path=os.path.join(output_dir_path,'TKE_data.csv')
   pd.DataFrame.from_dict(RKE_data).to_csv(RKE_data_file_path,index=False)
@@ -91,7 +72,7 @@ def task2():
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK2 COMPLETE\n')
     output_file.write(f'Ring Net Relative Translation = {ring_net_relative_translation} m\n')
-    output_file.write('-'*20+'\n\n')
+    output_file.write('-'*80+'\n\n')
   translation_data_file_path=os.path.join(output_dir_path,'translation_data.csv')
   pd.DataFrame.from_dict(translation_data).to_csv(translation_data_file_path,index=False)
   x=translation_data['frame_no']
@@ -112,10 +93,16 @@ def plot(x,y,output_dir_path='',title='',ylabel=''):
   #plt.xlim(0,10)
   plt.savefig(output_dir_path+'/'+'_'.join(title.split())+'.png')
   plt.show()
-  print(y)
+
 
 tasks={'0':task0,'1':task1,'2':task2}
-init()
+
+path_dict=init.initTask()
+input_file_path=path_dict['input_file_path']
+output_file_path=path_dict['output_file_path']
+output_dir_path=path_dict['output_dir_path']
+print(f'ring_atom_no_list={config.ring_atom_no_list}')
+print(f'track_atom_no_list={config.track_atom_no_list}')
 for task_no in config.tasks.split('+'):
   print(f'Running Task{task_no}....')
   tasks[task_no]()

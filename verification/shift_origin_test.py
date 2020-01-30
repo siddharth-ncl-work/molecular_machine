@@ -8,21 +8,20 @@ from source import shift_origin
 from helper_functions import createSystem,getRingDf,getTrackDf
 
 
-def shiftOrigin(process='rotation',part='ring'):
-  '''
-  frame1_no=0
-  frame2_no=10000
-  file=open(config.test_file_path,'r')
-  '''
+def shiftOrigin(process='rotation',part='ring',system='artificial'):
   frame1_no=0
   frame2_no=1
-  file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
-  frame1_initial_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
-  frame2_initial_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  _createSystem(frame1_initial_cords_df,frame2_initial_cords_df,f'output/shift_origin_initial_{process}.xyz',part=part)
+  if system=='artificial':
+    file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+  elif system=='semi_real':
+    file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+  with open(file_path,'r') as file:
+    frame1_initial_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
+    frame2_initial_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
+  _createSystem(frame1_initial_cords_df,frame2_initial_cords_df,f'output/shift_origin_initial_{process}_{system}.xyz',part=part)
   frame1_final_cords_df,frame2_final_cords_df=shift_origin.shiftOrigin(frame1_initial_cords_df,frame2_initial_cords_df,process=process)
-  _createSystem(frame1_final_cords_df,frame2_final_cords_df,f'output/shift_origin_final_{process}.xyz',part=part)
-  ring_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  _createSystem(frame1_final_cords_df,frame2_final_cords_df,f'output/shift_origin_final_{process}_{system}.xyz',part=part)
+  ring_atom_list=config.ring_atom_no_list
   frame1_ring_com=physics.getCom(frame1_final_cords_df,atom_list=ring_atom_list)
   frame2_ring_com=physics.getCom(frame2_final_cords_df,atom_list=ring_atom_list)
   frame1_ring_cog=physics.getCog(frame1_final_cords_df,atom_list=ring_atom_list)
@@ -42,7 +41,7 @@ def _createSystem(frame1_cords_df,frame2_cords_df,output_file_path,part='ring',a
     frame2_part_cords_df=frame2_cords_df
   else:
     assert len(atom_list)!=0,'atoms_list should not be empty' 
-  ring_atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+  ring_atom_list=config.ring_atom_no_list
   frame1_ring_com=physics.getCom(frame1_cords_df,atom_list=ring_atom_list)
   frame2_ring_com=physics.getCom(frame2_cords_df,atom_list=ring_atom_list)
   frame1_ring_cog=physics.getCog(frame1_cords_df,atom_list=ring_atom_list)
@@ -58,5 +57,5 @@ def _createSystem(frame1_cords_df,frame2_cords_df,output_file_path,part='ring',a
   createSystem(cords_list,atom_list,output_file_path,add_axes=True)
 
 
-shiftOrigin(process='rotation')
-shiftOrigin(process='translation')
+shiftOrigin(process='rotation',system='semi_real')
+#shiftOrigin(process='translation')
