@@ -86,9 +86,9 @@ def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
 
 def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
-    _atom_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+    _atom_list=config.ring_atom_no_list
   elif part=='track':
-    _atom_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+    _atom_list=config.track_atom_no_list
   else:
     assert len(atom_list)!=0,'atoms_list should not be empty'
     _atom_list=atom_list
@@ -99,7 +99,6 @@ def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   translation[0]=com2[0]-com1[0]
   translation[1]=com2[1]-com1[1]
   translation[2]=com2[2]-com1[2]
-  #print(translation)
   if config.axis=='x':
     axis=0
   elif config.axis=='y':
