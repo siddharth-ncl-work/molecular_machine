@@ -24,7 +24,7 @@ def task0():
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
   y=rotation_data['rotation']
-  title='Ring Net Relative Rotation'
+  title='Ring Net Relative Rotation'+f'({config.input_file_name.split('.')[0]})'
   ylabel='rotation (degrees)'
   plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
   print(f'Ring Net Relative Rotaion = {ring_net_relative_rotation} degrees')  
@@ -52,7 +52,7 @@ def task1():
   pd.DataFrame.from_dict(TKE_data).to_csv(TKE_data_file_path,index=False)
   x=RKE_data['frame_no']
   y=RKE_data['RKE']
-  title='Ring Average Relative RKE'
+  title='Ring Average Relative RKE'+f'({config.input_file_name.split('.')[0]})'
   ylabel='average RKE (J)'
   plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
   x=TKE_data['frame_no']
@@ -77,7 +77,7 @@ def task2():
   pd.DataFrame.from_dict(translation_data).to_csv(translation_data_file_path,index=False)
   x=translation_data['frame_no']
   y=translation_data['translation']
-  title='Ring Net Relative Translation'
+  title='Ring Net Relative Translation'+f'({config.input_file_name.split('.')[0]})'
   ylabel='translation (m)'
   plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
   print(f'Ring Net Relative Translation = {ring_net_relative_translation} m')
