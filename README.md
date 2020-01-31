@@ -1,6 +1,5 @@
 # Investigation of Motions in Molecular Machines
-Aim of the project is to investigate the motions in molecular machines using DFT (Ruchi's Project)
-
+Aim of the project is to investigate the motions in molecular machines using DFT
 ## Steps:
 * Model the system
 * Simulate the system
