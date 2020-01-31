@@ -1,8 +1,6 @@
 __version__='1.0.0'
 
-#test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
-test_file_path='/home/vanka/ruchi/output_only/system1/system1_a/system1_a_30_1_20.xyz'
-
+test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
 
 input_parent_dir_path='/home/vanka/ruchi/output_only'
 input_system_name='system3'
@@ -15,7 +13,7 @@ ring_atom_no=0
 track_atom_no=153
 
 start_frame_no=0
-end_frame_no=1000
+end_frame_no=272849
 step_size=10
 
 frame_no_pos=2
