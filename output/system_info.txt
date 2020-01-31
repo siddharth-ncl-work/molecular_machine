@@ -1,0 +1,83 @@
+
+###############################################
+SYSTEM 1
+###############################################
+molecular_rotor_b3lyp_withoutcounter_ion.md_merged.xyz --> system1_a_md_30_1_20.xyz
+ro_ci_1_removed.xyz --> system1_b_md_30_1_20.xyz
+
+ring/ --> system1_ring/
+Files in 'ring/scr_finished' directory were renamed and 'scr_finished' was removed:
+coors.xyz --> ring1_md_30_1_20.xyz
+ring_only.xzy --> ring2_md_30_1_20.xyz
+a --> ring3_md_30_1_20.xyz
+q --> ring4_md_30_1_20.xyz
+
+system1_a/system1_a_md_30_1_20.xyz:
+Total Atoms: 180
+frames: 0-62055
+ring_atom_no: 0
+track_atom_no: 144
+frame_no_pos: 1
+ 
+system1_b/system1_b_md_30_1_20.xyz:
+Total Atoms: 201
+frames: 0-65123
+ring_atom_no: 0
+track_atom_no: 199
+frame_no_pos: 1
+
+system1_ring/ring1_md_30_1_20.xyz:
+Total Atoms: 72
+frames: 0-169344
+frame_no_pos: 2
+
+system1_ring/ring2_md_30_1_20.xyz:
+Total Atoms: 72
+frames: 0-76943
+frame_no_pos: 2
+
+system1_ring/ring3_md_30_1_20.xyz:
+Total Atoms: 72
+frames: 0-142666
+frame_no_pos: 2
+
+system1_ring/ring4_md_30_1_20.xyz:
+Total Atoms: 72
+frames: 0-169344
+frame_no_pos: 2
+
+################################################
+SYSTEM 2
+################################################
+david_with_solvent_merged.xyz --> system2_a_md_30_1_20.xyz
+
+system2_a/system2_a_md_30_1_20.xyz:
+Total Atoms:239
+frames: 0-52345
+ring_atom_no: 0
+track_atom_no: 236
+frame_no_pos: 1
+
+################################################
+SYSTEM 3
+################################################
+ring_track_dl_at_sulfer_end.xyz --> system3_a_29_12_19.xyz
+ring_track_dl_charged_nh2.xyz  --> system3_b_29_12_19.xyz
+
+system3_a/system3_a_md_29_12_19.xyz:
+Total Atoms: 154
+frames: 0-272849
+ring atom nos: 1-64
+track atom nos: 65-154
+ring_atom_no: 0
+track_atom_no: 153
+frame_no_pos: 2
+
+system3_b/system3_b_md_29_12_19.xyz:
+Total Atoms: 155
+frames: 0-156796
+ring atom nos: 1-64
+track atom nos: 65-155
+ring_atom_no: 0
+track_atom_no: 153
+frame_no_pos: 2
