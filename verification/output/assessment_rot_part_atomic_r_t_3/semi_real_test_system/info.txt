@@ -1,0 +1,1 @@
+semi_real_system_file_path=/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz
