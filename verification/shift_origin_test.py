@@ -8,7 +8,7 @@ from source import shift_origin
 from helper_functions import createSystem,getRingDf,getTrackDf
 
 
-def shiftOrigin(process='rotation',part='ring',system='artificial'):
+def shiftOrigin(process='translation',part='ring',system='artificial'):
   frame1_no=0
   frame2_no=1
   if system=='artificial':
@@ -57,5 +57,5 @@ def _createSystem(frame1_cords_df,frame2_cords_df,output_file_path,part='ring',a
   createSystem(cords_list,atom_list,output_file_path,add_axes=True)
 
 
-shiftOrigin(process='rotation',system='semi_real')
-#shiftOrigin(process='translation')
+#shiftOrigin(process='rotation',system='semi_real')
+shiftOrigin(process='translation',system='semi_real')

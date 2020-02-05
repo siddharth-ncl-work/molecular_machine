@@ -130,7 +130,6 @@ def getRotationMultiFrame(ideal=True):
   file.close()
   print(f'Ring Relative Rotation = {_rotation}')
 
-
 def getNetRotation(ideal=True,method='rot_hybrid_1'):
   if ideal:
     file_path='test_systems/ring_track_multi_frame_ideal.xyz'

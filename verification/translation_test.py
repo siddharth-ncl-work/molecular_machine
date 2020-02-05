@@ -6,7 +6,7 @@ sys.path.append('..')
 import config
 from lib.io_chem import io
 from lib.basic_operations import vector,physics
-from source import rotation,translation,shift_origin
+from source import rotation,translation,shift_origin,init
 from helper_functions import createSystem
 
 
@@ -63,11 +63,11 @@ def getAtomicDisplacement():
   df=translation.translateAlongAxis(df,trans_vec,distance)
   print(df[['x','y','z']].values[0])
  
-def trans_atomic_r_t(ideal=True):
-  if ideal:
-    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
-  else:
-    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
+def trans_atomic_r_t(system='artificial'):
+  if system=='artificial':
+    file=open('test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz','r')
+  elif system=='semi_real':
+    file=open('test_systems/ring_track_two_frames_semi_real_system.xyz','r')
   frame1_no=0
   frame2_no=1
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
@@ -76,11 +76,14 @@ def trans_atomic_r_t(ideal=True):
   file.close()
   print(_translation)
 
-def trans_com(ideal=True):
-  if ideal:
-    file=open('test_systems/ring_track_two_frames_ideal.xyz','r')
-  else:
-    file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
+def trans_com(system='artificial'):
+  print(system)
+  if system=='artificial':
+    file=open('test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz','r')
+    init.initConfig('test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
+  elif system=='semi_real':
+    file=open('test_systems/ring_track_two_frames_semi_real_system.xyz','r')
+    init.initConfig('test_systems/ring_track_two_frames_semi_real_system.xyz',ring_atom_no=0,track_atom_no=153)
   frame1_no=0
   frame2_no=1
   frame1_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
@@ -89,11 +92,14 @@ def trans_com(ideal=True):
   file.close()
   print(_translation)
 
-def getTranslationTwoFrames(ideal=False):
-  if ideal:
-    file_path='test_systems/ring_track_two_frames_ideal.xyz'
-  else:
-    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+def getTranslationTwoFrames(system='artificial'):
+  print(system)
+  if system=='artificial':
+    file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=30)
+  elif system=='semi_real':
+    file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=153)
   frame1_no=0
   frame2_no=1
 
@@ -112,12 +118,14 @@ def getTranslationTwoFrames(ideal=False):
   file.close()
   print(f'Ring Relative Translation = {_translation}')
 
-def getTranslationMultiFrame(ideal=True):
-  if ideal:
-    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
-  else:
-    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
-
+def getTranslationMultiFrame(system='artificial'):
+  print(system)
+  if system=='artificial':
+    file_path='test_systems/ring_track_multi_frame_ideal_artificial_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=30)
+  elif system=='semi_real':
+    file_path='test_systems/ring_track_multi_frame_semi_real_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=153)
   frame1_no=50
   frame2_no=51
 
@@ -136,11 +144,14 @@ def getTranslationMultiFrame(ideal=True):
   file.close()
   print(f'Ring Relative Translation = {_translation}')
   
-def getNetTranslation(ideal=True):
-  if ideal:
-    file_path='test_systems/ring_track_multi_frame_ideal.xyz'
-  else: 
-    file_path='test_systems/ring_track_multi_frame_non_ideal.xyz'
+def getNetTranslation(system='artificial'):
+  print(system)
+  if system=='artificial':
+    file_path='test_systems/ring_track_multi_frame_ideal_artificial_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=30)
+  elif system=='semi_real': 
+    file_path='test_systems/ring_track_multi_frame_semi_real_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=153)
   start_frame_no=0
   end_frame_no=99
   step_size=10
@@ -163,10 +174,16 @@ def getNetTranslation(ideal=True):
   print(f'Net ring translation = {net_ring_translation}')
   print(data)
 
+
 #translateAlongAxis()
 #getAtomicDisplacement()
 #trans_atomic_r_t()
-#trans_com()
-#getTranslationTwoFrames()
-#getTranslationMultiFrame()
-getNetTranslation()
+trans_com(system='artificial')
+getTranslationTwoFrames(system='artificial')
+trans_com(system='semi_real')
+getTranslationTwoFrames(system='semi_real')
+#getTranslationMultiFrame(system='artificial')
+#getNetTranslation(system='artificial')
+getTranslationMultiFrame(system='semi_real')
+getNetTranslation(system='semi_real')
+

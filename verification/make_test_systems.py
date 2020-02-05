@@ -1,6 +1,7 @@
 import math
 import pandas as pd
 import sys
+import numpy as np
 sys.path.append('..')
 
 import config
@@ -117,14 +118,14 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[20.6,0,0]):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[10,0,0],track_rpy=[20,0,0]):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
 
-  ring_distance=2
-  track_distance=1
+  ring_distance=5
+  track_distance=3
 
   input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
@@ -166,23 +167,23 @@ def ringTrackMultiFrameIdealArtificial():
   ring_theta=0
   track_theta=0
   ring_d_theta=1
-  track_d_theta=-0.5
+  track_d_theta=0.5
   ring_distance=0
   track_distance=0
   ring_d_distance=0.1
-  track_d_distance=-0.05
+  track_d_distance=0.05
 
   input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   for curr_frame_no in range(total_frames):
     #ring
-    input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(ring_atom_no_list)]
+    input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.ring_atom_no_list)]
     df=rotation.rotateAlongAxis(input_system_ring_cords_df,x,math.radians(ring_theta))
     #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
     #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
     curr_frame_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
     #track
-    input_system_track_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(track_atom_no_list)]
+    input_system_track_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.track_atom_no_list)]
     df=rotation.rotateAlongAxis(input_system_track_cords_df,x,math.radians(track_theta))
     #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
     #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
@@ -223,8 +224,8 @@ def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0]):
   y=[0,1,0]
   z=[0,0,1]
   
-  ring_distance=2
-  track_distance=1
+  ring_distance=-10
+  track_distance=5
   
   input_system_file_path='test_systems/ring_track_at_origin_semi_real_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
@@ -257,9 +258,127 @@ def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0]):
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
+def extractFrames():
+  '''
+  Extract two frames
+  '''
+  output_file_path='test_systems/ring_track_two_frames_extracted_semi_real_system.xyz'
+  frame1_no=0
+  frame2_no=1000
+
+  with open(config.test_file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
+    frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
+  with open(output_file_path,'w') as output_file:
+    io.writeFileMd(output_file,frame1_cords_df,frame1_no,frame_no_pos=config.frame_no_pos)
+    io.writeFileMd(output_file,frame2_cords_df,frame2_no,frame_no_pos=config.frame_no_pos)
+
+def ringTrackMultiFrameSemiReal():
+  '''
+  its kinda ideal semi-real system
+  '''
+  output_file_path='test_systems/ring_track_multi_frame_semi_real_system.xyz'
+  output_file=open(output_file_path,'w')
+  x=[1,0,0]
+
+  total_frames=100
+  ring_theta=0
+  track_theta=0
+  ring_d_theta=1
+  track_d_theta=0.5
+  ring_distance=0
+  track_distance=0
+  ring_d_distance=0.1
+  track_d_distance=-0.05
+
+  input_system_file_path='test_systems/ring_track_at_origin_semi_real_system.xyz'
+  input_system_cords_df=io.readFile(input_system_file_path)
+  for curr_frame_no in range(total_frames):
+    #ring
+    input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.ring_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_ring_cords_df,x,math.radians(ring_theta))
+    #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+    #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
+    curr_frame_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
+    #track
+    input_system_track_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.track_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_track_cords_df,x,math.radians(track_theta))
+    #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+    #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
+    curr_frame_track_cords_df=translation.translateAlongAxis(df,x,track_distance)
+    #frame
+    curr_frame_cords_df=pd.concat([curr_frame_ring_cords_df,curr_frame_track_cords_df])
+    #transform frames
+    axis=[1,1,1]
+    theta=45.24
+    distance=1.67
+    curr_frame_cords_df=rotation.rotateAlongAxis(curr_frame_cords_df,axis,math.radians(theta))
+    curr_frame_cords_df=translation.translateAlongAxis(curr_frame_cords_df,axis,distance)
+    io.writeFileMd(output_file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
+
+    ring_theta+=ring_d_theta
+    ring_distance+=ring_d_distance
+    track_theta+=track_d_theta
+    track_distance+=track_d_distance
+  output_file.close()
+
+def ringTrackMultiFrameOscillatingSemiReal():
+  '''
+  its kinda ideal semi-real system with oscillations
+  '''
+  output_file_path='test_systems/ring_track_multi_frame_oscillating_semi_real_system.xyz'
+  output_file=open(output_file_path,'w')
+  x=[1,0,0]
+  y=[0,1,0]
+  z=[0,0,1]
+  total_frames=100
+  ring_distance=0
+  track_distance=0
+  ring_d_distance=1
+  track_d_distance=0.5
+  ring_rpy=np.zeros(3)
+  track_rpy=np.zeros(3)
+  input_system_file_path='test_systems/ring_track_at_origin_semi_real_system.xyz'
+  input_system_cords_df=io.readFile(input_system_file_path)
+  for curr_frame_no in range(total_frames):
+    #ring
+    input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.ring_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_ring_cords_df,x,math.radians(ring_rpy[0]))
+    df=rotation.rotateAlongAxis(df,y,math.radians(math.radians(ring_rpy[1])))
+    df=rotation.rotateAlongAxis(df,z,math.radians(math.radians(ring_rpy[2])))
+    curr_frame_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
+    #track
+    input_system_track_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.track_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_track_cords_df,x,math.radians(track_rpy[0]))
+    df=rotation.rotateAlongAxis(df,y,math.radians(track_rpy[1]))
+    df=rotation.rotateAlongAxis(df,z,math.radians(track_rpy[2]))
+    curr_frame_track_cords_df=translation.translateAlongAxis(df,x,track_distance)
+    #frame
+    curr_frame_cords_df=pd.concat([curr_frame_ring_cords_df,curr_frame_track_cords_df])
+    #transform frames
+    axis=[1,1,1]
+    theta=45.24
+    distance=1.67
+    #curr_frame_cords_df=rotation.rotateAlongAxis(curr_frame_cords_df,axis,math.radians(theta))
+    #curr_frame_cords_df=translation.translateAlongAxis(curr_frame_cords_df,axis,distance)
+    io.writeFileMd(output_file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
+
+    #ring_rpy=np.random.random(3)
+    if curr_frame_no%2==0:
+      ring_distance=-1*ring_d_distance
+    else:
+      ring_distance=1*ring_d_distance
+    #track_rpy=np.random.random(3)
+    if curr_frame_no%2==0:
+      track_distance=-1*track_d_distance
+    else:
+      track_distance=1*track_d_distance
+  output_file.close()
+
 
 if __name__=='__main__':
-  #oneAtomSystemArtificial() 
+  #oneAtomSystemArtificial()
   #multiAtomSystemArtificial()
   #rpyOneAtomSystemArtificial()
   #ringCordsArtificial()
@@ -269,6 +388,9 @@ if __name__=='__main__':
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   #ringTrackMultiFrameIdealArtificial()
+
   ringTrackAtOriginSemiReal()
-  init.initConfig(config.test_file_path)
+  init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153)
   ringTrackTwoFramesSemiReal()
+  #ringTrackMultiFrameSemiReal()
+  #ringTrackMultiFrameOscillatingSemiReal()

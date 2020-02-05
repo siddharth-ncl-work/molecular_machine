@@ -4,17 +4,17 @@ test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_
 
 #GENERAL PARAMETERS
 input_parent_dir_path='/home/vanka/ruchi/output_only'
-input_system_name='system1'
-input_subsystem_name='system1_a'
-input_file_name='system1_a_md_30_1_20.xyz'
+input_system_name='system2'
+input_subsystem_name='system2_a'
+input_file_name='system2_a_md_30_1_20.xyz'
 output_parent_dir_path='output'
 
 ring_atom_no=0
-track_atom_no=144
+track_atom_no=153
 
 start_frame_no=0
-end_frame_no=272849
-step_size=10
+end_frame_no=5000
+step_size=1
 frame_no_pos=2
 
 tasks='2'

@@ -6,7 +6,7 @@ import sys
 sys.path.extend(['.','..'])
 import subprocess
 
-from source import rotation,init
+from source import rotation,init,translation
 import make_test_systems
 import config
 
@@ -267,7 +267,35 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
   if show_plot:
     plt.show()
 
+def assessTranslationMethod():
+  '''
+  via oscillations
+  '''
+  file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+  frame1_no=0
+  frame2_no=1
+ 
+  with open(file_path,'r') as file:
+    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=config.translation_method)
+    print(f'ring direct absolute translation = {_translation}')
+  with open(file_path,'r') as file:
+    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=config.translation_method)
+    print(f'track direct absolute translation = {_translation}')
+  with open(file_path,'r') as file:
+    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=config.translation_method)
+    print(f'ring direct relative translation = {_translation}')
+  with open(file_path,'r') as file:
+    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=config.translation_method,step_size=config.step_size)
+    print(f'ring net absolute translation = {_translation}')
+  with open(file_path,'r') as file:
+    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=config.translation_method,step_size=config.step_size)
+    print(f'track net absolute translation= {_translation}')
+  with open(file_path,'r') as file:
+    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=config.translation_method,step_size=config.step_size)
+    print(f'ring net relative translation = {_translation}')
 
+ 
+'''
 system_list=['semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
@@ -284,3 +312,5 @@ for system in system_list:
     assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+'''
+assessTranslationMethod()
