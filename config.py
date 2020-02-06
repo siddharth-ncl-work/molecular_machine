@@ -24,7 +24,7 @@ track_range=2
 simulation_time_step=0.5 #in femto
 
 rotation_method='rot_part_atomic_r_t_3'
-translation_method='trans_com'
+translation_method='trans_com_2'
 RKE_method='energy_rot_hybrid_1'
 TKE_method='energy_trans_com'
 axis='x'

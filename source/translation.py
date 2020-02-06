@@ -35,8 +35,10 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
   if type=='absolute':
     if method=='trans_atomic_r_t':
       translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)    
-    elif method=='trans_com':
-      translation=trans_com(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='trans_com_1':
+      translation=trans_com_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+    elif method=='trans_com_2':
+      translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='trans_atomic_t_r':
       print('to be implemented')
     else:
@@ -46,9 +48,13 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       part1_translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
       part2_translation=trans_atomic_r_t(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       rotation=part1_translation-part2_translation
-    elif method=='trans_com':
-      part1_translation=trans_com(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
-      part2_translation=trans_com(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+    elif method=='trans_com_1':
+      part1_translation=trans_com_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_translation=trans_com_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      translation=part1_translation-part2_translation
+    elif method=='trans_com_2':
+      part1_translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      part2_translation=trans_com_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       translation=part1_translation-part2_translation
     elif method=='trans_atomic_t_r':
       print('to be implemented') 
@@ -84,7 +90,7 @@ def trans_atomic_r_t(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   avg_part_translation=part_translation/len(_atom_list)
   return avg_part_translation*constants.angstrom
 
-def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+def trans_com_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
     _atom_list=config.ring_atom_no_list
   elif part=='track':
@@ -106,6 +112,29 @@ def trans_com(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   elif config.axis=='z':
     axis=2
   return translation[axis]*constants.angstrom
+
+def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+  print('new method')
+  if part=='ring':
+    _atom_list=config.ring_atom_no_list
+  elif part=='track':
+    _atom_list=config.track_atom_no_list
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+  translation_vector=[0,0,0]
+  trans_axis=[0,0,0]
+  com1=physics.getCom(frame1_cords,atom_list=_atom_list)
+  com2=physics.getCom(frame2_cords,atom_list=_atom_list)
+  translation_vector[0]=com2[0]-com1[0]
+  translation_vector[1]=com2[1]-com1[1]
+  translation_vector[2]=com2[2]-com1[2]
+  cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
+  cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
+  trans_axis[0]=cog2[0]-cog1[0]
+  trans_axis[1]=cog2[1]-cog1[1]
+  trans_axis[2]=cog2[2]-cog1[2]
+  return vector.getProjection(translation_vector,trans_axis)
 
 def translateAlongAxis(cords,axis,distance):
   new_cords=cords.copy()
