@@ -11,10 +11,12 @@ output_parent_dir_path='output'
 
 ring_atom_no=0
 track_atom_no=153
+ref_axis_atom1_no=20
+ref_axis_atom2_no=37
 
 start_frame_no=0
 end_frame_no=5000
-step_size=1
+step_size=10
 frame_no_pos=2
 
 tasks='2'

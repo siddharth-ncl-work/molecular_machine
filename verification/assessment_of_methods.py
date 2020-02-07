@@ -11,23 +11,33 @@ import make_test_systems
 import config
 
 def _init(method,system):
-  subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
-  subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
-  subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
-  subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
-  subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
-  subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  if 'rot' in method:
+    subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
+    subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
+    subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  elif 'trans' in method:
+    subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
+    subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
+    subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','ring/translation_without_rotation_test','ring/translation_with_single_axis_rotation_test','ring/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','track/translation_without_rotation_test','track/translation_with_single_axis_rotation_test','track/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','ring/translation_without_rotation_test','ring/translation_with_single_axis_rotation_test','ring/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','track/translation_without_rotation_test','track/translation_with_single_axis_rotation_test','track/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
   if system=='artificial':
     make_test_systems.ringTrackAtOriginNonIdealArtificial()
-    init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
+    init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30,ref_axis_atom1_no=20,ref_axis_atom2_no=37)
   elif system=='semi_real':
     make_test_systems.ringTrackAtOriginSemiReal()
     init.initConfig(config.test_file_path)
   else:
-    print(f'method={method} does not exist')
-  
+    print(f'system={system} does not exist')
+
 def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system='',show_plot=True):
   frame1_no=0
   frame2_no=1
@@ -255,7 +265,7 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
       title=method.upper()+'('+part+',x,'+axis[rotation_axis]+','+axis[constant_axis]+'='+str(constant_axis_theta)+','+assessment_type+','+system+',3d,'+f'[{ele},{azm}]'+')'
       plt.figure(figsize=(16,8))
       plt.rcParams.update({'font.size': 15})
-      ax=plt.axes(projection="3d")
+      plt.axes(projection="3d")
       ax.plot_surface(X,Y,Z_expected,cmap='Reds',edgecolor='none')
       ax.plot_surface(X,Y,Z_predicted,cmap='winter',edgecolor='none')
       ax.set_title(title)
@@ -267,35 +277,157 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
   if show_plot:
     plt.show()
 
-def assessTranslationMethod():
-  '''
-  via oscillations
-  '''
-  file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+def assessTranslationMethodWithoutRotation(method='',step_size=10,parts=['ring','track'],system='',show_plot=True):
+  distance_range=np.arange(-10,11,step_size)
   frame1_no=0
   frame2_no=1
- 
-  with open(file_path,'r') as file:
-    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=config.translation_method)
-    print(f'ring direct absolute translation = {_translation}')
-  with open(file_path,'r') as file:
-    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=config.translation_method)
-    print(f'track direct absolute translation = {_translation}')
-  with open(file_path,'r') as file:
-    _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=config.translation_method)
-    print(f'ring direct relative translation = {_translation}')
-  with open(file_path,'r') as file:
-    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=config.translation_method,step_size=config.step_size)
-    print(f'ring net absolute translation = {_translation}')
-  with open(file_path,'r') as file:
-    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=config.translation_method,step_size=config.step_size)
-    print(f'track net absolute translation= {_translation}')
-  with open(file_path,'r') as file:
-    _translation=translation.getNetTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=config.translation_method,step_size=config.step_size)
-    print(f'ring net relative translation = {_translation}')
+  zero_rpy=[0,0,0]
+  for part in parts:
+    x=[]
+    y=[]
+    for distance in distance_range:
+      if part=='ring':
+        if system=='artificial':
+          make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=distance,track_translation=0,ring_rpy=zero_rpy,track_rpy=zero_rpy)
+        elif system=='semi_real':
+          make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=distance,track_translation=0,ring_rpy=zero_rpy,track_rpy=zero_rpy)
+      elif part=='track':
+        if system=='artificial':
+          make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=0,track_translation=distance,ring_rpy=zero_rpy,track_rpy=zero_rpy)
+        elif system=='semi_real':
+          make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=0,track_translation=distance,ring_rpy=zero_rpy,track_rpy=zero_rpy)
+      if system=='artificial':
+        file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+      elif system=='semi_real':
+        file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+      with open(file_path,'r') as file:
+        _translation=translation.getTranslation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method,unit='A')
+      x.append(distance)
+      y.append(_translation)
+      print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_without_rotation,{system}')
+    plot4(x,y,method=method,part=part,assessment_type='translation_without_rotation',system=system,show_plot=show_plot)
 
- 
+def assessTranslationMethodSingleAxis3d(method='',rotation_axis=1,step_size=120,parts=['ring','track'],system='',show_plot=True):
+  distance_range=np.arange(-10,11,step_size)
+  theta_range=range(-50,51,5)
+  frame1_no=0
+  frame2_no=1
+  zero_rpy=[0,0,0]
+  for part in parts:
+    X=[]
+    Y=[]
+    Z_expected=[]
+    Z_predicted=[]
+    for distance in distance_range:
+      x=[]
+      axis_theta_list=[]
+      z_expected=[]
+      z_predicted=[]
+      for theta in theta_range:
+        rpy=[0,0,0]
+        rpy[rotation_axis]=theta
+        if part=='ring':
+          if system=='artificial':
+            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=distance,track_translation=0,ring_rpy=rpy,track_rpy=zero_rpy)
+          elif system=='semi_real':
+            make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=distance,track_translation=0,ring_rpy=rpy,track_rpy=zero_rpy)
+        elif part=='track':
+          if system=='artificial':
+            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=0,track_translation=distance,ring_rpy=zero_rpy,track_rpy=rpy)
+          elif system=='semi_real':
+            make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=0,track_translation=distance,ring_rpy=zero_rpy,track_rpy=rpy)
+        if system=='artificial':
+          file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+        elif system=='semi_real':
+          file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+        with open(file_path,'r') as file:
+          _translation=translation.getTranslation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method,unit='A')
+        x.append(distance)
+        axis_theta_list.append(theta)
+        z_expected.append(distance)
+        z_predicted.append(_translation)
+        print(f'{distance},{rpy},{part} Absolute Translation = {_translation},{method},translation_with_single_axis_rotation,3d,{rotation_axis},{system}')
+      X.append(x)
+      Y.append(axis_theta_list)
+      Z_expected.append(z_expected)
+      Z_predicted.append(z_predicted)
+    plot5(X,Y,np.array(Z_expected),np.array(Z_predicted),method=method,part=part,rotation_axis=rotation_axis,assessment_type='translation_with_single_axis_rotation',system=system,show_plot=show_plot)
+
+def assessTranslationMethodWithRandomTripleAxisRotation1d(method='',step_size=10,parts=['ring','track'],system='',show_plot=True):
+  distance_range=np.arange(-10,11,step_size)
+  frame1_no=0
+  frame2_no=1
+  for part in parts:
+    x=[]
+    y=[]
+    for distance in distance_range:
+      ring_rpy=np.random.uniform(low=-10,high=10,size=(3,))
+      track_rpy=np.random.uniform(low=-10,high=10,size=(3,))
+      if part=='ring':
+        if system=='artificial':
+          make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=distance,track_translation=0,ring_rpy=ring_rpy,track_rpy=track_rpy)
+        elif system=='semi_real':
+          make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=distance,track_translation=0,ring_rpy=ring_rpy,track_rpy=track_rpy)
+      elif part=='track':
+        if system=='artificial':
+          make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_translation=0,track_translation=distance,ring_rpy=ring_rpy,track_rpy=track_rpy)
+        elif system=='semi_real':
+          make_test_systems.ringTrackTwoFramesSemiReal(ring_translation=0,track_translation=distance,ring_rpy=ring_rpy,track_rpy=track_rpy)
+      if system=='artificial':
+        file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+      elif system=='semi_real':
+        file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+      with open(file_path,'r') as file:
+        _translation=translation.getTranslation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method,unit='A')
+      x.append(distance)
+      y.append(_translation)
+      print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_with_random_triple_axis_rotation,{system}')
+    plot4(x,y,method=method,part=part,assessment_type='translation_with_random_triple_axis_rotation',system=system,show_plot=show_plot)
+
+
+def plot4(x,y,method='test',part='ring',assessment_type='',system='',show_plot=True):
+  plt.figure(figsize=(16,8))
+  plt.rcParams.update({'font.size': 15})
+  plt.plot(x,y,'r',label='predicted')
+  plt.plot(x,x,'b',label='expected')
+  title=method.upper()+'('+part+','+assessment_type+','+system+')'
+  plt.title(title)
+  plt.xlabel('Translation (A)')
+  plt.ylabel('Predicted Translation (A)')
+  plt.ylim(-15, 15)
+  plt.legend()
+  plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  if show_plot:
+    plt.show()
+
+def plot5(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_axis=0,assessment_type='',system='',show_plot=True):
+  axis={0:'x',1:'y',2:'z'}
+  title=method.upper()+'('+part+axis[rotation_axis]+','+assessment_type+','+system+',3d'+')'
+  data={'X':X,'Y':Y,'Z_expected':Z_expected,'Z_predicted':Z_predicted}
+  pickle.dump(data,open('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.dat.pkl', 'wb'))
+
+  for ele in [-10,10,45]:
+    for azm in range(0,181,45):
+      title=method.upper()+'('+part+','+axis[rotation_axis]+','+assessment_type+','+system+',3d,'+f'[{ele},{azm}]'+')'
+      fig=plt.figure(figsize=(16,8))
+      plt.rcParams.update({'font.size': 15})
+      ax=plt.axes(projection="3d")
+      surf1=ax.plot_surface(X,Y,Z_expected,cmap='Reds')
+      surf2=ax.plot_surface(X,Y,Z_predicted,cmap='winter')
+      ax.set_title(title)
+      ax.set_xlabel('Translation (A)')
+      ax.set_ylabel('Rotation (D)')
+      ax.set_zlabel('Expcted/Predicted Translation')
+      fig.colorbar(surf1,label='expected',fraction=.05)
+      fig.colorbar(surf2,label='predicted',fraction=.05)
+      ax.view_init(ele,azm)
+      plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  if show_plot:
+    plt.show()
+
+
 '''
+#ROTATION
 system_list=['semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
@@ -313,4 +445,19 @@ for system in system_list:
     assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 '''
-assessTranslationMethod()
+
+
+#TRANSLATION
+system_list=['artificial','semi_real']
+method_list=['trans_com_2']
+step_size=0.5
+parts=['ring','track']
+show_plot=True
+for system in system_list:
+  for method in method_list:
+    _init(method,system)
+    assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=True)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=True)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=True)
+    assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)  

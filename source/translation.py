@@ -24,13 +24,13 @@ def getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',
     data['translation'].append(translation)
   return (net_translation,data)
 
-def getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[]):
+def getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[],unit='m'):
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  return _getTranslation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
+  return _getTranslation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list,unit=unit)
 
-def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[]):
+def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[],unit='m'):
   translation=0
   if type=='absolute':
     if method=='trans_atomic_r_t':
@@ -38,7 +38,7 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
     elif method=='trans_com_1':
       translation=trans_com_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='trans_com_2':
-      translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
     elif method=='trans_atomic_t_r':
       print('to be implemented')
     else:
@@ -53,8 +53,8 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       part2_translation=trans_com_1(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
       translation=part1_translation-part2_translation
     elif method=='trans_com_2':
-      part1_translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
-      part2_translation=trans_com_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list)
+      part1_translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
+      part2_translation=trans_com_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list,unit=unit)
       translation=part1_translation-part2_translation
     elif method=='trans_atomic_t_r':
       print('to be implemented') 
@@ -113,8 +113,7 @@ def trans_com_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=2
   return translation[axis]*constants.angstrom
 
-def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
-  print('new method')
+def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[],unit='m'):
   if part=='ring':
     _atom_list=config.ring_atom_no_list
   elif part=='track':
@@ -131,10 +130,15 @@ def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   translation_vector[2]=com2[2]-com1[2]
   cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
   cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
-  trans_axis[0]=cog2[0]-cog1[0]
-  trans_axis[1]=cog2[1]-cog1[1]
-  trans_axis[2]=cog2[2]-cog1[2]
-  return vector.getProjection(translation_vector,trans_axis)
+  ref_axis_atom1_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom1_no][['x','y','z']].values[0]
+  ref_axis_atom2_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom2_no][['x','y','z']].values[0]
+  trans_axis[0]=ref_axis_atom2_cords[0]-ref_axis_atom1_cords[0]
+  trans_axis[1]=ref_axis_atom2_cords[1]-ref_axis_atom1_cords[1]
+  trans_axis[2]=ref_axis_atom2_cords[2]-ref_axis_atom1_cords[2]
+  if unit=='m':
+    return vector.getProjection(translation_vector,trans_axis)*constants.angstrom
+  elif unit.upper()=='A':
+    return vector.getProjection(translation_vector,trans_axis)
 
 def translateAlongAxis(cords,axis,distance):
   new_cords=cords.copy()
