@@ -39,7 +39,7 @@ def extractMolecule(file_path,atom_no=0):
 
 
 if __name__=='__main__':
-  #file_path='verification/test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
-  file_path=config.test_file_path
+  file_path='verification/test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+  #file_path=config.test_file_path
   print(f'ring: {extractMolecule(file_path,atom_no=config.ring_atom_no)}')
   print(f'track: {extractMolecule(file_path,atom_no=config.track_atom_no)}')
