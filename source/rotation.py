@@ -314,10 +314,11 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     ring_atom_list=config.ring_atom_no_list
     trans_axis=[0,0,0]
     cog1=physics.getCog(frame1_cords,atom_list=ring_atom_list)
-    cog2=physics.getCog(frame2_cords,atom_list=ring_atom_list)
-    trans_axis[0]=cog2[0]-cog1[0]
-    trans_axis[1]=cog2[1]-cog1[1]
-    trans_axis[2]=cog2[2]-cog1[2] 
+    ref_axis_atom1_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom1_no][['x','y','z']].values[0]
+    ref_axis_atom2_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom2_no][['x','y','z']].values[0]
+    trans_axis[0]=ref_axis_atom2_cords[0]-ref_axis_atom1_cords[0]
+    trans_axis[1]=ref_axis_atom2_cords[1]-ref_axis_atom1_cords[1]
+    trans_axis[2]=ref_axis_atom2_cords[2]-ref_axis_atom1_cords[2]
     nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)

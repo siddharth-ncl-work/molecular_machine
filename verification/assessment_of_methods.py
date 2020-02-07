@@ -209,17 +209,18 @@ def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system='',show
     axis='z'
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.plot(x,y)
+  plt.plot(x,y,'r',label='predicted')
   if axis=='x':
-    plt.plot(x,x)
+    plt.plot(x,x,'b',label='expected')
   else:
     zero=np.zeros(len(x))
-    plt.plot(x,zero)
+    plt.plot(x,zero,'b',label='expected')
   title=method.upper()+'('+part+','+axis+','+assessment_type+','+system+')'
   plt.title(title)
   plt.xlabel(f'{axis} Rotation(D)')
-  plt.ylabel('Predicted X Rotation (D)')
+  plt.ylabel('Predicted/Expected x Rotation (D)')
   plt.ylim(-100, 100)
+  plt.legend()
   plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   if show_plot:
     plt.show()
@@ -239,17 +240,18 @@ def plot2(x,y,method='test',part='ring',rotation_axis=0,constant_axis=1,constant
     constant_axis='z'
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.plot(x,y)
+  plt.plot(x,y,'r',label='predicted')
   if rotation_axis=='x':
-    plt.plot(x,x)
+    plt.plot(x,x,'b',label='expected')
   else:
     zero=np.zeros(len(x))
-    plt.plot(x,zero)
+    plt.plot(x,zero,'b',label='expected')
   title=method.upper()+'('+part+','+rotation_axis+','+constant_axis+'='+str(constant_theta)+','+assessment_type+','+system+',2d'+')'
   plt.title(title)
   plt.xlabel(f'{rotation_axis} Rotation(D)')
-  plt.ylabel('Predicted X Rotation(D)')
+  plt.ylabel('Predicted/Expected x Rotation(D)')
   plt.ylim(-100, 100)
+  plt.legend()
   plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   if show_plot:
     plt.show()
@@ -263,16 +265,18 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
   for ele in [-10,10,45]:
     for azm in range(0,181,45):
       title=method.upper()+'('+part+',x,'+axis[rotation_axis]+','+axis[constant_axis]+'='+str(constant_axis_theta)+','+assessment_type+','+system+',3d,'+f'[{ele},{azm}]'+')'
-      plt.figure(figsize=(16,8))
+      fig=plt.figure(figsize=(16,8))
       plt.rcParams.update({'font.size': 15})
-      plt.axes(projection="3d")
-      ax.plot_surface(X,Y,Z_expected,cmap='Reds',edgecolor='none')
-      ax.plot_surface(X,Y,Z_predicted,cmap='winter',edgecolor='none')
+      ax=plt.axes(projection="3d")
+      surf1=ax.plot_surface(X,Y,Z_expected,cmap='Reds',edgecolor='none')
+      surf2=ax.plot_surface(X,Y,Z_predicted,cmap='winter',edgecolor='none')
       ax.set_title(title)
       ax.set_xlabel('x Rotation')
       ax.set_ylabel(f'{axis[rotation_axis]} Rotation')
       ax.set_zlabel('Expcted/Predicted x Rotation')
       ax.view_init(ele,azm)
+      fig.colorbar(surf1,label='expected',fraction=.05)
+      fig.colorbar(surf2,label='predicted',fraction=.05)
       plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   if show_plot:
     plt.show()
@@ -384,7 +388,6 @@ def assessTranslationMethodWithRandomTripleAxisRotation1d(method='',step_size=10
       print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_with_random_triple_axis_rotation,{system}')
     plot4(x,y,method=method,part=part,assessment_type='translation_with_random_triple_axis_rotation',system=system,show_plot=show_plot)
 
-
 def plot4(x,y,method='test',part='ring',assessment_type='',system='',show_plot=True):
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
@@ -393,7 +396,7 @@ def plot4(x,y,method='test',part='ring',assessment_type='',system='',show_plot=T
   title=method.upper()+'('+part+','+assessment_type+','+system+')'
   plt.title(title)
   plt.xlabel('Translation (A)')
-  plt.ylabel('Predicted Translation (A)')
+  plt.ylabel('Predicted/Expected Translation (A)')
   plt.ylim(-15, 15)
   plt.legend()
   plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
@@ -402,7 +405,7 @@ def plot4(x,y,method='test',part='ring',assessment_type='',system='',show_plot=T
 
 def plot5(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_axis=0,assessment_type='',system='',show_plot=True):
   axis={0:'x',1:'y',2:'z'}
-  title=method.upper()+'('+part+axis[rotation_axis]+','+assessment_type+','+system+',3d'+')'
+  title=method.upper()+'('+part+','+axis[rotation_axis]+','+assessment_type+','+system+',3d'+')'
   data={'X':X,'Y':Y,'Z_expected':Z_expected,'Z_predicted':Z_predicted}
   pickle.dump(data,open('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.dat.pkl', 'wb'))
 
@@ -426,28 +429,29 @@ def plot5(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
     plt.show()
 
 
-'''
+
 #ROTATION
-system_list=['semi_real']
+system_list=['artificial','semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
 parts=['ring','track']
-show_plot=False
+show_plot=True
 for system in system_list:
   for method in method_list:
     _init(method,system)
     assessRotationMethodSingleAxis(method=method,step_size=step_size,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=-45,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-'''
+    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
+    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
+    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
+    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=-45,system=system,show_plot=show_plot)
+    #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    #assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+
 
 
 #TRANSLATION
+'''
 system_list=['artificial','semi_real']
 method_list=['trans_com_2']
 step_size=0.5
@@ -460,4 +464,5 @@ for system in system_list:
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=True)
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=True)
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=True)
-    assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)  
+    assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)
+'''
