@@ -13,7 +13,7 @@ ring_atom_no=0
 track_atom_no=153
 
 start_frame_no=0
-end_frame_no=100
+end_frame_no=272849
 step_size=10
 frame_no_pos=2
 

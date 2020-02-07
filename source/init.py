@@ -15,9 +15,13 @@ def initConfig(system_file_path,**kwargs):
   if len(kwargs)==0:
     ring_atom_no=config.ring_atom_no
     track_atom_no=config.track_atom_no
+    ref_axis_atom1_no=config.ref_axis_atom1_no
+    ref_axis_atom2_no=config.ref_axis_atom2_no 
   else:
     ring_atom_no=kwargs['ring_atom_no']
     track_atom_no=kwargs['track_atom_no'] 
+    ref_axis_atom1_no=kwargs['ref_axis_atom1_no']
+    ref_axis_atom2_no=kwargs['ref_axis_atom2_no']
   ring_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=ring_atom_no)
   track_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=track_atom_no)
   config_file_path=f'{config.code_dir_path}/config.py'
@@ -34,7 +38,16 @@ def initConfig(system_file_path,**kwargs):
       pos=i
       break
   data[pos]=f'track_atom_no_list={track_atom_no_list}\n'
-  
+  for i,line in enumerate(data):
+    if 'ref_axis_atom1_no' in line:
+      pos=i
+      break
+  data[pos]=f'ref_axis_atom1_no={ref_axis_atom1_no}\n'
+  for i,line in enumerate(data):
+    if 'ref_axis_atom2_no' in line:
+      pos=i
+      break
+  data[pos]=f'ref_axis_atom2_no={ref_axis_atom2_no}\n'
   with open(config_file_path,'w') as file:
     file.write(''.join(data))
   importlib.reload(config)
