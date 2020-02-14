@@ -1,0 +1,403 @@
+2019-12-30 11:50:14.926017
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 70.85191014849386 degrees
+--------------------
+
+2019-12-30 11:51:55.219580
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 70.85191014849386 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 99.3811905119618 %
+Ring avg relative RKE = 9.633454958797571e-15 J
+Ring avg relative TKE = 5.998391949606461e-17 J
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.7199813324941972e-10 m
+--------------------
+
+2019-12-30 11:55:29.038615
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -11.511638959067422 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 99.0794004107432 %
+Ring avg relative RKE = 3.609821326105376e-16 J
+Ring avg relative TKE = 3.3540776552203877e-18 J
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.987115980203189e-10 m
+--------------------
+
+2019-12-30 12:04:26.094021
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -0.880100899282617 degrees
+--------------------
+
+TASK1 COMPLETE
+Efficiency = 98.86599991447369 %
+Ring avg relative RKE = 2.9241994370771823e-16 J
+Ring avg relative TKE = 3.3540776552203877e-18 J
+--------------------
+
+2019-12-30 12:07:58.574562
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -21.272583407730995 degrees
+--------------------
+
+2019-12-30 12:22:27.577015
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -45.27863638497965 degrees
+--------------------
+
+2019-12-30 12:25:43.197568
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -0.880100899282617 degrees
+--------------------
+
+2019-12-30 12:27:22.625484
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -11.511638959067422 degrees
+--------------------
+
+2019-12-30 12:28:48.014713
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 49.13457589162889 degrees
+--------------------
+
+2019-12-30 12:29:34.346169
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -49.80997881508022 degrees
+--------------------
+
+2019-12-30 12:37:49.395700
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 173.2827551398605 degrees
+--------------------
+
+2019-12-30 12:54:10.402980
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+
+2020-01-05 14:45:50.302928
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+
+2020-01-05 14:54:09.392480
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 190.51464297259986 degrees
+--------------------
+
+2020-01-06 15:04:43.615265
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -72.2064409759072 degrees
+--------------------
+
+2020-01-24 08:19:08.359963
+step size = 10
+2020-01-24 08:19:56.510317
+step size = 10
+2020-01-24 08:20:29.793321
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 8.632134904848386e-11 m
+--------------------
+
+2020-01-24 08:23:45.901221
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -31.735529457957668 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 7.854135413498408e-11 m
+--------------------
+
+2020-01-24 08:24:36.583613
+step size = 1
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.33524405916207 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 8.715501626900596e-11 m
+--------------------
+
+2020-01-24 08:48:20.937974
+step size = 100
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -63.43333090314124 degrees
+--------------------
+
+TASK2 COMPLETE
+Ring Net Relative Translation = 1.2883558495028066e-09 m
+--------------------
+
+2020-01-24 08:52:30.374919
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -79.42014657520882 degrees
+--------------------
+
+2020-01-24 08:59:44.723093
+step size = 1
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -71.99887769842007 degrees
+--------------------
+
+2020-01-24 10:52:09.160900
+step size = 1
+2020-01-24 10:52:51.033576
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -178.88558141876123 degrees
+--------------------
+
+2020-01-24 20:48:46.912894
+step size = 10
+2020-01-25 11:18:48.047090
+step size = 10
+2020-01-25 11:19:51.330338
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 11:21:49.761761
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+2020-01-25 11:23:06.313879
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 11:25:30.718548
+step size = 10
+2020-01-25 11:26:11.539646
+step size = 10
+2020-01-25 11:28:14.701473
+step size = 10
+2020-01-25 11:28:30.058102
+step size = 10
+2020-01-25 11:51:28.554582
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 12:00:32.635893
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = 0.0 degrees
+--------------------
+
+2020-01-25 12:10:09.640040
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.906994822391326 degrees
+--------------------
+
+2020-01-25 20:21:08.116109
+step size = 10
+2020-01-25 20:21:25.791154
+step size = 10
+2020-01-30 05:00:16.984580
+step size = 10
+2020-01-30 10:12:33.358050
+##########config.py##########2020-01-30 10:13:23.459144
+##########config.py##########__version__='1.0.0'
+
+test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
+input_parent_dir_path='/home/vanka/ruchi/output_only'
+input_system_name='system3'
+input_subsystem_name='system3_a'
+input_file_name='system3_a_md_29_12_19.xyz'
+output_parent_dir_path='output'
+
+#GENERAL PARAMETERS
+ring_atom_no=0
+track_atom_no=64
+
+#ring_start_atom_no=0
+#ring_end_atom_no=19#63#19
+#track_start_atom_no=20#64#20
+#track_end_atom_no=37#153#37
+
+start_frame_no=0
+end_frame_no=100000#272849
+step_size=10
+
+track_range=2
+simulation_time_step=0.5 #in femto
+frame_no_pos=2
+rotation_method='rot_part_atomic_r_t_3'
+translation_method='trans_com'
+RKE_method='energy_rot_hybrid_1'
+TKE_method='energy_trans_com'
+axis='x'
+
+tasks='0'
+
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+
+track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153]
+
+code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
+
+
+'''
+NOTE COMMIT:
+ comment on y,z rotational components: Earlier I thought to include y,z rotational components as well but after thinking for a while, it was realised that its a bit tricky task. So we decided to include y,z rotational components in the next version and focus only on one component(x-axis rotation) in this version. 
+  I though y and z components are the just P and Y components respectively but they are not the same. Here as we calcuate RPY angles between projections perpendicular to x-axis,so P and Y components are always zero. In order to get y and z rotational components we need to calculate RPY angles between projections perpendicular to respective axis. But this raises another question, are x,y and z rotational components obtained by calculating RPY angles between respective projections same as actual RPY angles? In other words if apply these components to a point will transfrom to its final position?
+
+FUTURE TASKS:
+ 1. Think about other RPY components. Maybe a good method will have small P,Y components
+ 2. real system test: rotation vs step_sizse, rotation vs range
+ 3. Make code run faster for data generation
+ 4. cog/com
+ 5. use networkx to get ring and track
+ 6. modify assessment and respective test files to include artificial,semi_real,real systems
+'''
+####################
+step size = 10
+2020-01-30 11:56:46.524888
+##########config.py##########__version__='1.0.0'
+
+#test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
+test_file_path='/home/vanka/ruchi/output_only/system1/system1_a/system1_a_30_1_20.xyz'
+
+
+input_parent_dir_path='/home/vanka/ruchi/output_only'
+input_system_name='system3'
+input_subsystem_name='system3_a'
+input_file_name='system3_a_md_29_12_19.xyz'
+output_parent_dir_path='output'
+
+#GENERAL PARAMETERS
+ring_atom_no=0
+track_atom_no=236
+
+start_frame_no=0
+end_frame_no=1000
+step_size=10
+
+frame_no_pos=2
+track_range=2
+simulation_time_step=0.5 #in femto
+
+rotation_method='rot_part_atomic_r_t_3'
+translation_method='trans_com'
+RKE_method='energy_rot_hybrid_1'
+TKE_method='energy_trans_com'
+axis='x'
+
+tasks='0'
+
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+
+track_atom_no_list=None
+
+code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
+####################
+step size = 10
+2020-01-30 11:57:09.427819
+##########config.py##########__version__='1.0.0'
+
+#test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
+test_file_path='/home/vanka/ruchi/output_only/system1/system1_a/system1_a_30_1_20.xyz'
+
+
+input_parent_dir_path='/home/vanka/ruchi/output_only'
+input_system_name='system3'
+input_subsystem_name='system3_a'
+input_file_name='system3_a_md_29_12_19.xyz'
+output_parent_dir_path='output'
+
+#GENERAL PARAMETERS
+ring_atom_no=0
+track_atom_no=153
+
+start_frame_no=0
+end_frame_no=1000
+step_size=10
+
+frame_no_pos=2
+track_range=2
+simulation_time_step=0.5 #in femto
+
+rotation_method='rot_part_atomic_r_t_3'
+translation_method='trans_com'
+RKE_method='energy_rot_hybrid_1'
+TKE_method='energy_trans_com'
+axis='x'
+
+tasks='0'
+
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+
+track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153]
+
+code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
+####################
+step size = 10
+TASK0 COMPLETE
+Ring Net Relative Rotaion = -28.81794082448414 degrees
+--------------------
+
+2020-01-30 11:58:34.430813
+##########config.py##########__version__='1.0.0'
+
+#test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
+test_file_path='/home/vanka/ruchi/output_only/system1/system1_a/system1_a_30_1_20.xyz'
+
+
+input_parent_dir_path='/home/vanka/ruchi/output_only'
+input_system_name='system3'
+input_subsystem_name='system3_a'
+input_file_name='system3_a_md_29_12_19.xyz'
+output_parent_dir_path='output'
+
+#GENERAL PARAMETERS
+ring_atom_no=0
+track_atom_no=153
+
+start_frame_no=0
+end_frame_no=1000
+step_size=10
+
+frame_no_pos=2
+track_range=2
+simulation_time_step=0.5 #in femto
+
+rotation_method='rot_part_atomic_r_t_3'
+translation_method='trans_com'
+RKE_method='energy_rot_hybrid_1'
+TKE_method='energy_trans_com'
+axis='x'
+
+tasks='0'
+
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
+
+track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153]
+
+code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
+####################
+step size = 10
