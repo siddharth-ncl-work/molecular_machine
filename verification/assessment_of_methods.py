@@ -31,10 +31,10 @@ def _init(method,system):
     subprocess.run(['mkdir','track/translation_without_rotation_test','track/translation_with_single_axis_rotation_test','track/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
   if system=='artificial':
     make_test_systems.ringTrackAtOriginNonIdealArtificial()
-    init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30,ref_axis_atom1_no=20,ref_axis_atom2_no=37)
+    init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30,ref_axis_atom1_no=20,ref_axis_atom2_no=37,frame_no_pos=2)
   elif system=='semi_real':
     make_test_systems.ringTrackAtOriginSemiReal()
-    init.initConfig(config.test_file_path)
+    init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153,ref_axis_atom1_no=75,ref_axis_atom2_no=98,frame_no_pos=2)
   else:
     print(f'system={system} does not exist')
 
@@ -435,34 +435,32 @@ system_list=['artificial','semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
 parts=['ring','track']
-show_plot=True
+show_plot=False
 for system in system_list:
   for method in method_list:
     _init(method,system)
     assessRotationMethodSingleAxis(method=method,step_size=step_size,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=-45,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    #assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=-45,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 
 
 
 #TRANSLATION
-'''
 system_list=['artificial','semi_real']
 method_list=['trans_com_2']
 step_size=0.5
 parts=['ring','track']
-show_plot=True
+show_plot=False
 for system in system_list:
   for method in method_list:
     _init(method,system)
-    assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)
-    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=True)
-    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=True)
-    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=True)
-    assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=True)
-'''
+    assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)

@@ -128,8 +128,6 @@ def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[],unit='m'):
   translation_vector[0]=com2[0]-com1[0]
   translation_vector[1]=com2[1]-com1[1]
   translation_vector[2]=com2[2]-com1[2]
-  cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
-  cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
   ref_axis_atom1_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom1_no][['x','y','z']].values[0]
   ref_axis_atom2_cords=frame1_cords[frame1_cords['atom_no']==config.ref_axis_atom2_no][['x','y','z']].values[0]
   trans_axis[0]=ref_axis_atom2_cords[0]-ref_axis_atom1_cords[0]
