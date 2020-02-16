@@ -38,9 +38,6 @@ track_atom_no_list=[20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-* make code ready for data generation according to new data location
-* add task to get rotation and traslation data simultaneously
-* add feature to get absolute data during relative data calculation
-* update 1.1.0 tag
-* update data-1.1.0 with new traslation data
+* due to emergency verification-2.0.0 will be done later if needed
+* now creating data-2.0.0 branch for david(case 2) data generation
 '''
