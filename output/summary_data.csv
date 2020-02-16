@@ -1,6 +1,12 @@
-System,Sub-System,Ring Net Relative Rotation,Ring Net Relative Translation
-system1,system1_a,2.576997281868069,5.361868602322276e-13
-system1,system1_b,2.226918249733771,-9.000966925988009e-12
-system2,system2_a,3.148546519964418,-3.758315986768589e-12
-system3,system3_a,0.6214964101097351,2.8674895568860755e-12
-system3,system3_b,-4.310164613552515,-9.51145444025102e-12
+System,Sub-System,scr,Ring Net Relative Rotation,Ring Net Relative Translation
+case_1,molecular_rotor.md,scr1,3.3077592297636187,-9.221232598786798e-12
+case_1,molecular_rotor_b3lyp.md,scr,-6.823849919884083,6.520061710086169e-12
+case_1,molecular_rotor_b3lyp_withoutcounter_ion.md,merge_src,5.923625075854997,8.083523738622176e-13
+case_1,molecular_rotor_b3lyp_with_solvent.md,scr_1,1.1447978771680287,2.3490895396365843e-12
+case_1,molecular_rotor_b3lyp_with_solvent.md,scr_2,5.388539011284642,-5.8114662638296395e-12
+case_1,molecular_rotor_b3lyp_with_solvent.md,scr_3,-2.2897053344463285,-7.794224033647518e-12
+case_1,molecular_rotor_b3lyp_with_solvent.md,scr,2.0239570485613942,-3.1615072793184575e-12
+case_3,ring_track_dl_at_sulfer_end,scr.input_2,6.635759953055564,4.038879213965093e-12
+case_3,ring_track_dl_nutral_nh,scr_1300_temp,-3.7978206546759585,6.898849851236914e-12
+case_3,ring_track_dl_nutral_nh,scr_1700_temp,-11.97378497447745,1.7828242862874695e-11
+case_3,ring_track_dl_nutral_nh,scr_1800_temp,-10.550475958819465,-2.0480644770636142e-11

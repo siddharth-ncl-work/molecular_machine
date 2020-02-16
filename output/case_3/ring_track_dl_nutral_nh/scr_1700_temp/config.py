@@ -6,7 +6,7 @@ test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_
 input_parent_dir_path="/home/vanka/ruchi/molecular_motor"
 input_system_name="case_3"
 input_subsystem_name="ring_track_dl_nutral_nh"
-input_scr_dir_name="scr_1800_temp"
+input_scr_dir_name="scr_1700_temp"
 output_parent_dir_path='output'
 
 ring_atom_no=4

@@ -19,7 +19,7 @@ def isMd(file_path):
 def extractMolecule(file_path,atom_no=0):
   if isMd(file_path):
     with open(file_path,'r') as file:
-      df_cords=io.readFileMd(file,frame_no_pos=config.frame_no_pos)
+      df_cords=io.readFileMd(file,config.start_frame_no,frame_no_pos=config.frame_no_pos)
   else:
     df_cords=io.readFile(file_path)
   io.writeFile('ring_track_frame.tmp.xyz',df_cords) 

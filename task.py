@@ -115,9 +115,9 @@ if read_from=='config.py':
     tasks[task_no]()
     print(f'Task{task_no} Complete.')
 elif read_from=='system_info.csv':
-  system_info_df=pd.read_csv('system_info.csv')
+  system_info_df=pd.read_csv('test_system_info.csv')
   print(system_info_df)
-  summary_data={'System':[],'Sub-System':[]}
+  summary_data={'System':[],'Sub-System':[],'scr':[]}
   for task_no in config.tasks.split('+'):
     summary_data[task_name[task_no]]=[]
   for i,row in system_info_df.iterrows():
@@ -129,6 +129,7 @@ elif read_from=='system_info.csv':
     print(f'track_atom_no_list={config.track_atom_no_list}')
     summary_data['System'].append(config.input_system_name)
     summary_data['Sub-System'].append(config.input_subsystem_name)
+    summary_data['scr'].append(config.input_scr_dir_name)
     for task_no in config.tasks.split('+'):
       print(f'Running Task{task_no}....')
       value=tasks[task_no]()
