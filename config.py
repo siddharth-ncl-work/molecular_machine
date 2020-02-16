@@ -39,7 +39,5 @@ track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-* data-2.0.0 is branch for david(case 2) only
-* rotation and traslation data only
-* verification-2.0.0 will be finished later
-'''
+* generate data for real systems(case_1 and case_2)
+* generate rotatational and translational data using updated method (reference axis method)
