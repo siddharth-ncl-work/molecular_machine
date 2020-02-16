@@ -6,7 +6,7 @@ test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_
 input_parent_dir_path="/home/vanka/ruchi/molecular_motor"
 input_system_name="case_3"
 input_subsystem_name="ring_track_dl_nutral_nh"
-input_scr_dir_name="scr_1800_temp"
+input_scr_dir_name="scr_1700_temp"
 output_parent_dir_path='output'
 
 ring_atom_no=4
@@ -39,7 +39,9 @@ track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-* data-2.0.0 is branch for david(case 2) only
-* rotation and traslation data only
-* verification-2.0.0 will be finished later
+* make code ready for data generation according to new data location
+* add task to get rotation and traslation data simultaneously
+* add feature to get absolute data during relative data calculation
+* update 1.1.0 tag
+* update data-1.1.0 with new traslation data
 '''
