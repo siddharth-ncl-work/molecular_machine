@@ -115,7 +115,7 @@ if read_from=='config.py':
     tasks[task_no]()
     print(f'Task{task_no} Complete.')
 elif read_from=='system_info.csv':
-  system_info_df=pd.read_csv('test_system_info.csv')
+  system_info_df=pd.read_csv('system_info.csv')
   print(system_info_df)
   summary_data={'System':[],'Sub-System':[],'scr':[]}
   for task_no in config.tasks.split('+'):

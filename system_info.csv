@@ -1,5 +1,5 @@
 input_parent_dir_path,input_system_name,input_subsystem_name,input_scr_dir_name,ring_atom_no,track_atom_no,ref_axis_atom1_no,ref_axis_atom2_no,start_frame_no,end_frame_no,frame_no_pos
-/home/vanka/ruchi/molecular_motor,case_1,molecular_rotor.md,scr1,69,82,87,105,0,87548,1
+/home/vanka/ruchi/molecular_motor,case_1,molecular_rotor.md,scr,69,82,88,109,89099,200000,1
 /home/vanka/ruchi/molecular_motor,case_1,molecular_rotor_b3lyp.md,scr,69,82,85,105,0,142856,1
 /home/vanka/ruchi/molecular_motor,case_1,molecular_rotor_b3lyp_withoutcounter_ion.md,merge_src,69,82,88,105,0,62055,1
 /home/vanka/ruchi/molecular_motor,case_1,molecular_rotor_b3lyp_with_solvent.md,scr_1,69,82,88,105,0,19238,1
