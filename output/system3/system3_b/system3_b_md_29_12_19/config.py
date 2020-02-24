@@ -11,6 +11,8 @@ output_parent_dir_path='output'
 
 ring_atom_no=0
 track_atom_no=153
+ref_axis_atom1_no=105
+ref_axis_atom2_no=135
 
 start_frame_no=0
 end_frame_no=156796
@@ -24,7 +26,7 @@ track_range=2
 simulation_time_step=0.5 #in femto
 
 rotation_method='rot_part_atomic_r_t_3'
-translation_method='trans_com'
+translation_method='trans_com_2'
 RKE_method='energy_rot_hybrid_1'
 TKE_method='energy_trans_com'
 axis='x'
