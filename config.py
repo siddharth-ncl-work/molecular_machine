@@ -13,8 +13,8 @@ track_atom_no=153
 ref_axis_atom1_no=75
 ref_axis_atom2_no=98
 
-start_frame_no=40
-end_frame_no=99
+start_frame_no=0
+end_frame_no=1000
 step_size=10
 frame_no_pos=2
 

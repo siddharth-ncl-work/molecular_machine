@@ -29,12 +29,15 @@ def _init(method,system):
     subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
     subprocess.run(['mkdir','ring/translation_without_rotation_test','ring/translation_with_single_axis_rotation_test','ring/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
     subprocess.run(['mkdir','track/translation_without_rotation_test','track/translation_with_single_axis_rotation_test','track/translation_with_random_triple_axis_rotation_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+  else:
+    print(f'{method} does not exist, not creating directories')
   if system=='artificial':
     make_test_systems.ringTrackAtOriginNonIdealArtificial()
     init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30,ref_axis_atom1_no=20,ref_axis_atom2_no=37,frame_no_pos=2)
   elif system=='semi_real':
-    make_test_systems.ringTrackAtOriginSemiReal()
     init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153,ref_axis_atom1_no=75,ref_axis_atom2_no=98,frame_no_pos=2)
+    make_test_systems.ringTrackAtOriginSemiReal()
+    #init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153,ref_axis_atom1_no=75,ref_axis_atom2_no=98,frame_no_pos=2)
   else:
     print(f'system={system} does not exist')
 
@@ -428,14 +431,77 @@ def plot5(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
   if show_plot:
     plt.show()
 
+def assessRotationMethodSingleAxisPoster(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system='',show_plot=True):
+  frame1_no=0
+  frame2_no=1
+  zero_rpy=[0,0,0]
+  theta_range=range(-90,91,step_size)
+  x=theta_range
+  systems=['artificial','semi_real']
+  print(method)
+  for part in parts:
+    for axis in range(3):
+      Y={}
+      for system in systems:
+        _init('custom_single_axis',system)
+        y=[]
+        rpy=[0,0,0]
+        for theta in theta_range:
+          rpy[axis]=theta
+          if part=='ring':
+            if system=='artificial':
+              make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=rpy,track_rpy=zero_rpy)
+            elif system=='semi_real':
+              make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=rpy,track_rpy=zero_rpy)
+          elif part=='track':
+            if system=='artificial':
+              make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=zero_rpy,track_rpy=rpy)
+            elif system=='semi_real':
+              make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=zero_rpy,track_rpy=rpy)
+          if system=='artificial':
+            file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+          elif system=='semi_real':
+            file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+          with open(file_path,'r') as file:
+            _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
+          y.append(_rotation)
+          print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},single_axis,{system}')
+        Y[system]=y
+      plot1Poster(x,Y,method=method,part=part,axis=axis,assessment_type='single_axis',system=system,show_plot=show_plot)
 
+def plot1Poster(x,Y,method='test',part='ring',axis=0,assessment_type='',system='',show_plot=True):
+  if axis==0:
+    axis='x'
+  elif axis==1:
+    axis='y'
+  elif axis==2:
+    axis='z'
+  plt.figure(figsize=(16,8))
+  plt.rcParams.update({'font.size': 15})
+  plt.plot(x,Y['artificial'],'r',label='Artificial',lw=5)
+  plt.plot(x,Y['semi_real'],'g',label='Semi-Real',lw=5)
+  if axis=='x':
+    plt.plot(x,x,'b',label='Expected',lw=5)
+  else:
+    zero=np.zeros(len(x))
+    plt.plot(x,zero,'b',label='Expected',lw=5)
+  title=method.upper()+'('+part+','+axis+','+assessment_type+')'
+  plt.title(title)
+  plt.xlabel(f'{axis} Rotation(D)')
+  plt.ylabel('Predicted/Expected x Rotation (D)')
+  plt.ylim(-100, 100)
+  plt.legend()
+  #plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  if show_plot:
+    plt.show()
 
+'''
 #ROTATION
-system_list=['artificial','semi_real']
+system_list=['semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
 parts=['ring','track']
-show_plot=False
+show_plot=True
 for system in system_list:
   for method in method_list:
     _init(method,system)
@@ -449,13 +515,12 @@ for system in system_list:
     assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 
 
-
 #TRANSLATION
-system_list=['artificial','semi_real']
+system_list=['semi_real']
 method_list=['trans_com_2']
 step_size=0.5
 parts=['ring','track']
-show_plot=False
+show_plot=True
 for system in system_list:
   for method in method_list:
     _init(method,system)
@@ -464,3 +529,6 @@ for system in system_list:
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+'''
+
+assessRotationMethodSingleAxisPoster(method='rot_part_atomic_r_t_3',step_size=5,show_plot=True)
