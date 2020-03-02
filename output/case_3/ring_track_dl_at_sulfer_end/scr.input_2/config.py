@@ -15,7 +15,7 @@ ref_axis_atom1_no=75
 ref_axis_atom2_no=98
 
 start_frame_no=0
-end_frame_no=100
+end_frame_no=752147
 step_size=10
 frame_no_pos=2
 
@@ -37,11 +37,3 @@ ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
 track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153]
 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
-
-'''
-* make code ready for data generation according to new data location
-* add task to get rotation and traslation data simultaneously
-* add feature to get absolute data during relative data calculation
-* update 1.1.0 tag
-* update data-1.1.0 with new traslation data
-'''
