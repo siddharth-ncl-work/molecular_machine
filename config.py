@@ -1,4 +1,4 @@
-__version__='2.0.0'
+__version__='2.1.0'
 
 test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
 
