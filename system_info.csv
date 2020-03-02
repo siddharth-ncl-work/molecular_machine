@@ -1,0 +1,2 @@
+input_parent_dir_path,input_system_name,input_subsystem_name,input_scr_dir_name,ring_atom_no,track_atom_no,ref_axis_atom1_no,ref_axis_atom2_no,start_frame_no,end_frame_no,frame_no_pos
+/home/vanka/ruchi/molecular_motor,case_3,ring_track_dl_nutral_nh,scr_1700_temp,4,104,118,104,0,100000,2

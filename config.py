@@ -1,8 +1,9 @@
-__version__='1.1.0'
+__version__='2.0.0'
 
 test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
 
 #GENERAL PARAMETERS
+<<<<<<< HEAD
 input_parent_dir_path='/home/vanka/ruchi/output_only'
 input_system_name='system3'
 input_subsystem_name='system3_b'
@@ -16,6 +17,21 @@ ref_axis_atom2_no=135
 
 start_frame_no=0
 end_frame_no=156796
+=======
+input_parent_dir_path="/home/vanka/ruchi/molecular_motor"
+input_system_name="case_3"
+input_subsystem_name="ring_track_dl_nutral_nh"
+input_scr_dir_name="scr_1700_temp"
+output_parent_dir_path='output'
+
+ring_atom_no=4
+track_atom_no=104
+ref_axis_atom1_no=118
+ref_axis_atom2_no=104
+
+start_frame_no=0
+end_frame_no=100000
+>>>>>>> data-2.0.0
 step_size=10
 frame_no_pos=2
 
