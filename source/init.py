@@ -166,7 +166,7 @@ def initTask(read_from,row=None):
       data=config_file.readlines()
     output_file.write(''.join(data))
     output_file.write('-'*80+'\n')
-    output_file.write(f'step size = {config.step_size}\n')
+    #output_file.write(f'step size = {config.step_size}\n')
   path_dict={'input_file_path':input_file_path,'output_dir_path':output_dir_path,'output_file_path':output_file_path}
   return path_dict
 

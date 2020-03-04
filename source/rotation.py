@@ -321,6 +321,7 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     trans_axis[2]=ref_axis_atom2_cords[2]-ref_axis_atom1_cords[2]
     nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
+    #print(track_part_atom_list)
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)

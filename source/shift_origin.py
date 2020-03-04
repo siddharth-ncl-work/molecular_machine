@@ -26,7 +26,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
     cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
     new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
-    new_frame2_cords=_shiftOrigin(frame2_cords,cog2)
+    new_frame2_cords=_shiftOrigin(frame2_cords,cog1)
   elif process=='translation':
     com1=physics.getCom(frame1_cords,atom_list=config.ring_atom_no_list)
     com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_no_list)

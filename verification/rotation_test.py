@@ -83,12 +83,12 @@ def rot_atomic_r_t_2(ideal=True):
   _rotation=rotation.rot_atomic_r_t_2(frame1_cords_df,frame2_cords_df,part='ring')
   print(_rotation)
 
-def getRotationTwoFrames(ideal=True,method='rot_atomic_r_t_2'):
-  print(f'ideal = {ideal}\nmethod = {method}')
-  if ideal:
+def getRotationTwoFrames(system='artificial',method='rot_atomic_r_t_2'):
+  print(f'system = {system}\nmethod = {method}')
+  if system=='semi-real':
     file_path='test_systems/ring_track_two_frames_ideal.xyz'
-  else:
-    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+  elif system=='artificial':
+    file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   frame1_no=0
   frame2_no=1
 
@@ -200,9 +200,9 @@ def rot_part_atomic_r_t_3():
   print(f'track rotation ={_rotation}')
 
 #rotateAlongAxis() 
-getOneAtomRPYAngles()
+#getOneAtomRPYAngles()
 #rot_atomic_r_t_2()
-#getRotationTwoFrames(ideal=False,method='rot_atomic_r_t_3')
+getRotationTwoFrames(system='artificial',method='rot_part_atomic_r_t_3')
 #getRotationMultiFrame()
 #getNetRotation()
 #getNearestAtomList()

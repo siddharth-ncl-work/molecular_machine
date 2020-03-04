@@ -1,0 +1,8 @@
+   System                                   Sub-System    Scr Dir  Ring Net Relative Rotaion  Ring Net Relative Translation
+0  case_1                           molecular_rotor.md        scr                -127.212789                   3.830000e-10
+1  case_1                     molecular_rotor_b3lyp.md        scr                 276.162679                  -1.400000e-10
+2  case_1  molecular_rotor_b3lyp_withoutcounter_ion.md  merge_src                 407.583823                  -1.660000e-10
+3  case_1        molecular_rotor_b3lyp_with_solvent.md      scr_1                 -22.179633                   5.940000e-11
+4  case_1        molecular_rotor_b3lyp_with_solvent.md      scr_2                  -7.576278                   4.330000e-11
+5  case_1        molecular_rotor_b3lyp_with_solvent.md      scr_3                 -30.774208                  -2.620000e-11
+6  case_1        molecular_rotor_b3lyp_with_solvent.md        scr                 -47.333147                  -2.420000e-10

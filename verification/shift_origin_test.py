@@ -58,4 +58,4 @@ def _createSystem(frame1_cords_df,frame2_cords_df,output_file_path,part='ring',a
 
 
 #shiftOrigin(process='rotation',system='semi_real')
-shiftOrigin(process='translation',system='semi_real')
+shiftOrigin(process='rotation',part='track',system='artificial')

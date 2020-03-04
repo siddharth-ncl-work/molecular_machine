@@ -1,4 +1,4 @@
-__version__='2.0.0'
+__version__='2.1.0'
 
 test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_12_19.xyz'
 
@@ -15,14 +15,14 @@ ref_axis_atom1_no=118
 ref_axis_atom2_no=104
 
 start_frame_no=0
-end_frame_no=100000
+end_frame_no=100
 step_size=10
 frame_no_pos=2
 
-tasks='2'
+tasks='5'
 
 #INTERNAL PARAMETERS
-track_range=2
+track_range=20
 simulation_time_step=0.5 #in femto
 
 rotation_method='rot_part_atomic_r_t_3'

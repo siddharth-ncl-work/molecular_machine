@@ -6,6 +6,7 @@ sys.path.append('..')
 
 import config
 from lib.io_chem import io
+from lib.basic_operations import vector,physics
 from source import rotation,translation,init,shift_origin
 from helper_functions import createSystem,getRingDf,getTrackDf
 
@@ -80,6 +81,10 @@ def ringTrackAtOriginNonIdealArtificial():
   atom_list[:total_ring_atoms//2]=['Si']*(total_ring_atoms//2)
   atom_list[-total_track_atoms//2:]=['s']*(total_track_atoms//2)
   createSystem(cords_list,atom_list,file_path,add_axes=False)
+  
+  frame1_cords=io.readFile(file_path)
+  shifted_cords_df,_=shift_origin.shiftOrigin(frame1_cords,frame1_cords,process='rotation')
+  io.writeFile(file_path,shifted_cords_df)
 
 def ringTrackTwoFramesIdealArtificial():
   output_file_path='test_systems/ring_track_two_frames_ideal_artificial_system.xyz'
@@ -118,15 +123,16 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[10,0,0],track_rpy=[20,0,0],ring_translation=0,track_translation=0):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[20,0,0],ring_translation=0,track_translation=0):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
   z=[0,0,1]
-
+  
   input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
   frame1_initial_cords_df=input_system_cords_df.copy()
+ 
   #ring
   frame1_ring_cords_df=frame1_initial_cords_df[frame1_initial_cords_df['atom_no'].isin(config.ring_atom_no_list)]
   df=rotation.rotateAlongAxis(frame1_ring_cords_df,x,math.radians(ring_rpy[0]))
@@ -382,9 +388,10 @@ if __name__=='__main__':
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   #ringTrackMultiFrameIdealArtificial()
-
+  
   ringTrackAtOriginSemiReal()
   init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153)
   ringTrackTwoFramesSemiReal()
+  
   #ringTrackMultiFrameSemiReal()
-  ringTrackMultiFrameOscillatingSemiReal()
+  #ringTrackMultiFrameOscillatingSemiReal()

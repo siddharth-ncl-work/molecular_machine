@@ -2,6 +2,7 @@ import sys
 import os
 import subprocess
 from datetime import datetime
+import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
@@ -24,9 +25,10 @@ def task0():
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
   y=rotation_data['rotation']
-  title='Ring Net Relative Rotation'+f'({config.input_system_name,config.input_subsystem_name})'
+  title='Ring Net Relative Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Frame number'
   ylabel='rotation (degrees)'
-  plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
   print(f'Ring Net Relative Rotaion = {ring_net_relative_rotation} degrees')  
   return ring_net_relative_rotation
 
@@ -53,14 +55,16 @@ def task1():
   pd.DataFrame.from_dict(TKE_data).to_csv(TKE_data_file_path,index=False)
   x=RKE_data['frame_no']
   y=RKE_data['RKE']
-  title='Ring Average Relative RKE'+f'({config.input_system_name,config.input_subsystem_name})'
+  title='Ring Average Relative RKE'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Frame number'
   ylabel='average RKE (J)'
-  plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
   x=TKE_data['frame_no']
   y=TKE_data['TKE']
   title='Ring Average Relative TKE'
+  xlabel='Frame number'
   ylabel='average TKE (J)'
-  plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
   print(f'Efficiency = {efficiency} %')
 
 def task2():
@@ -69,7 +73,6 @@ def task2():
   '''
   with open(input_file_path,'r') as input_file:
     ring_net_relative_translation,translation_data=translation.getNetTranslation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='relative',method=config.translation_method)
-  input_file.close()
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK2 COMPLETE\n')
     output_file.write(f'Ring Net Relative Translation = {ring_net_relative_translation} m\n')
@@ -78,18 +81,74 @@ def task2():
   pd.DataFrame.from_dict(translation_data).to_csv(translation_data_file_path,index=False)
   x=translation_data['frame_no']
   y=translation_data['translation']
-  title='Ring Net Relative Translation'+f'({config.input_system_name,config.input_subsystem_name})'
+  title='Ring Net Relative Translation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Frame number'
   ylabel='translation (m)'
-  plot(x,y,output_dir_path=output_dir_path,title=title,ylabel=ylabel)
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
   print(f'Ring Net Relative Translation = {ring_net_relative_translation} m')
   return ring_net_relative_translation
 
-def plot(x,y,output_dir_path='',title='',ylabel=''):
+def task3():
+  '''
+  Rotational Directionality: Direct Relative Rotation of the ring between two frames/time steps
+  '''
+  with open(input_file_path,'r') as input_file:
+    ring_relative_rotation=rotation.getRotation(input_file,config.start_frame_no,config.end_frame_no,part1='ring',part2='track',type='relative',method=config.rotation_method)
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK3 COMPLETE\n')
+    output_file.write(f'Ring Relative Rotaion = {ring_relative_rotation} degrees\n')
+    output_file.write('-'*80+'\n\n')
+  print(f'Ring Relative Rotaion = {ring_relative_rotation} degrees')
+  return ring_relative_rotation
+
+def task4():
+  '''
+  Translational Directionality: Direct Relative Translation of the ring between two frames/time steps
+  '''
+  with open(input_file_path,'r') as input_file:
+    ring_relative_translation=translation.getTranslation(input_file,config.start_frame_no,config.end_frame_no,part1='ring',part2='track',type='relative',method=config.translation_method)
+  input_file.close()
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK4 COMPLETE\n')
+    output_file.write(f'Ring Relative Translation = {ring_relative_translation} m\n')
+    output_file.write('-'*80+'\n\n')
+  print(f'Ring Relative Translation = {ring_relative_translation} m')
+  return ring_relative_translation
+
+def task5():
+  '''
+  Robustness Test wrt 'step_size' parameter: Ring Net Relative Rotation Vs step_size 
+  '''
+  data={'step_size':[],'Ring_Net_Relative_Rotation':[]}
+  step_size_list=[1,2,5,8,10,15,20,30,40,50,100]
+  end_frame_no=min(config.start_frame_no+100000,config.end_frame_no)
+  for step_size in step_size_list:
+    with open(input_file_path,'r') as input_file:
+      ring_net_relative_rotation,_=rotation.getNetRotation(input_file,config.start_frame_no,end_frame_no,step_size=step_size,part1='ring',part2='track',type='relative',method=config.rotation_method)
+    data['step_size'].append(step_size)
+    data['Ring_Net_Relative_Rotation'].append(ring_net_relative_rotation)
+  average_ring_net_relative_rotation=np.mean(data['Ring_Net_Relative_Rotation'])
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK5 COMPLETE\n')
+    output_file.write(f'<Ring Net Relative Rotation> = {average_ring_net_relative_rotation} D\n')
+    output_file.write('-'*80+'\n\n')
+  data_file_path=os.path.join(output_dir_path,'ring_net_relative_rotation_vs_step_size_data.csv')
+  pd.DataFrame.from_dict(data).to_csv(data_file_path,index=False)
+  x=data['step_size']
+  y=data['Ring_Net_Relative_Rotation']
+  title='Ring_Net_Relative_Rotation_vs_Step_size'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Step size'
+  ylabel='Ring Net Relative Rotation (D)'
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
+  print(f'<Ring Net Relative Rotation> = {average_ring_net_relative_rotation} D')
+  return average_ring_net_relative_rotation
+
+def plot(x,y,output_dir_path='',title='',xlabel='',ylabel=''):
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.plot(x,y)
+  plt.scatter(x,y)
   plt.title(title)
-  plt.xlabel('Frame number')
+  plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   #plt.ylim(-360, 360)
   #plt.xlim(0,10)
@@ -98,8 +157,13 @@ def plot(x,y,output_dir_path='',title='',ylabel=''):
    plt.show()
 
 
-tasks={'0':task0,'1':task1,'2':task2}
-task_name={'0':'Ring Net Relative Rotation','1':'Ring Average Relative TKE','2':'Ring Net Relative Translation'}
+tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5}
+task_name={'0':'Ring_Net_Relative_Rotation',
+	   '1':'Ring_Average_Relative_TKE',
+           '2':'Ring_Net_Relative_Translation',
+           '3':'Ring_Net_Relative_Rotation',
+           '4':'Ring_Relative_Translation',
+           '5':'Ring_Net_Relative_Rotation_vs_Step_size'}
 
 read_from='system_info.csv'
 
@@ -117,7 +181,7 @@ if read_from=='config.py':
 elif read_from=='system_info.csv':
   system_info_df=pd.read_csv('system_info.csv')
   print(system_info_df)
-  summary_data={'System':[],'Sub-System':[],'scr':[]}
+  summary_data={'System':[],'Sub_System':[],'scr':[],'Start_Frame_No':[],'End_Frame_No':[]}
   for task_no in config.tasks.split('+'):
     summary_data[task_name[task_no]]=[]
   for i,row in system_info_df.iterrows():
@@ -128,8 +192,10 @@ elif read_from=='system_info.csv':
     print(f'ring_atom_no_list={config.ring_atom_no_list}')
     print(f'track_atom_no_list={config.track_atom_no_list}')
     summary_data['System'].append(config.input_system_name)
-    summary_data['Sub-System'].append(config.input_subsystem_name)
+    summary_data['Sub_System'].append(config.input_subsystem_name)
     summary_data['scr'].append(config.input_scr_dir_name)
+    summary_data['Start_Frame_No'].append(config.start_frame_no)
+    summary_data['End_Frame_No'].append(config.end_frame_no)
     for task_no in config.tasks.split('+'):
       print(f'Running Task{task_no}....')
       value=tasks[task_no]()
@@ -137,4 +203,7 @@ elif read_from=='system_info.csv':
       summary_data[task_name[task_no]].append(value)
   summary_data_df=pd.DataFrame.from_dict(summary_data)
   print(summary_data_df)
-  summary_data_df.to_csv(config.output_parent_dir_path+'/summary_data.csv',index=False)
+  with open(config.output_parent_dir_path+'/summary_data.csv','a') as summary_file:
+    summary_file.write(str(datetime.today())+'\n\n')
+    summary_data_df.to_csv(summary_file,mode='a') 
+    summary_file.write('#'*80+'\n')
