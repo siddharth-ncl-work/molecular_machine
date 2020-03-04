@@ -39,7 +39,7 @@ track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-MAJOR DESIGN UPDATE:
-
-* From now onwards there will not be separate 'verification' branch. Verification will be done in the 'data' branch along with the data generation. Because, verification is kinda data generation.
+FUTURE TASKS:
+ 1. no need to worry about circular track, david look like straight track for most of the time-steps
+ 2. think about how to get correct 'only ring and track' rotation values
 '''
