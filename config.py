@@ -39,11 +39,7 @@ track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-* add coneAssessment method in assessment_of_methods.py 
-  coneAssessment: shows out-of-plane contributions to x-axis rotation due to rotation along one of the y- or z-axis.This behaviour was expected before but never seen during verification. when Atom moves on the surface of the cone, it contribute to the x-axis rotation. Track has a lot of this kind of atoms
+MAJOR DESIGN UPDATE:
 
-* add task3,task4 and task5:
-  task3: Rotational Directionality: Direct Relative Rotation of the ring between two frames/time steps
-  task4: Translational Directionality: Direct Relative Translation of the ring between two frames/time steps
-  task5: Robustness Test wrt 'step_size' parameter: Ring Net Relative Rotation Vs step_size
+* From now onwards there will not be separate 'verification' branch. Verification will be done in the 'data' branch along with the data generation. Because, verification is kinda data generation.
 '''
