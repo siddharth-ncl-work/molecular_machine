@@ -39,16 +39,9 @@ track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 
 '''
-* update energy.py to return rotation and traslation data along with energy data
-* no need to run task0 and task2 separately because task1 can provide values given by task0 and task2
-* following values and data is returned by task1
-  1. Rotational Directionality: Net Relative Rotation of the ring between two frames/time steps
-  2. Translational Directionality: Net Relative Translation of the ring between two frames/time steps
-  3. Efficiency = avg_RKE/(avg_RKE+avg_TKE)
-  4. Average RKE: Average Relative Rotational Kinetic Energy of the ring between two frames/time steps
-  5. Average TKE: Average Relative Translation Kinetic Energy of the ring between two frames/time steps
-* update task5
-* add task6: Robustness Test wrt 'track_range' parameter: Ring Net Relative Rotation Vs track_range 
+NOTE COMMIT(MAJOR UPDATE):
+* version=3.0.0
+* updating shiftOrigin,rotation and traslation methods
 
 FUTURE TASKS:
  1. update shiftOrigin to fix sign of the rotation angle: this can potential remove the need for reference axis, it may provide correct rotation values for 'only ring and track'

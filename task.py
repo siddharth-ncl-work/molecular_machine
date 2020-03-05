@@ -194,7 +194,7 @@ def task6():
     with open(f'{config.code_dir_path}/config.py','w') as file:
       file.write(''.join(data))
     importlib.reload(config)
-    print(config.step_size)
+    print(config.track_range)
     with open(input_file_path,'r') as input_file:
       ring_net_relative_rotation,_=rotation.getNetRotation(input_file,config.start_frame_no,end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='relative',method=config.rotation_method)
     data['track_range'].append(track_range)
