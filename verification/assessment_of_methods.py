@@ -500,8 +500,8 @@ def plot1Poster(x,Y,method='test',part='ring',axis=0,assessment_type='',system='
 def coneAssessment():
   x=[]
   Y=[]
-  initial_cords_list=[[1.014267, -0.332612, -0.332612],[1.984436,  0.394977,  0.394977]]
-  axis=2
+  initial_cords_list=[[1.0,  0.353553,  0.353553],[2.0, -0.353553, -0.353553]]
+  axis=1
   _axis=[0,0,0]
   _axis[axis]=1
   step_size=1
@@ -550,15 +550,15 @@ def plotConeAssessment(x,y,method='test',part='ring',axis=0,assessment_type='',s
 
 
 #ROTATION
-system_list=['artificial','semi_real']
+system_list=['artificial']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
-parts=['ring','track']
+parts=['track']
 show_plot=True
 for system in system_list:
   for method in method_list:
     _init(method,system)
-    assessRotationMethodSingleAxis(method=method,step_size=step_size,system=system,show_plot=show_plot)
+    assessRotationMethodSingleAxis(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
@@ -570,7 +570,7 @@ for system in system_list:
 '''
 #TRANSLATION
 system_list=['semi_real']
-method_list=['trans_com_2']
+method_list=['trans_com_1']
 step_size=0.5
 parts=['ring','track']
 show_plot=True
