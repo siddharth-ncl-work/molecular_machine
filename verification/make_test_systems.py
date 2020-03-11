@@ -159,7 +159,7 @@ def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,60,0],track_rpy=[0,60,0],ri
   frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,track_translation)
   #frame2
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
-  '''
+  
   #transform both frames 
   axis=[-10.2,-42,-6]
   theta=60.5
@@ -168,7 +168,7 @@ def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,60,0],track_rpy=[0,60,0],ri
   frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
   frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)
   frame2_final_cords_df=translation.translateAlongAxis(frame2_final_cords_df,axis,distance)
-  '''
+  
   output_file=open(output_file_path,'w')
   io.writeFileMd(output_file,frame1_initial_cords_df,0,frame_no_pos=config.frame_no_pos)
   io.writeFileMd(output_file,frame2_initial_cords_df,1,frame_no_pos=config.frame_no_pos)

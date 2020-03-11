@@ -42,13 +42,13 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     ax=[0,1,0]
   elif config.axis=='z':
     ax=[0,0,1]
-  if not isZero(trans_axis):
-    axis=vector.getCrossProduct(trans_axis,ax)
-    theta=vector.getAngleR(trans_axis,ax)
-    new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
-    new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
+  assert not isZero(trans_axis),'COG1 == COG2, cannont determine rotation axis'
+  axis=vector.getCrossProduct(trans_axis,ax)
+  theta=vector.getAngleR(trans_axis,ax)
+  new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
+  new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
-  #WHOLE FRAME
+  #REFERENCE AXIS ALINGMENT
   whole_frame_cog=physics.getCog(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
