@@ -30,6 +30,8 @@ def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolu
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
+  print(physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list))
+  print(physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list))
   return _getRotation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
 
 def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
@@ -322,6 +324,7 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     trans_axis[2]=cog2[2]-cog1[2] 
     nearest_atom_list=getNearestAtomList(frame1_cords,cog1,trans_axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
+    print(config.track_range)
     print(track_part_atom_list)
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
   else:
@@ -446,6 +449,7 @@ def findCoplanarAtoms(df):
 
 def getNearestAtomList(df,point,direction,distance):
   atom_list=[]
+  assert not isZero(direction),'ERROR: Reference direction is zero'
   direction=vector.getUnitVec(direction)
   for index,row in df.iterrows():
     p=[0,0,0]

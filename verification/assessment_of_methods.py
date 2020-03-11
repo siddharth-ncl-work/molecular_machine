@@ -500,11 +500,11 @@ def plot1Poster(x,Y,method='test',part='ring',axis=0,assessment_type='',system='
 def coneAssessment():
   x=[]
   Y=[]
-  initial_cords_list=[[1.0,  0.353553,  0.353553],[2.0, -0.353553, -0.353553]]
+  initial_cords_list=[[1.0, -0.5,  0],[2.0,  0.5, 0]]#[[1.0,  0.353553,  0.353553],[2.0, -0.353553, -0.353553]]
   axis=1
   _axis=[0,0,0]
   _axis[axis]=1
-  step_size=1
+  step_size=5
   theta_range=range(-90,90,step_size)
   x=theta_range
   for initial_cords in initial_cords_list:
@@ -521,6 +521,7 @@ def coneAssessment():
       y.append(_rotation[0])
     Y.append(y)
   y=np.mean(np.array(Y),axis=0)
+  print(y)
   plotConeAssessment(x,y,axis=axis)
 
 def plotConeAssessment(x,y,method='test',part='ring',axis=0,assessment_type='',system='',show_plot=True):
@@ -547,7 +548,6 @@ def plotConeAssessment(x,y,method='test',part='ring',axis=0,assessment_type='',s
   #plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   if show_plot:
     plt.show()
-
 
 #ROTATION
 system_list=['artificial']
@@ -584,7 +584,7 @@ for system in system_list:
     assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 '''
 
-#coneAssessment()
+coneAssessment()
 #_init('rot_part_atomic_r_t_3','artificial')
 #assessRotationMethodSingleAxis(method='rot_part_atomic_r_t_3',step_size=5,system='artificial',parts=['track'],show_plot=True)
 #assessRotationMethodSingleAxisPoster(method='rot_part_atomic_r_t_3',step_size=5,show_plot=True)

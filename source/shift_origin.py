@@ -25,7 +25,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     trans_axis[1]=cog2[1]-cog1[1]
     trans_axis[2]=cog2[2]-cog1[2]
     new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
-    new_frame2_cords=_shiftOrigin(frame2_cords,cog1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,cog2)
   elif process=='translation':
     com1=physics.getCom(frame1_cords,atom_list=config.ring_atom_no_list)
     com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_list)
@@ -48,6 +48,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
     new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
+  #WHOLE FRAME
   whole_frame_cog=physics.getCog(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
@@ -58,9 +59,10 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
   elif config.axis=='z':
     ref_axis=[1,1,0]
     whole_frame_cog[2]=0
-  axis=vector.getCrossProduct(whole_frame_cog,ref_axis)
+  axis=vector.getUnitVec(vector.getCrossProduct(whole_frame_cog,ref_axis))
+  print(f'axis={axis}')
   theta=vector.getAngleR(whole_frame_cog,ref_axis)
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
-
+  
   return (new_frame1_cords,new_frame2_cords)

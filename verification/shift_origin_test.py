@@ -50,12 +50,15 @@ def _createSystem(frame1_cords_df,frame2_cords_df,output_file_path,part='ring',a
   atom_list=[]
   cords_list.extend(frame1_part_cords_df[['x','y','z']].values)
   cords_list.extend(frame2_part_cords_df[['x','y','z']].values)
-  cords_list.extend([frame1_ring_com,frame2_ring_com,frame1_ring_cog,frame2_ring_cog])
+  cords_list.extend([frame1_ring_cog,frame2_ring_cog])
   atom_list.extend(frame1_part_cords_df['atom'].values)
   atom_list.extend(frame2_part_cords_df['atom'].values)
-  atom_list.extend(['b','b','n','n'])
+  atom_list.extend(['b','b'])
+  if False:
+    cords_list.extend([frame1_ring_com,frame2_ring_com])
+    atom_list.extend(['n','n'])
   createSystem(cords_list,atom_list,output_file_path,add_axes=True)
 
 
 #shiftOrigin(process='rotation',system='semi_real')
-shiftOrigin(process='rotation',part='track',system='artificial')
+shiftOrigin(process='rotation',part='whole',system='artificial')
