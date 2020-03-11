@@ -34,6 +34,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
     trans_axis[2]=com2[2]-com1[2]
     new_frame1_cords=_shiftOrigin(frame1_cords,com1)
     new_frame2_cords=_shiftOrigin(frame2_cords,com1)
+  print(sign)
   for i in range(3):
     trans_axis[i]*=sign
   if config.axis=='x':
@@ -49,17 +50,17 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation'):
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
   
   #REFERENCE AXIS ALINGMENT
-  whole_frame_cog=physics.getCog(new_frame1_cords) 
+  whole_frame_com=physics.getCom(new_frame1_cords) 
   if config.axis=='x':
     ref_axis=[0,1,1]
-    whole_frame_cog[0]=0
+    whole_frame_com[0]=0
   elif config.axis=='y':
     ref_axis=[1,0,1]
-    whole_frame_cog[1]=0
+    whole_frame_com[1]=0
   elif config.axis=='z':
     ref_axis=[1,1,0]
-    whole_frame_cog[2]=0
-  axis=vector.getUnitVec(vector.getCrossProduct(whole_frame_cog,ref_axis))
+    whole_frame_com[2]=0
+  axis=vector.getUnitVec(vector.getCrossProduct(whole_frame_com,ref_axis))
   print(f'axis={axis}')
   theta=vector.getAngleR(whole_frame_cog,ref_axis)
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
