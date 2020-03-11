@@ -135,7 +135,7 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,60,0],track_rpy=[0,60,0],ring_translation=2,track_translation=2):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ring_translation=-2,track_translation=0):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
