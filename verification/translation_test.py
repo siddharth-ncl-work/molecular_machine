@@ -92,7 +92,7 @@ def trans_com(system='artificial'):
   file.close()
   print(_translation)
 
-def getTranslationTwoFrames(system='artificial'):
+def getTranslationTwoFrames(method='trans_com',system='artificial'):
   print(system)
   if system=='artificial':
     file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
@@ -104,17 +104,17 @@ def getTranslationTwoFrames(system='artificial'):
   frame2_no=1
 
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method=method)
   file.close()
   print(f'Ring Absolute Translation = {_translation}')
 
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method='trans_com')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='track',part2='track',type='absolute',method=method)
   file.close()
   print(f'Track Absolute Translation = {_translation}')
 
   file=open(file_path,'r')
-  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method='trans_com')
+  _translation=translation.getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='relative',method=method)
   file.close()
   print(f'Ring Relative Translation = {_translation}')
 
@@ -174,7 +174,7 @@ def getNetTranslation(system='artificial'):
   print(f'Net ring translation = {net_ring_translation}')
   print(data)
 
-
+'''
 #translateAlongAxis()
 #getAtomicDisplacement()
 #trans_atomic_r_t()
@@ -186,4 +186,5 @@ getTranslationTwoFrames(system='semi_real')
 #getNetTranslation(system='artificial')
 getTranslationMultiFrame(system='semi_real')
 getNetTranslation(system='semi_real')
-
+'''
+getTranslationTwoFrames(method=config.translation_method,system='semi_real')

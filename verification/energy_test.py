@@ -19,7 +19,7 @@ def get_dist_pt_line():
   #0.8165 Angs
   print(vector.get_dist_pt_line(pt_cords,[1,1,1]))
 
-def getMI():
+def getMI(rot_axis='x'):
   #Single Atom
   atom_cords=[3,4,0]
   atom_type='c'
@@ -32,27 +32,27 @@ def getMI():
   print(physics.getMI(atom_cords,atom_type,[1,1,1]))  
 
   #Whole system
-  #
-  if config.axis=='x':
+  if rot_axis=='x':
     axis=[1,0,0]
-  elif config.axis=='y':
+  elif rot_axis=='y':
     axis=[0,1,0]
-  elif config.axis=='z':
+  elif rot_axis=='z':
     axis=[0,0,1]
   frame1_no=0
   frame2_no=1
-  file=open('test_systems/ring_track_two_frames_non_ideal.xyz','r')
+  file=open('test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz','r')
   frame1_initial_cords_df=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_initial_cords_df=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  frame1_final_cords_df,frame2_final_cords_df=shift_origin.shiftOrigin(frame1_initial_cords_df,frame2_initial_cords_df)
+  frame1_final_cords_df,frame2_final_cords_df=shift_origin.shiftOrigin(frame1_initial_cords_df,frame2_initial_cords_df,process='rotation')
   #frame1
   #ring = 1.46E-43 kg.m2
   #track = 1.65-45 kg.m2
+  #MI_artificial={'ring':[1.66465125e-43,8.32325625e-44,8.323256249999998e-44],'track':[1.597027387500013e-45,8.831999703266061e-43,8.835985561608938e-43]}
   for part in ['ring','track']:
     if part=='ring':
-      atom_no_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+      atom_no_list=config.ring_atom_no_list
     if part=='track':
-      atom_no_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+      atom_no_list=config.track_atom_no_list
     cords_list=[]
     mass_list=[]
     for atom_no in atom_no_list:
@@ -66,11 +66,12 @@ def getMI():
   #frame2
   #ring = 1.46E-43 kg.m2
   #track = 1.65-45 kg.m2
+  #MI_artificial={'ring':[1.66465125e-43,8.32325625e-44,8.323256249999998e-44],'track':[1.597027387500013e-45,8.831999703266061e-43,8.835985561608938e-43]}
   for part in ['ring','track']:
     if part=='ring':
-      atom_no_list=range(config.ring_start_atom_no,config.ring_end_atom_no+1)
+      atom_no_list=config.ring_atom_no_list
     if part=='track':
-      atom_no_list=range(config.track_start_atom_no,config.track_end_atom_no+1)
+      atom_no_list=config.track_atom_no_list
     cords_list=[]
     mass_list=[]
     for atom_no in atom_no_list:
@@ -81,7 +82,6 @@ def getMI():
       cords_list.append(atom_cords)
     MI=physics._getMI(cords_list,mass_list,axis)
     print(f'{part} MI = {MI}')
-
 
 #RKE
 def getRKETwoFrames(ideal=False,method='energy_rot_hybrid_1'):
@@ -238,12 +238,12 @@ def getAvgTKE(ideal=True,method='energy_trans_com'):
   print(data)
 
 #get_dist_pt_line()
-#getMI()
+getMI()
 #getRKETwoFrames()
 #getRKEMultiFrame()
-getAvgRKE()
+#getAvgRKE()
 
 #getTKETwoFrames()
 #getTKEMultiFrame()
-getAvgTKE()
+#getAvgTKE()
 

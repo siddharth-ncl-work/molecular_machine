@@ -20,6 +20,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation',ref_axis_alignment=
   com1=physics.getCom(frame1_cords,atom_list=config.ring_atom_no_list)
   com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_no_list)
   sign= 1 if com2[0]-com1[0]>=0 else -1
+  #print(sign)
   if process=='rotation':
     cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
     cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
@@ -29,13 +30,32 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation',ref_axis_alignment=
     new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
     new_frame2_cords=_shiftOrigin(frame2_cords,cog2)
   elif process=='translation':
+    cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
+    cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
+    trans_axis[0]=cog2[0]-cog1[0]
+    trans_axis[1]=cog2[1]-cog1[1]
+    trans_axis[2]=cog2[2]-cog1[2]
+    new_frame1_cords=_shiftOrigin(frame1_cords,cog1)
+    new_frame2_cords=_shiftOrigin(frame2_cords,cog1)
+    '''
     com1=physics.getCom(frame1_cords,atom_list=config.ring_atom_no_list)
-    com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_list)
+    com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_no_list)
     trans_axis[0]=com2[0]-com1[0]
     trans_axis[1]=com2[1]-com1[1]
     trans_axis[2]=com2[2]-com1[2]
     new_frame1_cords=_shiftOrigin(frame1_cords,com1)
     new_frame2_cords=_shiftOrigin(frame2_cords,com1)
+    '''
+  if isZero(trans_axis):
+    print('COG1/COM1 == COG2/COM2, cannont determine rotation axis')
+    print('Changing rotation/translation axis')
+    com1=physics.getCom(frame1_cords,atom_list=config.track_atom_no_list)
+    com2=physics.getCom(frame2_cords,atom_list=config.track_atom_no_list)
+    trans_axis[0]=com2[0]-com1[0]
+    trans_axis[1]=com2[1]-com1[1]
+    trans_axis[2]=com2[2]-com1[2]
+  sign= 1 if com2[0]-com1[0]>=0 else -1
+ 
   for i in range(3):
     trans_axis[i]*=sign
   if config.axis=='x':
@@ -44,12 +64,12 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation',ref_axis_alignment=
     ax=[0,1,0]
   elif config.axis=='z':
     ax=[0,0,1]
-  assert not isZero(trans_axis),'COG1 == COG2, cannont determine rotation axis'
   axis=vector.getCrossProduct(trans_axis,ax)
   theta=vector.getAngleR(trans_axis,ax)
   new_frame1_cords=physics.rotateAlongAxis(new_frame1_cords,axis,theta)
   new_frame2_cords=physics.rotateAlongAxis(new_frame2_cords,axis,theta)
-  
+
+
   #REFERENCE AXIS ALIGNMENT
   if ref_axis_alignment:
     whole_frame_com=physics.getCom(new_frame1_cords) 

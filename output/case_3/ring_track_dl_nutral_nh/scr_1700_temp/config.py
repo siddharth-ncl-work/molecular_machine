@@ -15,18 +15,18 @@ ref_axis_atom1_no=118
 ref_axis_atom2_no=104
 
 start_frame_no=0
-end_frame_no=100
+end_frame_no=2000
 step_size=1
 frame_no_pos=2
 
-tasks='1'
+tasks='3+0+2+4'
 
 #INTERNAL PARAMETERS
 track_range=2
 simulation_time_step=0.5 #in femto
 
 rotation_method='rot_part_atomic_r_t_3'
-translation_method='trans_com_1'
+translation_method='trans_com_3'
 RKE_method='energy_rot_part_atomic_r_t_3'
 TKE_method='energy_trans_com_2'
 axis='x'

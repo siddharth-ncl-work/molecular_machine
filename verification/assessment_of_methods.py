@@ -8,9 +8,9 @@ import sys
 sys.path.extend(['.','..'])
 import subprocess
 
-from source import rotation,init,translation,shift_origin
+from source import rotation,init,translation,shift_origin,energy
 from lib.io_chem import io
-from lib.basic_operations import physics
+from lib.basic_operations import physics,constants
 import make_test_systems
 import config
 
@@ -292,6 +292,7 @@ def plot3(X,Y,Z_expected,Z_predicted,method='rot_atomic_r_t',part='',rotation_ax
   if show_plot:
     plt.show()
 
+#TRANSLATION
 def assessTranslationMethodWithoutRotation(method='',step_size=10,parts=['ring','track'],system='',show_plot=True):
   distance_range=np.arange(-10,11,step_size)
   frame1_no=0
@@ -584,6 +585,79 @@ def plotConeAssessment(x,y,method='',part='ring',axis=0,assessment_type='',syste
   if show_plot:
     plt.show()
 
+#ENERGY
+def assessRKEMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system='',show_plot=True):
+  frame1_no=0
+  frame2_no=1
+  zero_rpy=[0,0,0]
+  theta_range=range(-90,91,step_size)
+  x=theta_range
+  for part in parts:
+    for axis in range(3):
+      rpy=[0,0,0]
+      y_predicted=[]
+      y_expected=[]
+      for theta in theta_range:
+        rpy[axis]=theta
+        if part=='ring':
+          if system=='artificial':
+            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=rpy,track_rpy=zero_rpy)
+          elif system=='semi_real':
+            make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=rpy,track_rpy=zero_rpy)
+        elif part=='track':
+          if system=='artificial':
+            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=zero_rpy,track_rpy=rpy)
+          elif system=='semi_real':
+            make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=zero_rpy,track_rpy=rpy)
+        if system=='artificial':
+          file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+        elif system=='semi_real':
+          file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+        with open(file_path,'r') as file:
+          predicted_rke,_=energy.getRKE(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
+        y_predicted.append(predicted_rke)
+        expected_rke=getExpectedRKE(system=system,part=part,axis=axis,_rotation=theta)
+        y_expected.append(expected_rke)
+        print(f'{rpy},{part} Absolute RKE = {predicted_rke},{method},single_axis,{system}')
+      plotRKE(x,y_predicted,y_expected,method=method,part=part,axis=axis,assessment_type='RKE_single_axis',system=system,show_plot=show_plot)
+
+def getExpectedRKE(system='',part='',axis='',_rotation=0):
+  MI_artificial={'ring':[1.66465125e-43,8.32325625e-44,8.323256249999998e-44],'track':[1.597027387500013e-45,8.831999703266061e-43,8.835985561608938e-43]}
+  MI_semi_real={}
+  MI=0
+  if system=='artificial':
+    MI=MI_artificial[part][axis]
+  elif system=='semi_real':
+    MI=MI_semi_real[part][axis]
+  omega=math.radians(_rotation)/(config.simulation_time_step*constants.femto)
+  expected_rke=0.5*MI*omega**2
+  return expected_rke
+
+def plotRKE(x,y_predicted,y_expected,method='',part='',axis='',assessment_type='',system='',show_plot=True):
+  print(len(x))
+  print(len(y_predicted))
+  print(len(y_expected))
+  if axis==0:
+    axis='x'
+  elif axis==1:
+    axis='y'
+  elif axis==2:
+    axis='z'
+  plt.figure(figsize=(16,8))
+  plt.rcParams.update({'font.size': 15})
+  plt.plot(x,y_expected,'b',label='expected',lw=5)
+  plt.plot(x,y_predicted,'r',label='predicted')
+  title=method.upper()+'('+part+','+axis+','+assessment_type+','+system+')'
+  plt.title(title)
+  plt.xlabel(f'{axis} Rotation(deg)')
+  plt.ylabel('Predicted/Expected RKE (D)')
+  #plt.ylim(-100, 100)
+  plt.legend()
+  #plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  if show_plot:
+    plt.show()
+
+'''
 #ROTATION
 system_list=['semi_real']
 method_list=['rot_part_atomic_r_t_3']
@@ -605,10 +679,11 @@ for system in system_list:
     #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 
-'''
+
+
 #TRANSLATION
 system_list=['semi_real']
-method_list=['trans_com_1']
+method_list=['trans_com_3']
 step_size=0.5
 parts=['ring','track']
 show_plot=True
@@ -621,6 +696,8 @@ for system in system_list:
     assessTranslationMethodSingleAxis3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 '''
+
+assessRKEMethodSingleAxis(method='energy_rot_part_atomic_r_t_3',system='artificial',parts=['ring','track'],step_size=5,show_plot=True)
 
 #coneAssessment()
 #_init('rot_part_atomic_r_t_3','artificial')

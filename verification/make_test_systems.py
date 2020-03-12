@@ -135,7 +135,7 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ring_translation=0,track_translation=0):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translation=-2,track_translation=0):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -259,7 +259,7 @@ def ringMultiFrameArtificial():
 def ringTrackAtOriginSemiReal():
   file_path='test_systems/ring_track_at_origin_semi_real_system.xyz'
   frame1_no=0
-  frame2_no=10
+  frame2_no=100
 
   with open(config.test_file_path,'r') as file:
     frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
@@ -267,7 +267,7 @@ def ringTrackAtOriginSemiReal():
   frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   io.writeFile(file_path,frame1_cords)
 
-def ringTrackTwoFramesSemiReal(ring_rpy=[60,0,0],track_rpy=[0,0,0],ring_translation=2,track_translation=0):
+def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translation=1,track_translation=2):
   output_file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -436,10 +436,10 @@ if __name__=='__main__':
   
   #ringTrackMultiFrameIdealArtificial()
   #ringMultiFrameArtificial()
-  
+  '''
   ringTrackAtOriginSemiReal()
   init.initConfig(config.test_file_path,ring_atom_no=0,track_atom_no=153)
   ringTrackTwoFramesSemiReal()
-  
+  '''
   #ringTrackMultiFrameSemiReal()
   #ringTrackMultiFrameOscillatingSemiReal()

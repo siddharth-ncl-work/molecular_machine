@@ -39,6 +39,8 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
       translation=trans_com_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='trans_com_2':
       translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
+    elif method=='trans_com_3':
+      translation=trans_com_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
     elif method=='trans_atomic_t_r':
       print('to be implemented')
     else:
@@ -55,6 +57,10 @@ def _getTranslation(frame1_cords,frame2_cords,part1='ring',part2='track',type='a
     elif method=='trans_com_2':
       part1_translation=trans_com_2(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
       part2_translation=trans_com_2(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list,unit=unit)
+      translation=part1_translation-part2_translation
+    elif method=='trans_com_3':
+      part1_translation=trans_com_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,unit=unit)
+      part2_translation=trans_com_3(frame1_cords,frame2_cords,part=part2,atom_list=part2_atom_list,unit=unit)
       translation=part1_translation-part2_translation
     elif method=='trans_atomic_t_r':
       print('to be implemented') 
@@ -139,6 +145,35 @@ def trans_com_2(frame1_cords,frame2_cords,part='ring',atom_list=[],unit='m'):
     return vector.getProjection(translation_vector,trans_axis)*constants.angstrom
   elif unit.upper()=='A':
     return vector.getProjection(translation_vector,trans_axis)
+
+def trans_com_3(frame1_cords,frame2_cords,part='ring',atom_list=[],unit='m'):
+  if part=='ring':
+    _atom_list=config.ring_atom_no_list
+  elif part=='track':
+    _atom_list=config.track_atom_no_list
+  else:
+    assert len(atom_list)!=0,'atoms_list should not be empty'
+    _atom_list=atom_list
+
+  com_displacement=[0,0,0]
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='translation',ref_axis_alignment=False)
+  com1=physics.getCom(frame1_cords,atom_list=_atom_list)
+  com2=physics.getCom(frame2_cords,atom_list=_atom_list)
+  for i in range(3):
+    com_displacement[i]=com2[i]-com1[i]
+  print(com1)
+  print(com2)
+  print(com_displacement)
+  if config.axis=='x':
+    axis=0
+  elif config.axis=='y':
+    axis=1
+  elif config.axis=='z':
+    axis=2
+  if unit=='m':
+    return com_displacement[axis]*constants.angstrom
+  elif unit.upper()=='A':
+    return com_displacement[axis]
 
 def translateAlongAxis(cords,axis,distance):
   new_cords=cords.copy()
