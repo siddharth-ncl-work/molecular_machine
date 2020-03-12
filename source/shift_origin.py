@@ -17,10 +17,12 @@ def isZero(l):
 
 def shiftOrigin(frame1_cords,frame2_cords,process='rotation',ref_axis_alignment=True): 
   trans_axis=[0.0,0.0,0.0] 
-  cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
-  cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
-  sign= 1 if cog2[0]-cog1[0]>=0 else -1
+  com1=physics.getCom(frame1_cords,atom_list=config.ring_atom_no_list)
+  com2=physics.getCom(frame2_cords,atom_list=config.ring_atom_no_list)
+  sign= 1 if com2[0]-com1[0]>=0 else -1
   if process=='rotation':
+    cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
+    cog2=physics.getCog(frame2_cords,atom_list=config.ring_atom_no_list)
     trans_axis[0]=cog2[0]-cog1[0]
     trans_axis[1]=cog2[1]-cog1[1]
     trans_axis[2]=cog2[2]-cog1[2]
