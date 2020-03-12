@@ -237,7 +237,7 @@ tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6}
 task_name={'0':'Ring_Net_Relative_Rotation',
 	   '1':'Ring_Average_Relative_KE',
            '2':'Ring_Net_Relative_Translation',
-           '3':'Ring_Net_Relative_Rotation',
+           '3':'Ring_Relative_Rotation',
            '4':'Ring_Relative_Translation',
            '5':'Ring_Net_Relative_Rotation_vs_Step_size',
            '6':'Ring_Net_Relative_Rotation_vs_Track_Range'}

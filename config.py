@@ -10,16 +10,16 @@ input_scr_dir_name="scr_1700_temp"
 output_parent_dir_path='output'
 
 ring_atom_no=0
-track_atom_no=30
-ref_axis_atom1_no=20
-ref_axis_atom2_no=37
+track_atom_no=153
+ref_axis_atom1_no=75
+ref_axis_atom2_no=98
 
 start_frame_no=0
 end_frame_no=100
-step_size=10
+step_size=1
 frame_no_pos=2
 
-tasks='5'
+tasks='1'
 
 #INTERNAL PARAMETERS
 track_range=2
@@ -32,9 +32,9 @@ TKE_method='energy_trans_com_2'
 axis='x'
 show_plot=False
 
-ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63]
 
-track_atom_no_list=[20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37]
+track_atom_no_list=[64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153]
 
 code_dir_path='/home/vanka/siddharth/molecular_machines_project/molecular_machines'
 

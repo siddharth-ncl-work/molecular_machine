@@ -8,7 +8,9 @@ import sys
 sys.path.extend(['.','..'])
 import subprocess
 
-from source import rotation,init,translation
+from source import rotation,init,translation,shift_origin
+from lib.io_chem import io
+from lib.basic_operations import physics
 import make_test_systems
 import config
 
@@ -17,11 +19,11 @@ def _init(method,system):
     subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
     subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
     subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/artificial_test_system')
-    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
-    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test','ring/cone_test'],cwd=f'output/assessment_{method}/artificial_test_system')
+    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test','track/cone_test'],cwd=f'output/assessment_{method}/artificial_test_system')
     subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
-    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
-    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test','ring/cone_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test','track/cone_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
   elif 'trans' in method:
     subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
     subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
@@ -43,37 +45,39 @@ def _init(method,system):
   else:
     print(f'system={system} does not exist')
 
-def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system='',show_plot=True):
+def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ring','track'],system='',translation_list=[],show_plot=True):
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
-  for part in parts:
-    for axis in range(3):
-      rpy=[0,0,0]
-      x=[]
-      y=[]
-      for theta in range(-90,91,step_size):
-        rpy[axis]=theta
-        if part=='ring':
-          if system=='artificial':
-            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=rpy,track_rpy=zero_rpy)
-          elif system=='semi_real':
-            make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=rpy,track_rpy=zero_rpy)
-        elif part=='track':
-          if system=='artificial':
-            make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=zero_rpy,track_rpy=rpy)
-          elif system=='semi_real':
-            make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=zero_rpy,track_rpy=rpy)
-        if system=='artificial':
-          file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
-        elif system=='semi_real':
-          file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
-        with open(file_path,'r') as file:
-          _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
-        x.append(theta)
-        y.append(_rotation)
-        print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},single_axis,{system}')
-      plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis',system=system,show_plot=show_plot)
+  for ring_translation in translation_list:
+    for track_translation in translation_list:
+      for part in parts:
+        for axis in range(3):
+          rpy=[0,0,0]
+          x=[]
+          y=[]
+          for theta in range(-90,91,step_size):
+            rpy[axis]=theta
+            if part=='ring':
+              if system=='artificial':
+                make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=rpy,track_rpy=zero_rpy,ring_translation=_ring_translation,track_translation=track_translation)
+              elif system=='semi_real':
+                make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=rpy,track_rpy=zero_rpy,ring_translation=ring_translation,track_translation=track_translation)
+            elif part=='track':
+              if system=='artificial':
+                make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=zero_rpy,track_rpy=rpy,ring_translation=ring_translation,track_translation=track_translation)
+              elif system=='semi_real':
+                make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=zero_rpy,track_rpy=rpy,ring_translation=ring_translation,track_translation=track_translation)
+            if system=='artificial':
+              file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+            elif system=='semi_real':
+              file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+            with open(file_path,'r') as file:
+              _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
+            x.append(theta)
+            y.append(_rotation)
+            print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},single_axis,{system}')
+          plot1(x,y,method=method,part=part,axis=axis,assessment_type='single_axis',system=system,translation=[ring_translation,track_translation],show_plot=show_plot)
 
 def assessRotationMethodDoubleAxis2d(method='rot_atomic_r_t',step_size=10,rotation_axis=0,constant_axis=1,constant_theta=10,parts=['ring','track'],system='',show_plot=True):
   assert rotation_axis!=constant_axis,'Rotation axis should not be same constant axis'
@@ -205,7 +209,7 @@ def assessRotationMethodTripleAxis3d(method='rot_atomic_r_t',rotation_axis=1,con
   for constant_axis_theta in constant_axis_theta_range:
     _tripleAxis(method=method,rotation_axis=rotation_axis,constant_axis=constant_axis,constant_axis_theta=constant_axis_theta,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 
-def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system='',show_plot=True):
+def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system='',translation=-50,show_plot=True):
   if axis==0:
     axis='x'
   elif axis==1:
@@ -220,13 +224,15 @@ def plot1(x,y,method='test',part='ring',axis=0,assessment_type='',system='',show
   else:
     zero=np.zeros(len(x))
     plt.plot(x,zero,'b',label='expected')
-  title=method.upper()+'('+part+','+axis+','+assessment_type+','+system+')'
+  title=method.upper()+'('+part+','+axis+','+assessment_type+','+system+f'{translation}'+')'
   plt.title(title)
   plt.xlabel(f'{axis} Rotation(D)')
   plt.ylabel('Predicted/Expected x Rotation (D)')
   plt.ylim(-100, 100)
   plt.legend()
   plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  data={'x':x,'predicted_rotation':y,'expected_rotation':x}
+  pd.DataFrame.from_dict(data).to_csv('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.csv')
   if show_plot:
     plt.show()
  
@@ -497,34 +503,63 @@ def plot1Poster(x,Y,method='test',part='ring',axis=0,assessment_type='',system='
   if show_plot:
     plt.show()
 
-def coneAssessment():
-  x=[]
-  Y=[]
-  initial_cords_list=[[1.0, -0.5,  0],[2.0,  0.5, 0]]#[[1.0,  0.353553,  0.353553],[2.0, -0.353553, -0.353553]]
-  axis=1
-  _axis=[0,0,0]
-  _axis[axis]=1
+def coneAssessment(method='',system='',parts='',step_size=0):
+  if system=='artificial':
+    file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+  elif system=='semi_real':
+    file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+  with open(file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,0,frame_no_pos=config.frame_no_pos)
+    frame2_cords=io.readFileMd(file,1,frame_no_pos=config.frame_no_pos)
+  track_atom_list=config.track_atom_no_list
+  ring_atom_list=config.ring_atom_no_list
   step_size=5
-  theta_range=range(-90,90,step_size)
+  theta_range=range(-90,91,step_size)
   x=theta_range
-  for initial_cords in initial_cords_list:
-    atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
-    initial_df=pd.DataFrame.from_dict(atom_data)
-    y=[]
-    for theta in theta_range:
-      final_df=rotation.rotateAlongAxis(initial_df,_axis,math.radians(theta))
-      final_cords=final_df[['x','y','z']].values[0]
-      initial_cords[0]=0
-      final_cords[0]=0
-      _rotation=rotation.getRPYAngles(initial_cords,final_cords,unit='degrees')    
-      print(f'theta = {theta}, x-axis rotation = {_rotation}')
-      y.append(_rotation[0])
-    Y.append(y)
-  y=np.mean(np.array(Y),axis=0)
-  print(y)
-  plotConeAssessment(x,y,axis=axis)
+  #initial_cords_list=[[1.0, -0.5,  0],[2.0,  0.5, 0]]#[[1.0,  0.353553,  0.353553],[2.0, -0.353553, -0.353553]]
+  print(system)
+  for part in parts:
+    if part=='ring':
+      atom_no_list=ring_atom_list
+    elif part=='track':
+      trans_axis=[0,0,0]
+      cog1=physics.getCog(frame1_cords,atom_list=ring_atom_list)
+      cog2=physics.getCog(frame2_cords,atom_list=ring_atom_list)
+      print(f'{cog1},{cog2}')
+      trans_axis[0]=cog2[0]-cog1[0]
+      trans_axis[1]=cog2[1]-cog1[1]
+      trans_axis[2]=cog2[2]-cog1[2]
+      nearest_atom_list=rotation.getNearestAtomList(frame1_cords,cog1,trans_axis,config.track_range)
+      atom_no_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
+    
+    new_frame1_cords,new_frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation',ref_axis_alignment=False)
 
-def plotConeAssessment(x,y,method='test',part='ring',axis=0,assessment_type='',system='',show_plot=True):
+    initial_cords_list=new_frame1_cords[new_frame1_cords['atom_no'].isin(atom_no_list)][['x','y','z']].values
+    print(part)
+    print(atom_no_list)
+    print(initial_cords_list)
+    for axis in range(1,3):
+      Y=[]
+      _axis=[0,0,0]
+      _axis[axis]=1
+      for initial_cords in initial_cords_list:
+        atom_data={'atom':['c'],'atom_no':[0],'x':initial_cords[0],'y':initial_cords[1],'z':initial_cords[2]}
+        initial_df=pd.DataFrame.from_dict(atom_data)
+        y=[]
+        for theta in theta_range:
+          final_df=rotation.rotateAlongAxis(initial_df,_axis,math.radians(theta))
+          final_cords=final_df[['x','y','z']].values[0]
+          initial_cords[0]=0
+          final_cords[0]=0
+          _rotation=rotation.getRPYAngles(initial_cords,final_cords,unit='degrees')    
+          #print(f'theta = {theta}, x-axis rotation = {_rotation}')
+          y.append(_rotation[0])
+        Y.append(y)
+      y=np.mean(np.array(Y),axis=0)
+      print(y)
+      plotConeAssessment(x,y,method=method,part=part,axis=axis,system=system,assessment_type='cone')
+
+def plotConeAssessment(x,y,method='',part='ring',axis=0,assessment_type='',system='',show_plot=True):
   if axis==0:
     axis='x'
   elif axis==1:
@@ -533,32 +568,35 @@ def plotConeAssessment(x,y,method='test',part='ring',axis=0,assessment_type='',s
     axis='z'
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.plot(x,y,'r',label='Predicted',lw=1)
+  plt.plot(x,y,'r',label='Predicted')
   if axis=='x':
-    plt.plot(x,x,'b',label='Expected',lw=1)
+    plt.plot(x,x,'b',label='Expected')
   else:
     zero=np.zeros(len(x))
-    plt.plot(x,zero,'b',label='Expected',lw=1)
-  title=method.upper()+'('+part+','+axis+','+assessment_type+')'
+    plt.plot(x,zero,'b',label='Expected')
+  title=method.upper()+f'{system},'+part+','+axis+','+assessment_type
   plt.title(title)
   plt.xlabel(f'{axis} Rotation(D)')
   plt.ylabel('Predicted/Expected x Rotation (D)')
   plt.ylim(-100, 100)
   plt.legend()
-  #plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
+  plt.savefig('output/assessment_'+method+'/'+f'{system}_test_system'+'/'+part+'/'+f'{assessment_type}_test'+'/'+title+'.png')
   if show_plot:
     plt.show()
 
 #ROTATION
-system_list=['artificial']
+system_list=['semi_real']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
-parts=['track']
+parts=['ring','track']
+translation_list=[3.14,-3.14]
 show_plot=True
 for system in system_list:
   for method in method_list:
     _init(method,system)
-    assessRotationMethodSingleAxis(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    coneAssessment(method=method,system=system,parts=parts,step_size=step_size)
+    #assessRotationMethodSingleAxis(method=method,step_size=step_size,parts=parts,system=system,translation_list=translation_list,show_plot=show_plot)
+    #coneAssessment(system=system,parts=parts,step_size=step_size)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=45,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=1,constant_theta=-45,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis2d(method=method,step_size=step_size,rotation_axis=0,constant_axis=2,constant_theta=45,system=system,show_plot=show_plot)
@@ -584,7 +622,7 @@ for system in system_list:
     assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
 '''
 
-coneAssessment()
+#coneAssessment()
 #_init('rot_part_atomic_r_t_3','artificial')
 #assessRotationMethodSingleAxis(method='rot_part_atomic_r_t_3',step_size=5,system='artificial',parts=['track'],show_plot=True)
 #assessRotationMethodSingleAxisPoster(method='rot_part_atomic_r_t_3',step_size=5,show_plot=True)
