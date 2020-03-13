@@ -15,11 +15,11 @@ ref_axis_atom1_no=118
 ref_axis_atom2_no=104
 
 start_frame_no=0
-end_frame_no=2000
+end_frame_no=10000
 step_size=1
 frame_no_pos=2
 
-tasks='3+0+2+4'
+tasks='3+0+4+2'
 
 #INTERNAL PARAMETERS
 track_range=2

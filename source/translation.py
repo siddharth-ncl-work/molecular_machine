@@ -161,9 +161,9 @@ def trans_com_3(frame1_cords,frame2_cords,part='ring',atom_list=[],unit='m'):
   com2=physics.getCom(frame2_cords,atom_list=_atom_list)
   for i in range(3):
     com_displacement[i]=com2[i]-com1[i]
-  print(com1)
-  print(com2)
-  print(com_displacement)
+  #print(com1)
+  #print(com2)
+  #print(com_displacement)
   if config.axis=='x':
     axis=0
   elif config.axis=='y':
