@@ -20,7 +20,7 @@ end_frame_no=169344
 step_size=10
 frame_no_pos=2
 
-tasks='0'#'3+0+4+2'
+tasks='7'#'3+0+4+2'
 
 #INTERNAL PARAMETERS
 track_range=2

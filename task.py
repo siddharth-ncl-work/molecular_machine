@@ -17,7 +17,7 @@ def task0():
   Rotational Directionality: Net Relative Rotation of the ring between two frames/time steps
   '''
   with open(input_file_path,'r') as input_file:
-    ring_net_relative_rotation,rotation_data=rotation.getNetRotation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='absolute',method=config.rotation_method,system_type=config.system_type)
+    ring_net_relative_rotation,rotation_data=rotation.getNetRotation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='relative',method=config.rotation_method,system_type=config.system_type)
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK0 COMPLETE\n')
     output_file.write(f'Ring Net Relative Rotaion = {ring_net_relative_rotation} degrees\n')
@@ -219,6 +219,28 @@ def task6():
   return average_ring_net_relative_rotation
  
 
+def task7():
+  '''
+  Rotational Directionality: Net absolute  Rotation of the ring between two frames/time steps
+  '''
+  with open(input_file_path,'r') as input_file:
+    ring_net_absolute_rotation,rotation_data=rotation.getNetRotation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='absolute',method=config.rotation_method,system_type=config.system_type)
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK0 COMPLETE\n')
+    output_file.write(f'Ring Net Absolute Rotaion = {ring_net_absolute_rotation} degrees\n')
+    output_file.write('-'*80+'\n\n')
+  rotation_data_file_path=os.path.join(output_dir_path,'rotation_data.csv')
+  pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
+  x=rotation_data['frame_no']
+  y=rotation_data['rotation']
+  title='Ring Absolute Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Frame number'
+  ylabel='Rotation (degrees)'
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
+  print(f'Ring Net Absolute Rotaion = {ring_net_relative_rotation} degrees')
+  return ring_net_absolute_rotation
+
+
 def plot(x,y,output_dir_path='',title='',xlabel='',ylabel=''):
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
@@ -233,14 +255,15 @@ def plot(x,y,output_dir_path='',title='',xlabel='',ylabel=''):
    plt.show()
 
 
-tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6}
+tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7}
 task_name={'0':'Ring_Net_Relative_Rotation',
 	   '1':'Ring_Average_Relative_KE',
            '2':'Ring_Net_Relative_Translation',
            '3':'Ring_Relative_Rotation',
            '4':'Ring_Relative_Translation',
            '5':'Ring_Net_Relative_Rotation_vs_Step_size',
-           '6':'Ring_Net_Relative_Rotation_vs_Track_Range'}
+           '6':'Ring_Net_Relative_Rotation_vs_Track_Range',
+           '7':'Ring_Net_Absolute_Rotation'}
 
 read_from='system_info.csv'
 
