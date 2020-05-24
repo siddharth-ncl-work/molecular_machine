@@ -28,13 +28,14 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',par
     pbar.set_description(f'net_{part1}_{type}_rotation = {round(net_rotation,4)} deg')
   return (net_rotation,data)
 
-def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
+def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[],system_type='molecular_machine'):
+  print(system_type)
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
-  return _getRotation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
+  return _getRotation(frame1_cords,frame2_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list,system_type=system_type)
 
-def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
+def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[],system_type='molecular_machine'):
   rotation=0
   if type=='absolute':
     if method=='rot_atomic_r_t_1':
@@ -56,7 +57,7 @@ def _getRotation(frame1_cords,frame2_cords,part1='ring',part2='track',type='abso
     elif method=='rot_hybrid_3_1':
       rotation=rot_hybrid_3_1(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
     elif method=='rot_part_atomic_r_t_3':
-      rotation=rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list)
+      rotation=rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part=part1,atom_list=part1_atom_list,system_type=system_type)
     elif method=='rot_atomic_t_r':
       print('to be implemented in future')
       return
@@ -172,7 +173,7 @@ def rot_atomic_r_t_2(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=np.average(atom_rotation_list)
   return math.degrees(part_rotation)
 
-def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[],system_type='molecular_machine'):
   part_rotation=0
   if part=='ring':
     _atom_list=config.ring_atom_no_list
@@ -187,7 +188,7 @@ def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     axis=1
   elif config.axis=='z':
     axis=2
-  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
+  frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation',system_type=system_type)
   #print(frame1_cords[frame1_cords['atom_no'].isin(_atom_list)])
   #print(frame2_cords[frame2_cords['atom_no'].isin(_atom_list)])
   frame1_cords[config.axis]=0
@@ -310,9 +311,9 @@ def rot_mol_plane_3_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   part_rotation=getRPYAngles(frame1_plane,frame2_plane,axis=config.axis)[axis]
   return math.degrees(part_rotation)
 
-def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
+def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[],system_type='molecular_machine'):
   if part=='ring':
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring')
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',system_type=system_type)
   elif part=='track':
     track_atom_list=config.track_atom_no_list
     ring_atom_list=config.ring_atom_no_list
@@ -322,14 +323,14 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[]):
     trans_axis[0]=cog2[0]-cog1[0]
     trans_axis[1]=cog2[1]-cog1[1]
     trans_axis[2]=cog2[2]-cog1[2]
-    axis,origin=shift_origin.getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system='molecular_machine')
+    axis,origin=shift_origin.getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system=system_type)
     nearest_atom_list=getNearestAtomList(frame1_cords,origin,axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
     #print(f'distance from origin config.track_range)
     #print(track_part_atom_list)
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list,system_type=system_type)
   else:
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list,system_type=system_type)
 
 def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':

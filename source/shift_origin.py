@@ -11,13 +11,13 @@ def _shiftOrigin(cords,origin):
   new_cords['z']=new_cords['z']-origin[2]
   return new_cords
 
-def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system='molecular_machine'):
-  if system=='molecular_machine':
+def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system_type='molecular_machine'):
+  if system_type=='molecular_machine':
     _atom_no_list=config.ring_atom_no_list
   else:
     _atom_no_list=frame1_cords['atom_no'].values
 
-  #print(_atom_no_list)
+  print(_atom_no_list)
   _axis=[0,0,0]
   if (isinstance(axis,list) or isinstance(axis,np.ndarray)) and len(axis)==3:
     _axis=axis
@@ -27,7 +27,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
       for i in range(3):
         _axis[i]=cog2[i]-cog1[i]
       if isZero(_axis):
-        if system=='molecular_machine':
+        if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
           cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
@@ -53,7 +53,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
       for i in range(i):
         _axis[i]=com2[i]-com1[i]
       if isZero(_axis):
-        if system=='molecular_machine':
+        if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
           com2=physics.getCom(frame2_cords,atom_list=_atom_no_list)
@@ -83,7 +83,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
         _axis[i]=cog2[i]-cog1[i]
       if isZero(_axis):
         print('changing rotation axis to track cog')
-        if system=='molecular_machine':
+        if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
           cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
@@ -99,7 +99,16 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
             if isZero(_axis):
               print(f'_axis = {_axis}, Do not know other way to determine axis for {system}')
               print('so returning the same coordinates')
-              return None
+              return None 
+        elif system_type=='ring':
+          print('assuming its pure rotation determining axis using cross product')
+          atom_no=np.random.choice(_atom_no_list)
+          cords1=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
+          cords2=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
+          _axis=vector.getCrossProduct(cords2,cords1)
+          if isZero(_axis):
+            print('no rotation or translation, identical\nany axis should give zero value')
+            _axis=[1,0,0] 
         else:
           print(f'_axis = {_axis}, Do not know other way to determine axis for {system}')
           print('so returning the same coordinates')
@@ -111,7 +120,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
         _axis[i]=com2[i]-com1[i]
       if isZero(_axis):
         print('Changing to track com axis')
-        if system=='molecular_machine':
+        if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
           com2=physics.getCom(frame2_cords,atom_list=_atom_no_list)
@@ -143,7 +152,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   print(f'shift_origin axis={_axis}')
 
 
-  if system=='molecular_machine':
+  if system_type=='molecular_machine':
     _atom_no_list=config.ring_atom_no_list
   else:
     _atom_no_list=frame1_cords['atom_no'].values
@@ -177,7 +186,7 @@ def isZero(l):
       return False
   return True
 
-def shiftOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system='molecular_machine',ref_axis_alignment=True): 
+def shiftOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system_type='molecular_machine',ref_axis_alignment=True): 
   '''
   axis: is required for rotation as well as translation
         if axis is not given then it assumed to be COG/COM axis
@@ -185,7 +194,7 @@ def shiftOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=No
   origin: is required only for rotation
           if origin is not given it is assumed to be COG/COM of the first frame
   '''
-  _axis,_origin=getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system='molecular_machine')
+  _axis,_origin=getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system_type=system_type)
   if type(_axis)==type(None):
     return (frame1_cords,frame2_cords)
 

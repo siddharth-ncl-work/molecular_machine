@@ -173,6 +173,38 @@ def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ri
   io.writeFileMd(output_file,frame2_initial_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
+def ringTwoFramesArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ring_translation=0,track_translation=2):
+  output_file_path='test_systems/ring_two_frames_non_ideal_artificial_system.xyz'
+  x=[1,0,0]
+  y=[0,1,0]
+  z=[0,0,1]
+
+  input_system_file_path='test_systems/ring_at_origin_non_ideal_artificial_system.xyz'
+  input_system_cords_df=io.readFile(input_system_file_path)
+  frame1_initial_cords_df=input_system_cords_df.copy()
+  #ring
+  frame1_ring_cords_df=frame1_initial_cords_df#[frame1_initial_cords_df['atom_no'].isin(config.ring_atom_no_list)]
+  df=rotation.rotateAlongAxis(frame1_ring_cords_df,x,math.radians(ring_rpy[0]))
+  df=rotation.rotateAlongAxis(df,y,math.radians(ring_rpy[1]))
+  df=rotation.rotateAlongAxis(df,z,math.radians(ring_rpy[2]))
+  frame2_initial_ring_cords_df=translation.translateAlongAxis(df,x,ring_translation)
+  #frame2
+  frame2_initial_cords_df=frame2_initial_ring_cords_df
+
+  #transform both frames
+  axis=[-10.2,-42,-6]
+  theta=60.5
+  distance=5.3
+  frame1_final_cords_df=rotation.rotateAlongAxis(frame1_initial_cords_df,axis,math.radians(theta))
+  frame2_final_cords_df=rotation.rotateAlongAxis(frame2_initial_cords_df,axis,math.radians(theta))
+  frame1_final_cords_df=translation.translateAlongAxis(frame1_final_cords_df,axis,distance)
+  frame2_final_cords_df=translation.translateAlongAxis(frame2_final_cords_df,axis,distance)
+
+  output_file=open(output_file_path,'w')
+  io.writeFileMd(output_file,frame1_initial_cords_df,0,frame_no_pos=config.frame_no_pos)
+  io.writeFileMd(output_file,frame2_initial_cords_df,1,frame_no_pos=config.frame_no_pos)
+  output_file.close()
+
 def ringTrackMultiFrameIdealArtificial():
   output_file_path='test_systems/ring_track_multi_frame_ideal_artificial_system.xyz'
   output_file=open(output_file_path,'w')
@@ -435,6 +467,8 @@ if __name__=='__main__':
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   
+  ringTwoFramesArtificial()
+
   #ringTrackMultiFrameIdealArtificial()
   #ringMultiFrameArtificial()
   '''

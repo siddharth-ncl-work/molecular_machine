@@ -24,6 +24,7 @@ def _init(method,system):
     subprocess.run(['mkdir','ring','track'],cwd=f'output/assessment_{method}/semi_real_test_system')
     subprocess.run(['mkdir','ring/single_axis_test','ring/double_axis_test','ring/triple_axis_test','ring/cone_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
     subprocess.run(['mkdir','track/single_axis_test','track/double_axis_test','track/triple_axis_test','track/cone_test'],cwd=f'output/assessment_{method}/semi_real_test_system')
+    subprocess.run(['mkdir','-p','output/assessment_rot_part_atomic_r_t_3/only_ring_artificial_test_system/ring/single_axis_test'])
   elif 'trans' in method:
     subprocess.run(['mkdir',f'assessment_{method}'],cwd='output')
     subprocess.run(['mkdir','artificial_test_system','semi_real_test_system'],cwd=f'output/assessment_{method}')
@@ -64,6 +65,8 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ri
                 make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=rpy,track_rpy=zero_rpy,ring_translation=ring_translation,track_translation=track_translation)
               elif system=='semi_real':
                 make_test_systems.ringTrackTwoFramesSemiReal(ring_rpy=rpy,track_rpy=zero_rpy,ring_translation=ring_translation,track_translation=track_translation)
+              elif system=='only_ring_artificial':
+                make_test_systems.ringTwoFramesArtificial(ring_rpy=rpy,track_rpy=zero_rpy,ring_translation=ring_translation,track_translation=track_translation)
             elif part=='track':
               if system=='artificial':
                 make_test_systems.ringTrackTwoFramesNonIdealArtificial(ring_rpy=zero_rpy,track_rpy=rpy,ring_translation=ring_translation,track_translation=track_translation)
@@ -73,8 +76,13 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ri
               file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
             elif system=='semi_real':
               file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+            elif system=='only_ring_artificial':
+              file_path='test_systems/ring_two_frames_non_ideal_artificial_system.xyz'
             with open(file_path,'r') as file:
-              _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
+              if system=='artificial' or system=='semi_real':
+                _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method)
+              elif system=='only_ring_artificial':
+                _rotation=rotation.getRotation(file,frame1_no,frame2_no,part1=part,part2='track',type='absolute',method=method,system_type='ring')
             x.append(theta)
             y.append(_rotation)
             print(f'{rpy},{part} Absolute Rotation = {_rotation},{method},single_axis,{system}')
@@ -693,10 +701,10 @@ def plotRKE(x,y_predicted,y_expected,method='',part='',axis='',assessment_type='
 
 
 #ROTATION
-system_list=['artificial']
+system_list=['only_ring_artificial']#'artificial']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
-parts=['track']
+parts=['ring']
 translation_list=[0,3.14,-3.14]
 show_plot=True
 for system in system_list:
