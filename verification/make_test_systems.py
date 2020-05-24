@@ -135,7 +135,7 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translation=-2,track_translation=0):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ring_translation=-2,track_translation=2):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -242,14 +242,14 @@ def ringMultiFrameArtificial():
     #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
     curr_frame_cords_df=translation.translateAlongAxis(df,x,ring_distance)
    
-    '''
+    
     #transform frames
     axis=[1,1,1]
     theta=45.24
     distance=1.67
     curr_frame_cords_df=rotation.rotateAlongAxis(curr_frame_cords_df,axis,math.radians(theta))
     curr_frame_cords_df=translation.translateAlongAxis(curr_frame_cords_df,axis,distance)
-    '''
+    
     io.writeFileMd(output_file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
 
     ring_theta+=ring_d_theta
@@ -267,7 +267,7 @@ def ringTrackAtOriginSemiReal():
   frame1_cords,frame2_cords=shift_origin.shiftOrigin(frame1_cords,frame2_cords,process='rotation')
   io.writeFile(file_path,frame1_cords)
 
-def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translation=1,track_translation=2):
+def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translation=0,track_translation=0):
   output_file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -290,6 +290,7 @@ def ringTrackTwoFramesSemiReal(ring_rpy=[0,0,0],track_rpy=[0,0,0],ring_translati
   frame2_initial_track_cords_df=translation.translateAlongAxis(df,x,track_translation)
   #frame2
   frame2_initial_cords_df=pd.concat([frame2_initial_ring_cords_df,frame2_initial_track_cords_df])
+
   #transform both frames
   axis=[-10.2,-42,-6]
   theta=60.5

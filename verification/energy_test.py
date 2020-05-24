@@ -6,7 +6,7 @@ sys.path.append('..')
 import config
 from lib.io_chem import io
 from lib.basic_operations import vector,physics,atomic_mass
-from source import rotation,shift_origin,energy
+from source import init,rotation,shift_origin,energy
 
 
 def get_dist_pt_line():
@@ -84,12 +84,14 @@ def getMI(rot_axis='x'):
     print(f'{part} MI = {MI}')
 
 #RKE
-def getRKETwoFrames(ideal=False,method='energy_rot_hybrid_1'):
-  print(f'ideal = {ideal}\nmethod = {method}')
-  if ideal:
-    file_path='test_systems/ring_track_two_frames_ideal.xyz'
-  else:
-    file_path='test_systems/ring_track_two_frames_non_ideal.xyz'
+def getRKETwoFrames(method='',system=''):
+  print(system)
+  if system=='artificial':
+    file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=30)
+  elif system=='semi_real':
+    file_path='test_systems/ring_track_two_frames_semi_real_system.xyz'
+    init.initConfig(file_path,ring_atom_no=0,track_atom_no=153)
   frame1_no=0
   frame2_no=1
 
@@ -238,7 +240,7 @@ def getAvgTKE(ideal=True,method='energy_trans_com'):
   print(data)
 
 #get_dist_pt_line()
-getMI()
+#getMI()
 #getRKETwoFrames()
 #getRKEMultiFrame()
 #getAvgRKE()
@@ -246,4 +248,6 @@ getMI()
 #getTKETwoFrames()
 #getTKEMultiFrame()
 #getAvgTKE()
+
+getRKETwoFrames(method='energy_rot_part_atomic_r_t_3',system='artificial')
 

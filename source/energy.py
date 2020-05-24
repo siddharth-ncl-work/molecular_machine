@@ -262,6 +262,7 @@ def energy_rot_hybrid_3(frame1_cords,frame2_cords,part1='ring',part2='track',typ
 
 def energy_rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part1='ring',part2='track',type='absolute',part1_atom_list=[],part2_atom_list=[]):
   RKE=0
+  print(part1)
   if part1=='ring':
     _part1_atom_list=config.ring_atom_no_list
   elif part1=='track':
@@ -286,8 +287,10 @@ def energy_rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part1='ring',part2='t
   MI=physics._getMI(cords_list,mass_list,axis)
   if type=='absolute':
     theta=rotation.rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part=part1,atom_list=_part1_atom_list)
-    theta=math.radians(theta)
-    omega=theta/(config.simulation_time_step*constants.femto)
+    _theta=math.radians(theta)
+    print(f'{part1} {theta}')
+    omega=_theta/(config.simulation_time_step*constants.femto)
+    print(MI)
     RKE=0.5*MI*pow(omega,2)
   elif type=='relative':
     if part2=='ring':

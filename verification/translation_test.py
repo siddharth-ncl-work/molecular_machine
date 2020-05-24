@@ -187,4 +187,4 @@ getTranslationTwoFrames(system='semi_real')
 getTranslationMultiFrame(system='semi_real')
 getNetTranslation(system='semi_real')
 '''
-getTranslationTwoFrames(method=config.translation_method,system='semi_real')
+getTranslationTwoFrames(method='trans_com_3',system='artificial')
