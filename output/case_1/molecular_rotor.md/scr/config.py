@@ -7,6 +7,7 @@ input_parent_dir_path="/home/vanka/ruchi/molecular_motor"
 input_system_name="case_1"
 input_subsystem_name="molecular_rotor.md"
 input_scr_dir_name="scr"
+system_type="molecular_machine"
 output_parent_dir_path='output'
 
 ring_atom_no=69
@@ -19,7 +20,7 @@ end_frame_no=999999
 step_size=10
 frame_no_pos=1
 
-tasks='3+0'#'3+0+4+2'
+tasks='0'#'3+0+4+2'
 
 #INTERNAL PARAMETERS
 track_range=2

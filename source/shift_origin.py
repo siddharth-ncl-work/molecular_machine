@@ -17,7 +17,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   else:
     _atom_no_list=frame1_cords['atom_no'].values
 
-  print(_atom_no_list)
+  #print(_atom_no_list)
   _axis=[0,0,0]
   if (isinstance(axis,list) or isinstance(axis,np.ndarray)) and len(axis)==3:
     _axis=axis
@@ -74,15 +74,15 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
           print('so returning the same coordinates')
           return None
   elif type(axis)==type(None):
-    print('determining axis...')
+    #print('determining axis...')
     if process=='rotation' or 'translation':
-      print('making ring cog as axis')
+      #print('making ring cog as axis')
       cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
       cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
       for i in range(3):
         _axis[i]=cog2[i]-cog1[i]
       if isZero(_axis):
-        print('changing rotation axis to track cog')
+        #print('changing rotation axis to track cog')
         if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
@@ -90,7 +90,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
           for i in range(3):
             _axis[i]=0#cog2[i]-cog1[i]
           if isZero(_axis):
-            print('changing rotation axis to ring track cog')
+            #print('changing rotation axis to ring track cog')
             _atom_no_list=config.ring_atom_no_list
             cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
             cog2=physics.getCog(frame2_cords,atom_list=config.track_atom_no_list)
@@ -101,7 +101,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
               print('so returning the same coordinates')
               return None 
         elif system_type=='ring':
-          print('assuming its pure rotation determining axis using cross product')
+          #print('assuming its pure rotation determining axis using cross product')
           atom_no=np.random.choice(_atom_no_list)
           cords1=frame1_cords[frame1_cords['atom_no']==atom_no][['x','y','z']].values[0]
           cords2=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
@@ -149,7 +149,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   sign= 1 if com2[0]-com1[0]>=0 else -1
   for i in range(3):
     _axis[i]*=sign
-  print(f'shift_origin axis={_axis}')
+  #print(f'shift_origin axis={_axis}')
 
 
   if system_type=='molecular_machine':
@@ -167,7 +167,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
       com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
       _origin=com1
   elif type(origin)==type(None):
-    print('determining origin...')
+    #print('determining origin...')
     if process=='rotation' or 'translation':
       cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
       _origin=cog1
@@ -176,7 +176,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
       _origin=com1
   else:
     print(f'argument origin = {origin}, cannont determine the origin')
-  print(f'shift_origin origin={_origin}')
+  #print(f'shift_origin origin={_origin}')
 
   return _axis,_origin
 

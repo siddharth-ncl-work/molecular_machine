@@ -17,7 +17,7 @@ def task0():
   Rotational Directionality: Net Relative Rotation of the ring between two frames/time steps
   '''
   with open(input_file_path,'r') as input_file:
-    ring_net_relative_rotation,rotation_data=rotation.getNetRotation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='relative',method=config.rotation_method)
+    ring_net_relative_rotation,rotation_data=rotation.getNetRotation(input_file,config.start_frame_no,config.end_frame_no,step_size=config.step_size,part1='ring',part2='track',type='absolute',method=config.rotation_method,system_type=config.system_type)
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK0 COMPLETE\n')
     output_file.write(f'Ring Net Relative Rotaion = {ring_net_relative_rotation} degrees\n')

@@ -10,7 +10,7 @@ from source import shift_origin
 import config
 
 
-def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[]):
+def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[],system_type='molecular_machine'):
   net_rotation=0
   data={'frame_no':[],'rotation':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
@@ -19,7 +19,7 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',par
   pbar=tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size))
   for curr_frame_no in pbar:
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
-    rotation=_getRotation(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
+    rotation=_getRotation(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list,system_type=system_type)
     net_rotation+=rotation    
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
@@ -29,7 +29,7 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',par
   return (net_rotation,data)
 
 def getRotation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[],system_type='molecular_machine'):
-  print(system_type)
+  #print(system_type)
   assert frame2_no>=frame1_no,'Invalid Frame Numbers'
   frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
   frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
@@ -323,14 +323,14 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[],sys
     trans_axis[0]=cog2[0]-cog1[0]
     trans_axis[1]=cog2[1]-cog1[1]
     trans_axis[2]=cog2[2]-cog1[2]
-    axis,origin=shift_origin.getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None,system=system_type)
+    axis,origin=shift_origin.getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None)
     nearest_atom_list=getNearestAtomList(frame1_cords,origin,axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
     #print(f'distance from origin config.track_range)
     #print(track_part_atom_list)
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list,system_type=system_type)
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list)
   else:
-    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list,system_type=system_type)
+    return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list)
 
 def rot_hybrid_1(frame1_cords,frame2_cords,part='ring',atom_list=[]):
   if part=='ring':
@@ -460,8 +460,8 @@ def getNearestAtomList(df,point,direction,distance):
     p[1]=atom_cords[1]-point[1]
     p[2]=atom_cords[2]-point[2]
     projection=vector.getDotProduct(direction,p)
-    print(f"distance from point {row['atom_no']} = {projection}")
-    print(f'point = {point}, atom cord = {atom_cords}')
+    #print(f"distance from point {row['atom_no']} = {projection}")
+    #print(f'point = {point}, atom cord = {atom_cords}')
     if isZero(p):
       continue
     if np.abs(round(projection,6))<=distance:

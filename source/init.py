@@ -57,6 +57,11 @@ def initConfig(system_file_path,**kwargs):
     frame_no_pos=kwargs['frame_no_pos']
   else:
     frame_no_pos=config.frame_no_pos
+  if 'system_type' in kwargs.keys():
+    system_type=kwargs['system_type']
+  else:
+    system_type=config.system_type
+
   data=None
   with open(config_file_path,'r') as file:
     data=file.readlines()
@@ -115,6 +120,11 @@ def initConfig(system_file_path,**kwargs):
       pos=i
       break
   data[pos]=f'frame_no_pos={frame_no_pos}\n'
+  for i,line in enumerate(data):
+    if 'system_type' in line:
+      pos=i
+      break
+  data[pos]=f'system_type="{system_type}"\n'
   with open(config_file_path,'w') as file:
     file.write(''.join(data))
   importlib.reload(config)
@@ -137,6 +147,8 @@ def initConfig(system_file_path,**kwargs):
   with open(config_file_path,'w') as file:
     file.write(''.join(data))
   importlib.reload(config)
+  
+
 
 def initTask(read_from,row=None):
   if read_from=='config.py':
@@ -146,7 +158,7 @@ def initTask(read_from,row=None):
   elif read_from=='system_info.csv':
     print('system_info.csv')
     input_file_path=os.path.join(row['input_parent_dir_path'],row['input_system_name'],row['input_subsystem_name'],row['input_scr_dir_name'],'coors.xyz')
-    initConfig(input_file_path,input_parent_dir_path=row['input_parent_dir_path'],input_system_name=row['input_system_name'],input_subsystem_name=row['input_subsystem_name'],input_scr_dir_name=row['input_scr_dir_name'],ring_atom_no=row['ring_atom_no'],track_atom_no=row['track_atom_no'],ref_axis_atom1_no=row['ref_axis_atom1_no'],ref_axis_atom2_no=row['ref_axis_atom2_no'],start_frame_no=row['start_frame_no'],end_frame_no=row['end_frame_no'],frame_no_pos=row['frame_no_pos'])
+    initConfig(input_file_path,input_parent_dir_path=row['input_parent_dir_path'],input_system_name=row['input_system_name'],input_subsystem_name=row['input_subsystem_name'],input_scr_dir_name=row['input_scr_dir_name'],ring_atom_no=row['ring_atom_no'],track_atom_no=row['track_atom_no'],ref_axis_atom1_no=row['ref_axis_atom1_no'],ref_axis_atom2_no=row['ref_axis_atom2_no'],start_frame_no=row['start_frame_no'],end_frame_no=row['end_frame_no'],frame_no_pos=row['frame_no_pos'],system_type=row['system_type'])
   output_dir_path=os.path.join(config.output_parent_dir_path,config.input_system_name,config.input_subsystem_name,config.input_scr_dir_name)
   if not os.path.isdir(output_dir_path):
     print(f'Directory does not exits\nCreating {output_dir_path}')
