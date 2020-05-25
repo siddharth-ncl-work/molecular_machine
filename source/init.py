@@ -54,9 +54,9 @@ def initConfig(system_file_path,**kwargs):
   else:
     end_frame_no=config.end_frame_no
   if 'frame_no_pos' in kwargs.keys():
-    frame_no_pos=kwargs['frame_no_pos']
+    frame_no_pos=int(kwargs['frame_no_pos'])
   else:
-    frame_no_pos=config.frame_no_pos
+    frame_no_pos=int(config.frame_no_pos)
   if 'system_type' in kwargs.keys():
     system_type=kwargs['system_type']
   else:
