@@ -232,8 +232,8 @@ def task7():
   rotation_data_file_path=os.path.join(output_dir_path,'rotation_data.csv')
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
-  y=rotation_data['rotation']
-  title='Ring Absolute Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  y=rotation_data[f'net_absolute_rotation']
+  title='Ring Net Absolute Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
   xlabel='Frame number'
   ylabel='Rotation (degrees)'
   plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
@@ -244,7 +244,7 @@ def task7():
 def plot(x,y,output_dir_path='',title='',xlabel='',ylabel=''):
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.scatter(x,y)
+  plt.plot(x,y)
   plt.title(title)
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)

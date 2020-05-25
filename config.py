@@ -16,7 +16,7 @@ ref_axis_atom1_no=-1
 ref_axis_atom2_no=-1
 
 start_frame_no=0
-end_frame_no=169344
+end_frame_no=200
 step_size=10
 frame_no_pos=2
 

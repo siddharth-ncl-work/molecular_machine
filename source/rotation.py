@@ -12,7 +12,7 @@ import config
 
 def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='rot_atomic_r_t_2',part1_atom_list=[],part2_atom_list=[],system_type='molecular_machine'):
   net_rotation=0
-  data={'frame_no':[],'rotation':[]}
+  data={'frame_no':[],f'{type}_rotation':[],f'net_{type}_rotation':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
@@ -24,7 +24,8 @@ def getNetRotation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',par
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
     data['frame_no'].append(curr_frame_no)
-    data['rotation'].append(rotation)
+    data[f'{type}_rotation'].append(rotation)
+    data[f'net_{type}_rotation'].append(net_rotation)
     pbar.set_description(f'net_{part1}_{type}_rotation = {round(net_rotation,4)} deg')
   return (net_rotation,data)
 
