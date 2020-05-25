@@ -237,7 +237,7 @@ def task7():
   xlabel='Frame number'
   ylabel='Rotation (degrees)'
   plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
-  print(f'Ring Net Absolute Rotaion = {ring_net_relative_rotation} degrees')
+  print(f'Ring Net Absolute Rotaion = {ring_net_absolute_rotation} degrees')
   return ring_net_absolute_rotation
 
 
