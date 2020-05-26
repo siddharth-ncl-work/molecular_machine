@@ -9,6 +9,8 @@ import pandas as pd
 from tqdm import tqdm
 
 import config
+from lib.io_chem import io
+from lib.basic_operations import vector,physics
 from source import rotation,translation,energy,init
 
 
@@ -241,21 +243,58 @@ def task7():
   return ring_net_absolute_rotation
 
 
-def plot(x,y,output_dir_path='',title='',xlabel='',ylabel=''):
+def task8():
+  '''
+  center of mass motion
+  '''
+  com_data={'frame_no':[],'com_x':[],'com_y':[],'com_z':[],'dcom_x':[],'dcom_y':[],'dcom_z':[]}
+  with open(input_file_path,'r') as input_file:
+    init_frame_cords=io.readFileMd(input_file,config.start_frame_no,frame_no_pos=config.frame_no_pos)
+    init_com=physics.getCom(init_frame_cords)
+  with open(input_file_path,'r') as input_file:
+    pbar=tqdm(range(config.start_frame_no+config.step_size,config.end_frame_no+1,config.step_size))
+    for curr_frame_no in pbar:
+      frame_cords=io.readFileMd(input_file,curr_frame_no,frame_no_pos=config.frame_no_pos)
+      com=physics.getCom(frame_cords)
+      com_data['frame_no'].append(curr_frame_no)
+      com_data['com_x'].append(com[0])
+      com_data['com_y'].append(com[1])
+      com_data['com_z'].append(com[2])
+      com_data['dcom_x'].append(com[0]-init_com[0])
+      com_data['dcom_y'].append(com[1]-init_com[1])
+      com_data['dcom_z'].append(com[2]-init_com[2])
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK8 COMPLETE\n')
+    output_file.write(f"Average dcom = [{np.mean(com_data['dcom_x'])},{np.mean(com_data['dcom_y'])},{np.mean(com_data['dcom_z'])}] \n")
+    output_file.write('-'*80+'\n\n')
+  com_data_file_path=os.path.join(output_dir_path,'com_data.csv')
+  pd.DataFrame.from_dict(com_data).to_csv(com_data_file_path,index=False)
+
+  ylim=(-5,5)
+  plot(com_data['frame_no'],com_data['dcom_x'],output_dir_path=output_dir_path,title='dcom_x',xlabel='Frame No',ylabel='com',ylim=ylim)
+  plot(com_data['frame_no'],com_data['dcom_y'],output_dir_path=output_dir_path,title='dcom_y',xlabel='Frame No',ylabel='com',ylim=ylim)
+  plot(com_data['frame_no'],com_data['dcom_z'],output_dir_path=output_dir_path,title='dcom_z',xlabel='Frame No',ylabel='com',ylim=ylim)
+  return 'DONE'
+
+def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None):
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
   plt.plot(x,y)
   plt.title(title)
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
-  #plt.ylim(-360, 360)
+  if ylim is not None:
+    ymax=max(max(ylim),max(y))
+    ymin=min(min(ylim),min(y))
+    plt.ylim(ymin,ymax)
   #plt.xlim(0,10)
-  plt.savefig(output_dir_path+'/'+'_'.join(title.split())+'.png')
+  plt.grid()
+  plt.savefig(os.path.join(output_dir_path,'_'.join(title.split())+'.jpg'))
   if config.show_plot:
-   plt.show()
+    plt.show()
 
 
-tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7}
+tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8}
 task_name={'0':'Ring_Net_Relative_Rotation',
 	   '1':'Ring_Average_Relative_KE',
            '2':'Ring_Net_Relative_Translation',
@@ -263,7 +302,8 @@ task_name={'0':'Ring_Net_Relative_Rotation',
            '4':'Ring_Relative_Translation',
            '5':'Ring_Net_Relative_Rotation_vs_Step_size',
            '6':'Ring_Net_Relative_Rotation_vs_Track_Range',
-           '7':'Ring_Net_Absolute_Rotation'}
+           '7':'Ring_Net_Absolute_Rotation',
+           '8':'com_motion'}
 
 read_from='system_info.csv'
 

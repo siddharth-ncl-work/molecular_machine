@@ -4,3 +4,57 @@
 0,case_1,ring,scr_finished,0,169344,-76.70268098028534 
 1,case_2,ring,scr,0,46393,-4.440388969784027
 ################################################################################
+2020-05-25 12:52:31.391243
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,Ring_Net_Absolute_Rotation
+0,case_1,ring,scr_finished,0,100,-0.1589064744675561
+1,case_2,ring,scr,0,100,0.35041899671888116
+################################################################################
+2020-05-25 12:53:04.545428
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,Ring_Net_Absolute_Rotation
+0,case_1,ring,scr_finished,0,100,-0.1589064744675561
+1,case_2,ring,scr,0,100,0.35041899671888116
+################################################################################
+2020-05-26 06:08:50.339967
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,100,
+1,case_2,ring,scr,0,100,
+################################################################################
+2020-05-26 06:14:24.760155
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,100,
+1,case_2,ring,scr,0,100,
+################################################################################
+2020-05-26 06:21:12.111603
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,10000,
+1,case_2,ring,scr,0,10000,
+################################################################################
+2020-05-26 06:52:37.083927
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,100,
+1,case_2,ring,scr,0,100,
+################################################################################
+2020-05-26 06:55:02.848042
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,100,
+1,case_2,ring,scr,0,100,
+################################################################################
+2020-05-26 07:21:58.017892
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,45000,
+1,case_2,ring,scr,0,45000,
+################################################################################
+2020-05-26 08:45:32.830145
+
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
+0,case_1,ring,scr_finished,0,169344,DONE
+1,case_2,ring,scr,0,46393,DONE
+################################################################################
