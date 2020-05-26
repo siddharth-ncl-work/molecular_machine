@@ -4,6 +4,7 @@ import subprocess
 import importlib
 from datetime import datetime
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
@@ -13,6 +14,8 @@ from lib.io_chem import io
 from lib.basic_operations import vector,physics
 from source import rotation,translation,energy,init
 
+if not config.show_plot:
+  matplotlib.use('Agg')
 
 def task0():
   '''
@@ -319,7 +322,7 @@ if read_from=='config.py':
     tasks[task_no]()
     print(f'Task{task_no} Complete.')
 elif read_from=='system_info.csv':
-  system_info_df=pd.read_csv('system_info.csv')
+  system_info_df=pd.read_csv('system_info_test.csv')
   print(system_info_df)
   summary_data={'System':[],'Sub_System':[],'scr':[],'Start_Frame_No':[],'End_Frame_No':[]}
   for task_no in config.tasks.split('+'):

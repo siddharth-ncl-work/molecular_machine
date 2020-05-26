@@ -11,9 +11,28 @@ number of molecules found is 1
 1 molecule converted
 4 info messages 28 audit log messages 
 number of molecules found is 1
-output/case_1/ring/scr_finished already exits
+Directory does not exits
+Creating output/case_1/ring/scr_finished
 ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71]
 track_atom_no_list=None
-Running Task7....
-  0%|          | 0/10 [00:00<?, ?it/s]net_ring_absolute_rotation = 0.0351 deg:   0%|          | 0/10 [00:00<?, ?it/s]net_ring_absolute_rotation = 0.0351 deg:  10%|█         | 1/10 [00:00<00:08,  1.12it/s]net_ring_absolute_rotation = 0.0076 deg:  10%|█         | 1/10 [00:01<00:08,  1.12it/s]net_ring_absolute_rotation = 0.0076 deg:  20%|██        | 2/10 [00:01<00:06,  1.16it/s]net_ring_absolute_rotation = 0.0078 deg:  20%|██        | 2/10 [00:02<00:06,  1.16it/s]net_ring_absolute_rotation = 0.0078 deg:  30%|███       | 3/10 [00:02<00:05,  1.24it/s]net_ring_absolute_rotation = -0.0131 deg:  30%|███       | 3/10 [00:03<00:05,  1.24it/s]net_ring_absolute_rotation = -0.0131 deg:  40%|████      | 4/10 [00:03<00:04,  1.27it/s]net_ring_absolute_rotation = 0.0223 deg:  40%|████      | 4/10 [00:03<00:04,  1.27it/s] net_ring_absolute_rotation = 0.0223 deg:  50%|█████     | 5/10 [00:03<00:03,  1.35it/s]net_ring_absolute_rotation = 0.1384 deg:  50%|█████     | 5/10 [00:04<00:03,  1.35it/s]net_ring_absolute_rotation = 0.1384 deg:  60%|██████    | 6/10 [00:04<00:02,  1.39it/s]net_ring_absolute_rotation = -0.215 deg:  60%|██████    | 6/10 [00:05<00:02,  1.39it/s]net_ring_absolute_rotation = -0.215 deg:  70%|███████   | 7/10 [00:05<00:02,  1.43it/s]net_ring_absolute_rotation = -0.0558 deg:  70%|███████   | 7/10 [00:05<00:02,  1.43it/s]net_ring_absolute_rotation = -0.0558 deg:  80%|████████  | 8/10 [00:05<00:01,  1.46it/s]net_ring_absolute_rotation = -0.2286 deg:  80%|████████  | 8/10 [00:06<00:01,  1.46it/s]net_ring_absolute_rotation = -0.2286 deg:  90%|█████████ | 9/10 [00:06<00:00,  1.48it/s]net_ring_absolute_rotation = -0.1589 deg:  90%|█████████ | 9/10 [00:07<00:00,  1.48it/s]net_ring_absolute_rotation = -0.1589 deg: 100%|██████████| 10/10 [00:07<00:00,  1.50it/s]
-QXcbConnection: Could not connect to display localhost:10.0
+Running Task8....
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:00<00:01,  4.70it/s] 20%|██        | 2/10 [00:00<00:01,  4.87it/s] 30%|███       | 3/10 [00:00<00:01,  5.41it/s] 40%|████      | 4/10 [00:00<00:01,  5.86it/s] 50%|█████     | 5/10 [00:00<00:00,  6.15it/s] 60%|██████    | 6/10 [00:00<00:00,  6.25it/s] 70%|███████   | 7/10 [00:01<00:00,  6.56it/s] 80%|████████  | 8/10 [00:01<00:00,  6.77it/s] 90%|█████████ | 9/10 [00:01<00:00,  6.93it/s]100%|██████████| 10/10 [00:01<00:00,  6.95it/s]
+Task8 Complete.
+system_info.csv
+initializing from '/home/vanka/ruchi/molecular_motor/case_2/ring/scr/coors.xyz'
+1 molecule converted
+28 audit log messages 
+number of molecules found is 1
+1 molecule converted
+28 audit log messages 
+number of molecules found is 1
+Directory does not exits
+Creating output/case_2/ring/scr
+ring_atom_no_list=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67]
+track_atom_no_list=None
+Running Task8....
+  0%|          | 0/10 [00:00<?, ?it/s] 10%|█         | 1/10 [00:00<00:01,  7.88it/s] 20%|██        | 2/10 [00:00<00:01,  7.71it/s] 30%|███       | 3/10 [00:00<00:00,  7.31it/s] 40%|████      | 4/10 [00:00<00:00,  6.48it/s] 50%|█████     | 5/10 [00:00<00:00,  5.71it/s] 60%|██████    | 6/10 [00:01<00:00,  5.41it/s] 70%|███████   | 7/10 [00:01<00:00,  5.59it/s] 80%|████████  | 8/10 [00:01<00:00,  5.73it/s] 90%|█████████ | 9/10 [00:01<00:00,  5.58it/s]100%|██████████| 10/10 [00:01<00:00,  5.49it/s]
+Task8 Complete.
+   System Sub_System           scr  Start_Frame_No  End_Frame_No com_motion
+0  case_1       ring  scr_finished               0           100       DONE
+1  case_2       ring           scr               0           100       DONE
