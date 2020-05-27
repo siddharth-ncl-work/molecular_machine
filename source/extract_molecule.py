@@ -16,7 +16,8 @@ def isMd(file_path):
         return True
   return False
 
-def extractMolecule(file_path,atom_no=0):
+def extractMolecule(file_path,atom_no=0,name=None):
+  found_molecule=None
   if isMd(file_path):
     with open(file_path,'r') as file:
       df_cords=io.readFileMd(file,config.start_frame_no,frame_no_pos=config.frame_no_pos)
@@ -28,15 +29,20 @@ def extractMolecule(file_path,atom_no=0):
   subprocess.run(['rm','ring_track_frame.tmp.xyz','ring_track_frame.tmp.mol'])
   cc_list=list(nx.connected_component_subgraphs(G))
   print(f'number of molecules found is {len(cc_list)}')
+  print(f'number of atoms in found molecules {list(map(lambda x:len(x.nodes),cc_list))}')
   for cc in cc_list:
     if atom_no in list(cc.nodes):
-      return sorted(list(cc.nodes))
-      
+      found_molecule=sorted(list(cc.nodes))
+      break
     #print(list(cc.nodes))
     #pos=nx.spring_layout(cc)
     #nx.draw_networkx(cc,pos,labels=nx.get_node_attributes(cc,'element'))
     #plt.show()
-
+  if found_molecule is not None:
+    print(f'found {name} with {len(found_molecule)} atoms')
+  else:
+    print(f'Could not find {name}')
+  return found_molecule
 
 if __name__=='__main__':
   file_path='verification/test_systems/ring_two_frames_non_ideal_artificial_system.xyz'

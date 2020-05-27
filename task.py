@@ -266,6 +266,7 @@ def task8():
       com_data['dcom_x'].append(com[0]-init_com[0])
       com_data['dcom_y'].append(com[1]-init_com[1])
       com_data['dcom_z'].append(com[2]-init_com[2])
+      pbar.set_description(f"dcom = {[round(com_data['dcom_x'][-1],2),round(com_data['dcom_y'][-1],2),round(com_data['dcom_z'][-1],2)]} A")
   with open(output_file_path,'a') as output_file:
     output_file.write('TASK8 COMPLETE\n')
     output_file.write(f"Average dcom = [{np.mean(com_data['dcom_x'])},{np.mean(com_data['dcom_y'])},{np.mean(com_data['dcom_z'])}] \n")
@@ -287,8 +288,8 @@ def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None):
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
   if ylim is not None:
-    ymax=max(max(ylim),max(y))
-    ymin=min(min(ylim),min(y))
+    ymax=max(max(ylim),max(y))+0.1
+    ymin=min(min(ylim),min(y))-0.1
     plt.ylim(ymin,ymax)
   #plt.xlim(0,10)
   plt.grid()
@@ -322,7 +323,7 @@ if read_from=='config.py':
     tasks[task_no]()
     print(f'Task{task_no} Complete.')
 elif read_from=='system_info.csv':
-  system_info_df=pd.read_csv('system_info_test.csv')
+  system_info_df=pd.read_csv('system_info.csv')
   print(system_info_df)
   summary_data={'System':[],'Sub_System':[],'scr':[],'Start_Frame_No':[],'End_Frame_No':[]}
   for task_no in config.tasks.split('+'):

@@ -129,8 +129,8 @@ def initConfig(system_file_path,**kwargs):
     file.write(''.join(data))
   importlib.reload(config)
 
-  ring_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=ring_atom_no)
-  track_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=track_atom_no)
+  ring_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=ring_atom_no,name='ring')
+  track_atom_no_list=extract_molecule.extractMolecule(system_file_path,atom_no=track_atom_no,name='track')
   data=None
   with open(config_file_path,'r') as file:
     data=file.readlines()

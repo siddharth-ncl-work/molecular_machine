@@ -1,6 +1,6 @@
-2020-05-26 11:57:39.333655
+2020-05-26 14:47:07.685746
 
 ,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
-0,case_1,ring,scr_finished,0,100,DONE
-1,case_2,ring,scr,0,100,DONE
+0,case_2,david,scr,0,51785,DONE
+1,case_2,david_1,scr,0,97226,DONE
 ################################################################################
