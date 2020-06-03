@@ -275,15 +275,19 @@ def task8():
   pd.DataFrame.from_dict(com_data).to_csv(com_data_file_path,index=False)
 
   ylim=(-5,5)
-  plot(com_data['frame_no'],com_data['dcom_x'],output_dir_path=output_dir_path,title='dcom_x',xlabel='Frame No',ylabel='com',ylim=ylim)
-  plot(com_data['frame_no'],com_data['dcom_y'],output_dir_path=output_dir_path,title='dcom_y',xlabel='Frame No',ylabel='com',ylim=ylim)
-  plot(com_data['frame_no'],com_data['dcom_z'],output_dir_path=output_dir_path,title='dcom_z',xlabel='Frame No',ylabel='com',ylim=ylim)
+  plot(com_data['frame_no'],com_data['dcom_x'],output_dir_path=output_dir_path,title='dcom_x',xlabel='Frame No',ylabel='com',ylim=ylim,\
+new_figure=True,save=False,label='x')
+  plot(com_data['frame_no'],com_data['dcom_y'],output_dir_path=output_dir_path,title='dcom_y',xlabel='Frame No',ylabel='com',ylim=ylim,\
+new_figure=False,save=False,label='y')
+  plot(com_data['frame_no'],com_data['dcom_z'],output_dir_path=output_dir_path,title='delta_com',xlabel='Frame No',ylabel='delta_com(x,y,z)',ylim=ylim,\
+new_figure=False,save=True,label='z')
   return 'DONE'
 
-def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None):
-  plt.figure(figsize=(16,8))
+def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None,new_figure=True,save=True,label=''):
+  if new_figure:
+    plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
-  plt.plot(x,y)
+  plt.plot(x,y,label=label)
   plt.title(title)
   plt.xlabel(xlabel)
   plt.ylabel(ylabel)
@@ -292,8 +296,10 @@ def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None):
     ymin=min(min(ylim),min(y))-0.1
     plt.ylim(ymin,ymax)
   #plt.xlim(0,10)
+  plt.legend()
   plt.grid()
-  plt.savefig(os.path.join(output_dir_path,'_'.join(title.split())+'.jpg'))
+  if save:
+    plt.savefig(os.path.join(output_dir_path,'_'.join(title.split())+'.jpg'))
   if config.show_plot:
     plt.show()
 
