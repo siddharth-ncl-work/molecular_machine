@@ -50,8 +50,14 @@ def assessRotationMethodSingleAxis(method='rot_hybrid_3',step_size=10,parts=['ri
   frame1_no=0
   frame2_no=1
   zero_rpy=[0,0,0]
-  for ring_translation in translation_list:
-    for track_translation in translation_list:
+  ring_translation_list=translation_list
+  if 'only_ring' in system:
+    track_translation_list=[0]
+  else:
+    track_translation_list=translation_list
+  print(f'track_translation_list = {track_translation_list}')
+  for ring_translation in ring_translation_list:
+    for track_translation in track_translation_list:
       for part in parts:
         for axis in range(3):
           rpy=[0,0,0]
