@@ -20,7 +20,7 @@ end_frame_no=67144
 step_size=10
 frame_no_pos=2
 
-tasks='8'#'3+0+4+2'
+tasks='7'#'8+7'
 
 #INTERNAL PARAMETERS
 track_range=2 #Angstrom

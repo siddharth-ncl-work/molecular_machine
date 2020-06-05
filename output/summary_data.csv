@@ -1,5 +1,5 @@
-2020-06-03 11:12:40.800492
+2020-06-04 11:28:53.782758
 
-,System,Sub_System,scr,Start_Frame_No,End_Frame_No,com_motion
-0,case_1,ring_without_dielectric,scr,0,67144,DONE
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,Ring_Net_Absolute_Rotation
+0,case_1,ring_without_dielectric,scr,0,67144,21.99516649957634
 ################################################################################
