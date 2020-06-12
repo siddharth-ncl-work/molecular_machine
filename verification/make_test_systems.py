@@ -3,6 +3,7 @@ import pandas as pd
 import sys
 import numpy as np
 sys.path.append('..')
+from tqdm import tqdm
 
 import config
 from lib.io_chem import io
@@ -454,6 +455,39 @@ def ringTrackMultiFrameOscillatingSemiReal():
       track_distance=1*track_d_distance
   output_file.close()
 
+def onlyRingGetComTestSystem(**kwargs):
+  if 'input_file_path' in kwargs.keys():
+    input_file_path=kwargs['input_file_path']
+  else:
+    input_file_path='/home/vanka/ruchi/molecular_motor/case_1/ring/scr_finished/coors.xyz'
+  if 'output_file_path' in kwargs.keys():
+    output_file_path=kwargs['output_file_path']
+  else:
+    output_file_path='test_systems/only_ring_get_com_test_system.xyz'
+  if 'total_frames' in kwargs.keys():
+    total_frames=kwargs['total_frames']
+  else:
+    total_frames=100
+  if 'distance' in kwargs.keys():
+    distance=kwargs['distance']
+  else:
+    distance=10
+
+  velocity=distance/total_frames #Angs/step
+  direction=np.random.randint(-10,10,size=(3,))
+  print(f'Direction = {direction}\nDistance = {distance}')
+  with open(input_file_path,'r') as file:
+    input_frame_cords=io.readFileMd(file,0,frame_no_pos=config.frame_no_pos)
+  
+  _input_frame_cords=input_frame_cords
+  output_file=open(output_file_path,'w')
+  for curr_frame_no in tqdm(range(total_frames)):
+    curr_frame_cords=translation.translateAlongAxis(_input_frame_cords,direction,velocity)
+    _input_frame_cords=curr_frame_cords
+    io.writeFileMd(output_file,curr_frame_cords,curr_frame_no,frame_no_pos=config.frame_no_pos)
+  
+  output_file.close()
+
 
 if __name__=='__main__':
   #oneAtomSystemArtificial()
@@ -462,12 +496,16 @@ if __name__=='__main__':
   #ringCordsArtificial()
   #trackCordsArtificial()
   #ringTrackTwoFramesIdealArtificial()
-  
+ 
+
+  ''' 
   ringTrackAtOriginNonIdealArtificial()
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   
   ringTwoFramesArtificial()
+  '''
+
 
   #ringTrackMultiFrameIdealArtificial()
   #ringMultiFrameArtificial()
@@ -478,3 +516,5 @@ if __name__=='__main__':
   '''
   #ringTrackMultiFrameSemiReal()
   #ringTrackMultiFrameOscillatingSemiReal()
+
+  onlyRingGetComTestSystem(input_file_path='/home/vanka/ruchi/molecular_motor/case_1/ring/scr_finished/coors.xyz')

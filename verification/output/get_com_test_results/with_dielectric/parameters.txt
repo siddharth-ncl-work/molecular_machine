@@ -1,0 +1,2 @@
+Direction = [-5  7  9] Angs
+Distance Travelled = 10 Angs
