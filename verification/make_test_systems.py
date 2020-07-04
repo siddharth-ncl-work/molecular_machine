@@ -498,13 +498,13 @@ if __name__=='__main__':
   #ringTrackTwoFramesIdealArtificial()
  
 
-  ''' 
+   
   ringTrackAtOriginNonIdealArtificial()
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   
   ringTwoFramesArtificial()
-  '''
+  
 
 
   #ringTrackMultiFrameIdealArtificial()

@@ -707,6 +707,7 @@ def plotRKE(x,y_predicted,y_expected,method='',part='',axis='',assessment_type='
 
 
 #ROTATION
+'''
 system_list=['only_ring_artificial']#'artificial']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
@@ -726,7 +727,7 @@ for system in system_list:
     #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-
+'''
 
 
 #TRANSLATION
