@@ -73,24 +73,24 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
           print(f'_axis = {_axis}, Do not know other way to determine axis for {system}')
           print('so returning the same coordinates')
           return None
-  elif type(axis)==type(None):
-    #print('determining axis...')
+  elif axis is None:
+    print('determining axis...')
     if process=='rotation' or 'translation':
-      #print('making ring cog as axis')
+      print('making ring cog as axis')
       cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
       cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
       for i in range(3):
         _axis[i]=cog2[i]-cog1[i]
       if isZero(_axis):
-        #print('changing rotation axis to track cog')
+        print('changing rotation axis to track cog')
         if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
           cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
           for i in range(3):
-            _axis[i]=0#cog2[i]-cog1[i]
+            _axis[i]=cog2[i]-cog1[i]
           if isZero(_axis):
-            #print('changing rotation axis to ring track cog')
+            print('changing rotation axis to ring track cog')
             _atom_no_list=config.ring_atom_no_list
             cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
             cog2=physics.getCog(frame2_cords,atom_list=config.track_atom_no_list)
@@ -143,7 +143,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   else:
     print(f'shiftOrigin: axis_argument = {axis}, cannont determine the axis')  
 
-  
+  #print(_axis)  
   com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
   com2=physics.getCom(frame2_cords,atom_list=_atom_no_list)
   sign= 1 if com2[0]-com1[0]>=0 else -1
@@ -166,7 +166,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   elif axis=='com':
       com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
       _origin=com1
-  elif type(origin)==type(None):
+  elif origin is None:
     #print('determining origin...')
     if process=='rotation' or 'translation':
       cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)

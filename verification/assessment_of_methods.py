@@ -707,12 +707,11 @@ def plotRKE(x,y_predicted,y_expected,method='',part='',axis='',assessment_type='
 
 
 #ROTATION
-'''
-system_list=['only_ring_artificial']#'artificial']
+system_list=['artificial']#['only_ring_artificial']#'artificial']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
-parts=['ring']
-translation_list=[0,3.14,-3.14]
+parts=['track']
+translation_list=[0,10,-10]#[0,3.14,-3.14]
 show_plot=True
 for system in system_list:
   for method in method_list:
@@ -727,7 +726,7 @@ for system in system_list:
     #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=1,constant_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodDoubleAxis3d(method=method,rotation_axis=2,constant_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessRotationMethodTripleAxis3d(method=method,rotation_axis=1,constant_axis=2,constant_axis_theta_range=[-10,10],step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-'''
+
 
 
 #TRANSLATION
@@ -741,7 +740,7 @@ for system in system_list:
     _init(method,system)
     #assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     assessTranslationMethodWithSingleAxisRotation1d(method=method,rotation_axis=0,theta=90,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    #assessTranslationMethodSingleAxisWithRotation3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    #assessTranslationMethodWithSingleAxisRotation3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodSingleAxisWithRotation3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodSingleAxisWithRotation3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodWithRandomTripleAxisRotation1d(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
