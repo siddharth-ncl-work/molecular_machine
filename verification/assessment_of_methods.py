@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 from mpl_toolkits import mplot3d
 import pickle
@@ -13,6 +14,7 @@ from lib.io_chem import io
 from lib.basic_operations import physics,constants
 import make_test_systems
 import config
+
 
 def _init(method,system):
   if 'rot' in method:
@@ -336,7 +338,7 @@ def assessTranslationMethodWithoutRotation(method='',step_size=10,parts=['ring',
       x.append(distance)
       y.append(_translation)
       print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_without_rotation,{system}')
-    plot4(x,y,method=method,part=part,assessment_type='translation_without_rotation',system=system,show_plot=show_plot)
+    plot4(x,y,method=method,part=part,assessment_type='translation_without_rotation',system=system,theta=0,show_plot=show_plot)
 
 def assessTranslationMethodWithSingleAxisRotation1d(method='',rotation_axis=1,theta=60,step_size=120,parts=['ring','track'],system='',show_plot=True):
   distance_range=np.arange(-10,11,step_size)
@@ -368,7 +370,7 @@ def assessTranslationMethodWithSingleAxisRotation1d(method='',rotation_axis=1,th
       x.append(distance)
       y.append(_translation)
       print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_with_single_axis_rotation_1d,{system}')
-    plot4(x,y,method=method,part=part,assessment_type='translation_with_single_axis_rotation_1d',system=system,show_plot=show_plot)
+    plot4(x,y,method=method,part=part,assessment_type='translation_with_single_axis_rotation_1d',system=system,rotation_axis=rotation_axis,theta=theta,show_plot=show_plot)
 
 def assessTranslationMethodWithSingleAxisRotation3d(method='',rotation_axis=1,step_size=120,parts=['ring','track'],system='',show_plot=True):
   distance_range=np.arange(-10,11,step_size)
@@ -447,12 +449,13 @@ def assessTranslationMethodWithRandomTripleAxisRotation1d(method='',step_size=10
       print(f'{distance},{part} Absolute Translation = {_translation},{method},translation_with_random_triple_axis_rotation,{system}')
     plot4(x,y,method=method,part=part,assessment_type='translation_with_random_triple_axis_rotation',system=system,show_plot=show_plot)
 
-def plot4(x,y,method='test',part='ring',assessment_type='',system='',show_plot=True):
+def plot4(x,y,method='test',part='ring',assessment_type='',system='',rotation_axis=0,theta=-10,show_plot=True):
+  axis={0:'x',1:'y',2:'z'}
   plt.figure(figsize=(16,8))
   plt.rcParams.update({'font.size': 15})
   plt.plot(x,y,'r',label='predicted')
   plt.plot(x,x,'b',label='expected')
-  title=method.upper()+'('+part+','+assessment_type+','+system+')'
+  title=method.upper()+'('+part+','+axis[rotation_axis]+','+assessment_type+f','+system+f')[{theta}]'
   plt.title(title)
   plt.xlabel('Translation (A)')
   plt.ylabel('Predicted/Expected Translation (A)')
@@ -710,9 +713,11 @@ def plotRKE(x,y_predicted,y_expected,method='',part='',axis='',assessment_type='
 system_list=['artificial']#['only_ring_artificial']#'artificial']
 method_list=['rot_part_atomic_r_t_3']
 step_size=5
-parts=['track']
+parts=['ring','track']
 translation_list=[0,10,-10]#[0,3.14,-3.14]
-show_plot=True
+show_plot=False
+if not show_plot:
+  matplotlib.use('Agg')
 for system in system_list:
   for method in method_list:
     _init(method,system)
@@ -734,12 +739,16 @@ system_list=['artificial']
 method_list=['trans_com_3']
 step_size=0.5
 parts=['ring','track']
-show_plot=True
+show_plot=False
+if not show_plot:
+  matplotlib.use('Agg')
 for system in system_list:
   for method in method_list:
     _init(method,system)
-    #assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
-    assessTranslationMethodWithSingleAxisRotation1d(method=method,rotation_axis=0,theta=90,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodWithoutRotation(method=method,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodWithSingleAxisRotation1d(method=method,rotation_axis=0,theta=10,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodWithSingleAxisRotation1d(method=method,rotation_axis=1,theta=10,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
+    assessTranslationMethodWithSingleAxisRotation1d(method=method,rotation_axis=2,theta=10,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodWithSingleAxisRotation3d(method=method,rotation_axis=0,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodSingleAxisWithRotation3d(method=method,rotation_axis=1,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
     #assessTranslationMethodSingleAxisWithRotation3d(method=method,rotation_axis=2,step_size=step_size,parts=parts,system=system,show_plot=show_plot)
