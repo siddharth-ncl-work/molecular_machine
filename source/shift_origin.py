@@ -74,15 +74,15 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
           print('so returning the same coordinates')
           return None
   elif axis is None:
-    print('determining axis...')
+    #print('determining axis...')
     if process=='rotation' or 'translation':
-      print('making ring cog as axis')
+      #print('making ring cog as axis')
       cog1=physics.getCog(frame1_cords,atom_list=_atom_no_list)
       cog2=physics.getCog(frame2_cords,atom_list=_atom_no_list)
       for i in range(3):
         _axis[i]=cog2[i]-cog1[i]
       if isZero(_axis):
-        print('changing rotation axis to track com')
+        #print('changing rotation axis to track com')
         if system_type=='molecular_machine':
           _atom_no_list=config.track_atom_no_list
           '''
@@ -97,7 +97,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
             _axis[i]=com2[i]-com1[i]
 
           if isZero(_axis):
-            print('changing rotation axis to ring track cog')
+            #print('changing rotation axis to ring track cog')
             _atom_no_list=config.ring_atom_no_list
             cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
             cog2=physics.getCog(frame2_cords,atom_list=config.track_atom_no_list)

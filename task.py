@@ -30,7 +30,7 @@ def task0():
   rotation_data_file_path=os.path.join(output_dir_path,'rotation_data.csv')
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
-  y=rotation_data['rotation']
+  y=rotation_data['net_relative_rotation']
   title='Ring Relative Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
   xlabel='Frame number'
   ylabel='Rotation (degrees)'

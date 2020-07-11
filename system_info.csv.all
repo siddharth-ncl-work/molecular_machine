@@ -10,6 +10,7 @@ input_parent_dir_path,input_system_name,input_subsystem_name,input_scr_dir_name,
 /home/vanka/ruchi/molecular_motor,case_1,molecular_rotor_b3lyp_with_solvent.md,scr,molecular_machine,69,82,88,105,37799,65580,2
 /home/vanka/ruchi/molecular_motor,case_2,david,scr,molecular_machine,91,61,-1,-1,0,51785,1
 /home/vanka/ruchi/molecular_motor,case_2,david_1,scr,molecular_machine,26,76,-1,-1,0,97226,1
+/home/vanka/ruchi/molecular_motor,case_2,david_with_solvent,
 /home/vanka/ruchi/molecular_motor,case_3,ring_track_dl_at_sulfer_end,scr.input_2,molecular_machine,4,104,75,98,0,752147,2
 /home/vanka/ruchi/molecular_motor,case_3,ring_track_dl_nutral_nh,scr_1300_temp,molecular_machine,4,104,118,104,0,163457,2
 /home/vanka/ruchi/molecular_motor,case_3,ring_track_dl_nutral_nh,scr_1700_temp,molecular_machine,4,104,118,104,0,383705,2

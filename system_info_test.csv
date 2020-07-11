@@ -1,2 +1,2 @@
 input_parent_dir_path,input_system_name,input_subsystem_name,input_scr_dir_name,system_type,ring_atom_no,track_atom_no,ref_axis_atom1_no,ref_axis_atom2_no,start_frame_no,end_frame_no,frame_no_pos
-/home/vanka/ruchi/molecular_motor,case_1,ring_without_dielectric,scr,ring,0,-1,-1,-1,0,100,2
+/home/vanka/ruchi/molecular_motor,case_1,molecular_rotor_b3lyp_with_solvent.md,scr,molecular_machine,69,82,88,105,0,100,2
