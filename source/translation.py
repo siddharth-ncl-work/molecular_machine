@@ -10,18 +10,21 @@ import config
 
 def getNetTranslation(file,start_frame_no,end_frame_no,step_size=1,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[]):
   net_translation=0
-  data={'frame_no':[],'translation':[]}
+  data={'frame_no':[],f'{type}_translation':[],f'net_{type}_translation':[]}
   assert end_frame_no>=start_frame_no,'Invalid Frame Numbers'
   prev_frame_no=start_frame_no
   prev_frame_cords=io.readFileMd(file,prev_frame_no,frame_no_pos=config.frame_no_pos)
-  for curr_frame_no in tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size)):
+  pbar=tqdm(range(start_frame_no+step_size,end_frame_no+1,step_size))
+  for curr_frame_no in pbar:
     curr_frame_cords=io.readFileMd(file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     translation=_getTranslation(prev_frame_cords,curr_frame_cords,part1=part1,part2=part2,type=type,method=method,part1_atom_list=part1_atom_list,part2_atom_list=part2_atom_list)
-    net_translation+=translation    
+    net_translation+=translation
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
     data['frame_no'].append(curr_frame_no)
-    data['translation'].append(translation)
+    data[f'{type}_translation'].append(translation)
+    data[f'net_{type}_translation'].append(net_translation)
+    pbar.set_description(f'net_{part1}_{type}_translation = {round(net_translation,4)} m')
   return (net_translation,data)
 
 def getTranslation(file,frame1_no,frame2_no,part1='ring',part2='track',type='absolute',method='trans_com',part1_atom_list=[],part2_atom_list=[],unit='m'):

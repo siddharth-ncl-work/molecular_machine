@@ -31,7 +31,7 @@ def task0():
   pd.DataFrame.from_dict(rotation_data).to_csv(rotation_data_file_path,index=False)
   x=rotation_data['frame_no']
   y=rotation_data['net_relative_rotation']
-  title='Ring Relative Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  title='Ring Net Relative Rotation'+f'({config.input_system_name},{config.input_subsystem_name})'
   xlabel='Frame number'
   ylabel='Rotation (degrees)'
   plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
@@ -104,8 +104,8 @@ def task2():
   translation_data_file_path=os.path.join(output_dir_path,'translation_data.csv')
   pd.DataFrame.from_dict(translation_data).to_csv(translation_data_file_path,index=False)
   x=translation_data['frame_no']
-  y=translation_data['translation']
-  title='Ring Relative Translation'+f'({config.input_system_name},{config.input_subsystem_name})'
+  y=translation_data['net_relative_translation']
+  title='Ring Net Relative Translation'+f'({config.input_system_name},{config.input_subsystem_name})'
   xlabel='Frame number'
   ylabel='Translation (m)'
   plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)

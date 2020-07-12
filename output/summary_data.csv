@@ -1,5 +1,5 @@
-2020-07-10 01:04:36.793011
+2020-07-12 17:13:59.944768
 
 ,System,Sub_System,scr,Start_Frame_No,End_Frame_No,Ring_Net_Relative_Rotation,Ring_Net_Relative_Translation
-0,case_1,molecular_rotor_b3lyp_with_solvent.md,scr,0,44697,125.82462251786477,-5.673619077608124e-10
+0,case_1,molecular_rotor_b3lyp_with_solvent.md,merged_scr_1_2_3_4_low_temp,0,44697,31.764042569925945,1.3058725325941795e-10
 ################################################################################
