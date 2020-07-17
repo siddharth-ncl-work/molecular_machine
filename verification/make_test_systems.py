@@ -68,6 +68,8 @@ def ringTrackAtOriginIdealArtificial():
   cords_list.extend(ring_cords_list)
   cords_list.extend(track_cords_list)
   atom_list=len(cords_list)*['c']
+  total_track_atoms=len(track_cords_list)
+  atom_list[-total_track_atoms:]=total_track_atoms*['S']
   createSystem(cords_list,atom_list,file_path,add_axes=False)
   
 def ringTrackAtOriginNonIdealArtificial():
@@ -214,12 +216,59 @@ def ringTrackMultiFrameIdealArtificial():
   total_frames=100
   ring_theta=0
   track_theta=0
-  ring_d_theta=1
-  track_d_theta=0.5
+  ring_d_theta=0
+  track_d_theta=0
   ring_distance=0
   track_distance=0
-  ring_d_distance=0.1
-  track_d_distance=0.05
+  ring_d_distance=0.5
+  track_d_distance=0
+
+  input_system_file_path='test_systems/ring_track_at_origin_ideal_artificial_system.xyz'
+  input_system_cords_df=io.readFile(input_system_file_path)
+  for curr_frame_no in range(total_frames):
+    #ring
+    input_system_ring_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.ring_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_ring_cords_df,x,math.radians(ring_theta))
+    #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+    #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
+    curr_frame_ring_cords_df=translation.translateAlongAxis(df,x,ring_distance)
+    #track
+    input_system_track_cords_df=input_system_cords_df[input_system_cords_df['atom_no'].isin(config.track_atom_no_list)]
+    df=rotation.rotateAlongAxis(input_system_track_cords_df,x,math.radians(track_theta))
+    #df=rotation.rotateAlongAxis(df,y,math.radians(rpy[1]))
+    #df=rotation.rotateAlongAxis(df,z,math.radians(rpy[2]))
+    curr_frame_track_cords_df=translation.translateAlongAxis(df,x,track_distance)
+    #frame
+    curr_frame_cords_df=pd.concat([curr_frame_ring_cords_df,curr_frame_track_cords_df])
+    #transform frames
+    axis=[1,1,1]
+    theta=45.24
+    distance=1.67
+    curr_frame_cords_df=rotation.rotateAlongAxis(curr_frame_cords_df,axis,math.radians(theta))
+    curr_frame_cords_df=translation.translateAlongAxis(curr_frame_cords_df,axis,distance)
+    io.writeFileMd(output_file,curr_frame_cords_df,curr_frame_no,frame_no_pos=config.frame_no_pos)
+
+    ring_theta+=ring_d_theta
+    ring_distance+=ring_d_distance
+    track_theta+=track_d_theta
+    track_distance+=track_d_distance
+  output_file.close()
+
+
+def ringTrackMultiFrameNonIdealArtificial():
+  output_file_path='test_systems/ring_track_multi_frame_ideal_artificial_system.xyz'
+  output_file=open(output_file_path,'w')
+  x=[1,0,0]
+
+  total_frames=100
+  ring_theta=0
+  track_theta=0
+  ring_d_theta=2
+  track_d_theta=0
+  ring_distance=0
+  track_distance=0
+  ring_d_distance=0
+  track_d_distance=0
 
   input_system_file_path='test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz'
   input_system_cords_df=io.readFile(input_system_file_path)
@@ -252,8 +301,6 @@ def ringTrackMultiFrameIdealArtificial():
     track_distance+=track_d_distance
   output_file.close()
     
-def ringTrackMultiFrameNonIdealArtificial():
-  pass
 
 def ringMultiFrameArtificial():
   output_file_path='test_systems/ring_multi_frame_non_ideal_artificial_system.xyz'
@@ -498,13 +545,13 @@ if __name__=='__main__':
   #ringTrackTwoFramesIdealArtificial()
  
 
-   
+  '''
   ringTrackAtOriginNonIdealArtificial()
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   
   ringTwoFramesArtificial()
-  
+  '''
 
 
   #ringTrackMultiFrameIdealArtificial()
@@ -517,4 +564,7 @@ if __name__=='__main__':
   #ringTrackMultiFrameSemiReal()
   #ringTrackMultiFrameOscillatingSemiReal()
 
-  onlyRingGetComTestSystem(input_file_path='/home/vanka/ruchi/molecular_motor/case_1/ring/scr_finished/coors.xyz')
+  #onlyRingGetComTestSystem(input_file_path='/home/vanka/ruchi/molecular_motor/case_1/ring/scr_finished/coors.xyz')
+  ringTrackAtOriginIdealArtificial()
+  init.initConfig('test_systems/ring_track_at_origin_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
+  ringTrackMultiFrameIdealArtificial()
