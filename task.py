@@ -12,7 +12,7 @@ from tqdm import tqdm
 import config
 from lib.io_chem import io
 from lib.basic_operations import vector,physics
-from source import rotation,translation,energy,init
+from source import rotation,translation,energy,init,shift_origin
 
 if not config.show_plot:
   matplotlib.use('Agg')
@@ -303,8 +303,68 @@ def plot(x,y,output_dir_path='',title='',xlabel='',ylabel='',ylim=None,new_figur
   if config.show_plot:
     plt.show()
 
+def task9():
+  '''
+  Ring Atoms Net Relative Rotation
+  '''
+  input_file=open(input_file_path,'r')
+  data={'frame_no':[],'insta_track_absolute_rotation':[]}
+  ring_atom_no_list=config.ring_atom_no_list
 
-tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8}
+  for atom_no in ring_atom_no_list:
+    data[f'insta_atom_no_{atom_no}_absolute_rotation']=[]
+  
+  assert config.end_frame_no>=config.start_frame_no,'Invalid Frame Numbers'
+  prev_frame_no=config.start_frame_no
+  prev_frame_cords=io.readFileMd(input_file,prev_frame_no,frame_no_pos=config.frame_no_pos)
+  pbar=tqdm(range(config.start_frame_no+config.step_size,config.end_frame_no+1,config.step_size))
+  ref_atom_no=0
+  ref_atom_net_relative_rotation=0
+  for curr_frame_no in pbar:
+    curr_frame_cords=io.readFileMd(input_file,curr_frame_no,frame_no_pos=config.frame_no_pos)
+    _prev_frame_cords,_curr_frame_cords=shift_origin.shiftOrigin(prev_frame_cords,curr_frame_cords,process='rotation',system_type=config.system_type)
+    insta_track_rotation_data=rotation._getRotation(_prev_frame_cords,_curr_frame_cords,part1='track',type='absolute',method=config.rotation_method,system_type=config.system_type,_shift_origin=False)
+    data['frame_no'].append(curr_frame_no)
+    data['insta_track_absolute_rotation'].append(insta_track_rotation_data['insta_part1_absolute_rotation']) 
+    insta_ref_atom_absolute_rotation=0
+    for atom_no in ring_atom_no_list:
+      part1_atom_list=[atom_no]
+      atom_rotation_data=rotation._getRotation(_prev_frame_cords,_curr_frame_cords,part1='custom',type='absolute',method=config.rotation_method,part1_atom_list=part1_atom_list,system_type=config.system_type,_shift_origin=False)
+      data[f'insta_atom_no_{atom_no}_absolute_rotation'].append(atom_rotation_data['insta_part1_absolute_rotation'])
+      if atom_no==ref_atom_no:
+        insta_ref_atom_absolute_rotation=atom_rotation_data['insta_part1_absolute_rotation']
+    ref_atom_net_relative_rotation+=insta_ref_atom_absolute_rotation-insta_track_rotation_data['insta_part1_absolute_rotation']
+    pbar.set_description(f'Atom {ref_atom_no} net relative rotation = {ref_atom_net_relative_rotation}')
+    prev_frame_no=curr_frame_no
+    prev_frame_cords=curr_frame_cords.copy()
+  
+  rotation_data_file_path=os.path.join(output_dir_path,f'rotation_data_ring_atoms.csv')
+  rotation_data=pd.DataFrame.from_dict(data)
+  rotation_data.to_csv(rotation_data_file_path,index=False)
+  
+  atom_column_list=[column for column in rotation_data.columns if 'atom_no' in column]
+  rotation_data['insta_ring_relative_rotation']=rotation_data[atom_column_list].mean(axis=1)-rotation_data['insta_track_absolute_rotation']
+  rotation_data['net_ring_relative_rotation']=rotation_data['insta_ring_relative_rotation'].cumsum()
+  ring_net_relative_rotation=rotation_data['insta_ring_relative_rotation'].sum()
+  
+  input_file.close()
+
+  with open(output_file_path,'a') as output_file:
+    output_file.write('TASK9 COMPLETE\n')
+    output_file.write(f'Ring Net Relative Rotaion (task9) = {ring_net_relative_rotation} degrees\n')
+    output_file.write('-'*80+'\n\n')
+  x=rotation_data['frame_no']
+  y=rotation_data['net_ring_relative_rotation']
+  title='Ring Net Relative Rotation(task9)'+f'({config.input_system_name},{config.input_subsystem_name})'
+  xlabel='Frame number'
+  ylabel='Rotation (degrees)'
+  plot(x,y,output_dir_path=output_dir_path,title=title,xlabel=xlabel,ylabel=ylabel)
+  print(f'Ring Net Relative Rotaion(task9) = {ring_net_relative_rotation} degrees')
+  return ring_net_relative_rotation
+
+
+#===================================================================================================
+tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8,'9':task9}
 task_name={'0':'Ring_Net_Relative_Rotation',
 	   '1':'Ring_Average_Relative_KE',
            '2':'Ring_Net_Relative_Translation',
@@ -313,7 +373,8 @@ task_name={'0':'Ring_Net_Relative_Rotation',
            '5':'Ring_Net_Relative_Rotation_vs_Step_size',
            '6':'Ring_Net_Relative_Rotation_vs_Track_Range',
            '7':'Ring_Net_Absolute_Rotation',
-           '8':'com_motion'}
+           '8':'com_motion',
+           '9':'Ring_Net_Relative_Rotation(atoms,task9)'}
 
 read_from='system_info.csv'
 
