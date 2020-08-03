@@ -207,6 +207,7 @@ def rot_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[],system_t
     frame2_atom_cords=frame2_cords[frame2_cords['atom_no']==atom_no][['x','y','z']].values[0]
     atom_rotation=getRPYAngles(frame1_atom_cords,frame2_atom_cords,axis=config.axis)
     part_rotation+=atom_rotation[axis]
+    print(f'{part}, {atom_no} = {atom_rotation*180/3.14}')
   avg_part_rotation=part_rotation/len(_atom_list)
   return math.degrees(avg_part_rotation)
 
@@ -335,9 +336,9 @@ def rot_part_atomic_r_t_3(frame1_cords,frame2_cords,part='ring',atom_list=[],sys
     axis,origin=shift_origin.getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,origin=None)
     nearest_atom_list=getNearestAtomList(frame1_cords,origin,axis,config.track_range)
     track_part_atom_list=list(filter(lambda x:x in track_atom_list,nearest_atom_list))
-    #print(f'distance from origin config.track_range)
+    print(f'distance from origin {config.track_range}')
     #print(axis,origin)
-    #print(track_part_atom_list)
+    print(track_part_atom_list)
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part='custom',atom_list=track_part_atom_list,_shift_origin=_shift_origin)
   else:
     return rot_atomic_r_t_3(frame1_cords,frame2_cords,part=part,atom_list=atom_list,_shift_origin=_shift_origin)

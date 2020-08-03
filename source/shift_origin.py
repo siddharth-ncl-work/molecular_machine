@@ -16,7 +16,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
     _atom_no_list=config.ring_atom_no_list
   else:
     _atom_no_list=frame1_cords['atom_no'].values
-
+  
   #print(_atom_no_list)
   _axis=[0,0,0]
   if (isinstance(axis,list) or isinstance(axis,np.ndarray)) and len(axis)==3:
@@ -150,7 +150,7 @@ def getAxisAndOrigin(frame1_cords,frame2_cords,process='rotation',axis=None,orig
   else:
     print(f'shiftOrigin: axis_argument = {axis}, cannont determine the axis')  
 
-  #print(_axis)  
+  #print(_axis)
   com1=physics.getCom(frame1_cords,atom_list=_atom_no_list)
   com2=physics.getCom(frame2_cords,atom_list=_atom_no_list)
   sign= 1 if com2[0]-com1[0]>=0 else -1

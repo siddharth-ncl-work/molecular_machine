@@ -6,7 +6,7 @@ test_file_path='/home/vanka/ruchi/output_only/system3/system3_a/system3_a_md_29_
 input_parent_dir_path="/home/vanka/ruchi/molecular_motor"
 input_system_name="case_1"
 input_subsystem_name="molecular_rotor_b3lyp_with_solvent.md"
-input_scr_dir_name="merged_scr_1_2_3_4_low_temp"
+input_scr_dir_name="scr_hf_1600"
 system_type="molecular_machine"
 output_parent_dir_path='output'
 
@@ -16,7 +16,7 @@ ref_axis_atom1_no=88
 ref_axis_atom2_no=105
 
 start_frame_no=0
-end_frame_no=65580
+end_frame_no=86054
 step_size=10
 frame_no_pos=2
 

@@ -138,7 +138,7 @@ def ringTrackTwoFramesIdealArtificial():
   io.writeFileMd(output_file,frame2_final_cords_df,1,frame_no_pos=config.frame_no_pos)
   output_file.close()
 
-def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[60,0,0],track_rpy=[60,0,0],ring_translation=-2,track_translation=2):
+def ringTrackTwoFramesNonIdealArtificial(ring_rpy=[0,0,0],track_rpy=[60,0,0],ring_translation=0,track_translation=2):
   output_file_path='test_systems/ring_track_two_frames_non_ideal_artificial_system.xyz'
   x=[1,0,0]
   y=[0,1,0]
@@ -545,14 +545,13 @@ if __name__=='__main__':
   #ringTrackTwoFramesIdealArtificial()
  
 
-  '''
+  
   ringTrackAtOriginNonIdealArtificial()
   init.initConfig('test_systems/ring_track_at_origin_non_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackTwoFramesNonIdealArtificial()
   
-  ringTwoFramesArtificial()
-  '''
-
+  #ringTwoFramesArtificial()
+  
 
   #ringTrackMultiFrameIdealArtificial()
   #ringMultiFrameArtificial()
@@ -565,6 +564,8 @@ if __name__=='__main__':
   #ringTrackMultiFrameOscillatingSemiReal()
 
   #onlyRingGetComTestSystem(input_file_path='/home/vanka/ruchi/molecular_motor/case_1/ring/scr_finished/coors.xyz')
+  '''
   ringTrackAtOriginIdealArtificial()
   init.initConfig('test_systems/ring_track_at_origin_ideal_artificial_system.xyz',ring_atom_no=0,track_atom_no=30)
   ringTrackMultiFrameIdealArtificial()
+  '''
