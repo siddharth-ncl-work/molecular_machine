@@ -16,28 +16,28 @@ import config
 test_file_path='/home/vanka/ruchi/molecular_motor/case_1/molecular_rotor_b3lyp_with_solvent.md/scr_hf_1600/coors.xyz'
 init.initConfig(test_file_path,ring_atom_no=69,track_atom_no=82)
 
+#test_file_path='/home/vanka/siddharth/molecular_machine_project/molecular_machine/verification/test_systems/ring_two_frames_non_ideal_artificial_system.xyz'
+#init.initConfig(test_file_path,ring_atom_no=0,track_atom_no=30)
 ####################################################################3
 def visualizeShiftOrigin(input_file_path,frame1_no,frame2_no,method='old',part='ring'):
   '''
   Visualize shift_origin Transformations
-  Extract two frames 
   '''
-  output_file_path=f'test_file_{frame1_no}_{frame2_no}.xyz'
-
+  print(f'-->{method.upper()}')
   with open(input_file_path,'r') as file:
     init_frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
     init_frame2_cords=io.readFileMd(file,frame2_no,frame_no_pos=config.frame_no_pos)
 
   if method=='old':
-    init_axis,init_origin=shift_origin.getAxisAndOriginOld(init_frame1_cords,init_frame2_cords,process='rotation',axis=None,origin=None,debug=True,method='old')
+    init_axis,init_origin=shift_origin.getAxisAndOriginOld(init_frame1_cords,init_frame2_cords,process='rotation',axis=None,origin=None,debug=True)
   elif method=='new':
-    init_axis,init_origin=shift_origin.getAxisAndOriginNew(init_frame1_cords,init_frame2_cords,process='rotation',axis=None,origin=None,debug=True,method='new')
+    init_axis,init_origin=shift_origin.getAxisAndOriginNew(init_frame1_cords,init_frame2_cords,process='rotation',axis=None,origin=None,debug=True)
   print(init_axis,init_origin)
 
   plot(init_frame1_cords,init_axis,init_origin,part=part,output_file_name=f'init_frame1_cords_{method}.jpg')
   plot(init_frame2_cords,init_axis,init_origin,part=part,output_file_name=f'init_frame2_cords_{method}.jpg')
 
-  transformed_frame1_cords,transformed_frame2_cords=shift_origin.shiftOrigin(init_frame1_cords,init_frame2_cords,process='rotation',debug=True)
+  transformed_frame1_cords,transformed_frame2_cords=shift_origin.shiftOrigin(init_frame1_cords,init_frame2_cords,process='rotation',debug=True,method=method)
   
   transformed_axis=transformed_frame1_cords.iloc[-1][['x','y','z']].values
   transformed_origin=transformed_frame1_cords.iloc[-2][['x','y','z']].values
@@ -47,10 +47,7 @@ def visualizeShiftOrigin(input_file_path,frame1_no,frame2_no,method='old',part='
   plot(transformed_frame1_cords,transformed_axis,transformed_origin,part=part,output_file_name=f'transformed_frame1_cords_{method}.jpg')
   plot(transformed_frame2_cords,transformed_axis,transformed_origin,part=part,output_file_name=f'transformed_frame2_cords_{method}.jpg')
 
-  with open(output_file_path,'w') as output_file:
-    io.writeFileMd(output_file,transformed_frame1_cords,frame1_no,frame_no_pos=config.frame_no_pos)
-    io.writeFileMd(output_file,transformed_frame2_cords,frame2_no,frame_no_pos=config.frame_no_pos) 
- 
+
 def plot(cords,axis,origin,part='whole',output_file_name='test.jpg'):
   if part=='ring':
     cords=cords[cords['atom_no'].isin(config.ring_atom_no_list)]
@@ -61,7 +58,7 @@ def plot(cords,axis,origin,part='whole',output_file_name='test.jpg'):
 
   fig = plt.figure(figsize=(10,10),dpi=72)
   ax = fig.add_subplot(111, projection='3d')
-  ax.scatter(cords['x'],cords['y'],cords['z'],s=10,color='orange')
+  ax.scatter(cords['x'],cords['y'],cords['z'],s=50,color='orange')
 
   d = -vector.getDotProduct(origin,axis)
   print(f'd = {d}')
@@ -112,6 +109,7 @@ def regression(input_file_path,frame1_no):
     z.append(_Y)
 
   z=np.array(z)
+  print(xx,yy,z)
   fig = plt.figure(figsize=(10,10),dpi=72)
   ax = fig.add_subplot(111, projection='3d') 
   ax.scatter(frame1_cords['x'],frame1_cords['y'],frame1_cords['z'],color='orange',s=50)
@@ -123,6 +121,82 @@ def regression(input_file_path,frame1_no):
   ax.set_ylabel('y')
   ax.set_zlabel('z')
   plt.show()
+
+def regression2(input_file_path,frame1_no):
+  with open(input_file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
+  cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
+  #frame1_cords=shift_origin._shiftOrigin(frame1_cords,cog1)
+  frame1_cords=frame1_cords[frame1_cords['atom_no'].isin(config.ring_atom_no_list)]
+  
+  X=frame1_cords[['x','y','z']].values
+  Y=frame1_cords[['x','y','z']].apply(lambda row:np.sqrt(row['x']**2+row['y']**2+row['z']**2),axis=1).values
+  reg = LinearRegression().fit(X, Y)
+  print(reg.coef_,reg.intercept_)
+  
+  value_range=range(-5,5)
+  [xx,yy]=np.meshgrid(range(int(cog1[0])-5,int(cog1[0])+5),range(int(cog1[1])-5,int(cog1[1])+5))
+
+  axis,origin=reg.coef_,cog1
+  d = -vector.getDotProduct(cog1,axis)
+  print(f'd = {d}')
+  [xx,yy]=np.meshgrid(range(int(origin[0])-5,int(origin[0])+5),range(int(origin[1])-5,int(origin[1])+5))
+  z=(-axis[0]*xx - axis[1]*yy - d)/float(axis[2])
+  i=np.random.randint(0,10,size=2)
+  print(i)
+  print(f'This should be zero = {axis[0]*xx[i[0]][i[1]]+axis[1]*yy[i[0]][i[1]]+axis[2]*z[i[0]][i[1]]+d}')
+
+  print(xx,yy,z)
+  fig = plt.figure(figsize=(10,10),dpi=72)
+  ax = fig.add_subplot(111, projection='3d')
+  ax.scatter(frame1_cords['x'],frame1_cords['y'],frame1_cords['z'],color='orange',s=50)
+  color='#1C4675'
+  ax.plot_surface(xx,yy,z,color=color)
+  ax.scatter([cog1[0]],[cog1[1]],[cog1[2]],s=100,color=color)
+  ax.quiver([cog1[0]],[cog1[1]],[cog1[2]],[reg.coef_[0]],[reg.coef_[1]],[reg.coef_[2]],length=5,color=color)
+  ax.set_xlabel('x')
+  ax.set_ylabel('y')
+  ax.set_zlabel('z')
+  plt.show()
+  
+def regression3(input_file_path,frame1_no):
+  with open(input_file_path,'r') as file:
+    frame1_cords=io.readFileMd(file,frame1_no,frame_no_pos=config.frame_no_pos)
+  cog1=physics.getCog(frame1_cords,atom_list=config.ring_atom_no_list)
+  #frame1_cords=shift_origin._shiftOrigin(frame1_cords,cog1)
+  frame1_cords=frame1_cords[frame1_cords['atom_no'].isin(config.ring_atom_no_list)]
+
+
+  total_atoms=frame1_cords.shape[0] 
+  v1=np.array([frame1_cords.iloc[:total_atoms//2]['x'].mean(),frame1_cords.iloc[:total_atoms//2]['y'].mean(),frame1_cords.iloc[:total_atoms//2]['z'].mean()])
+  v2=np.array([frame1_cords.iloc[-total_atoms//2:]['x'].mean(),frame1_cords.iloc[-total_atoms//2:]['y'].mean(),frame1_cords.iloc[-total_atoms//2:]['z'].mean()])
+  
+  value_range=range(-5,5)
+  [xx,yy]=np.meshgrid(range(int(cog1[0])-5,int(cog1[0])+5),range(int(cog1[1])-5,int(cog1[1])+5))
+  cog1=[0,0,0]
+  axis,origin=vector.getCrossProduct(v1,v2),cog1
+  print(axis)
+  d = -vector.getDotProduct(cog1,axis)
+  print(f'd = {d}')
+  [xx,yy]=np.meshgrid(range(int(origin[0])-5,int(origin[0])+5),range(int(origin[1])-5,int(origin[1])+5))
+  z=(-axis[0]*xx - axis[1]*yy - d)/float(axis[2])
+  i=np.random.randint(0,10,size=2)
+  print(i)
+  print(f'This should be zero = {axis[0]*xx[i[0]][i[1]]+axis[1]*yy[i[0]][i[1]]+axis[2]*z[i[0]][i[1]]+d}')
+
+  print(xx,yy,z)
+  fig = plt.figure(figsize=(10,10),dpi=72)
+  ax = fig.add_subplot(111, projection='3d')
+  ax.scatter(frame1_cords['x'],frame1_cords['y'],frame1_cords['z'],color='orange',s=50)
+  color='#1C4675'
+  ax.plot_surface(xx,yy,z,color=color)
+  ax.scatter([cog1[0]],[cog1[1]],[cog1[2]],s=100,color=color)
+  ax.quiver([cog1[0]],[cog1[1]],[cog1[2]],[axis[0]],[axis[1]],[axis[2]],length=5,color=color,normalize=True)
+  ax.set_xlabel('x')
+  ax.set_ylabel('y')
+  ax.set_zlabel('z')
+  plt.show()
+
 
 
 def calculateAxisDifference(input_file_path,start_frame_no,end_frame_no):
@@ -200,12 +274,11 @@ def visualizeDifference(input_file_path,frame1_no,frame2_no,part='whole'):
   plt.show()
  
 ###############################################
-
-frame1_no=18255#np.random.randint(0,55230)
+frame1_no=41153#np.random.randint(0,55230)
 frame2_no=frame1_no+10
 print(f'FRAME1 NO = {frame1_no}')
-regression(test_file_path,frame1_no)
-visualizeShiftOrigin(test_file_path,frame1_no,frame2_no,method='old',part='ring')
+regression3(test_file_path,frame1_no)
+#visualizeShiftOrigin(test_file_path,frame1_no,frame2_no,method='new',part='ring')
 #visualizeDifference(test_file_path,frame1_no,frame2_no,part='ring')
 ################################################
 #calculateAxisDifference(test_file_path,0,86054)
