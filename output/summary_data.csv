@@ -1,5 +1,6 @@
-2020-07-21 17:17:47.619565
+2020-08-21 08:29:09.944685
 
-,System,Sub_System,scr,Start_Frame_No,End_Frame_No,Ring_Net_Relative_Rotation,Ring_Net_Relative_Translation
-0,case_2,david_and_david_1_merged,scr_merged,0,149012,32.6947252863147,-3.1914251789270027e-10
+,System,Sub_System,scr,Start_Frame_No,End_Frame_No,"Ring_Net_Relative_Rotation(atoms,task9)"
+0,case_1,molecular_rotor_b3lyp_with_solvent.md,scr_hf_1600,0,86054,-116.3282388563322
+1,case_1,molecular_rotor_b3lyp_with_solvent.md,merged_scr_1_2_3_4_low_temp,0,65580,4.008724917483688
 ################################################################################

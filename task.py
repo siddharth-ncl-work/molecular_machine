@@ -309,6 +309,7 @@ def task9():
   '''
   input_file=open(input_file_path,'r')
   data={'frame_no':[],'insta_track_absolute_rotation':[]}
+  close_atoms_data={'frame_no':[],f'no_of_atoms_within_{config.x_axis_close_range}':[]}
   ring_atom_no_list=config.ring_atom_no_list
 
   for atom_no in ring_atom_no_list:
@@ -323,6 +324,12 @@ def task9():
   for curr_frame_no in pbar:
     curr_frame_cords=io.readFileMd(input_file,curr_frame_no,frame_no_pos=config.frame_no_pos)
     _prev_frame_cords,_curr_frame_cords=shift_origin.shiftOrigin(prev_frame_cords,curr_frame_cords,process='rotation',system_type=config.system_type)
+    n=getNoOfRingAtomsCloseToXAxis(_curr_frame_cords)
+    close_atoms_data['frame_no'].append(curr_frame_no)
+    close_atoms_data[f'no_of_atoms_within_{config.x_axis_close_range}'].append(n)
+    if n>0:
+      pbar.set_description(f'Atom {ref_atom_no} net relative rotation = {ref_atom_net_relative_rotation} : Skipping Frame {prev_frame_no} - {curr_frame_no}')
+      continue
     insta_track_rotation_data=rotation._getRotation(_prev_frame_cords,_curr_frame_cords,part1='track',type='absolute',method=config.rotation_method,system_type=config.system_type,_shift_origin=False)
     data['frame_no'].append(curr_frame_no)
     data['insta_track_absolute_rotation'].append(insta_track_rotation_data['insta_part1_absolute_rotation']) 
@@ -338,15 +345,18 @@ def task9():
     prev_frame_no=curr_frame_no
     prev_frame_cords=curr_frame_cords.copy()
   
-  rotation_data_file_path=os.path.join(output_dir_path,f'rotation_data_ring_atoms.csv')
   rotation_data=pd.DataFrame.from_dict(data)
-  rotation_data.to_csv(rotation_data_file_path,index=False)
-  
   atom_column_list=[column for column in rotation_data.columns if 'atom_no' in column]
   rotation_data['insta_ring_relative_rotation']=rotation_data[atom_column_list].mean(axis=1)-rotation_data['insta_track_absolute_rotation']
   rotation_data['net_ring_relative_rotation']=rotation_data['insta_ring_relative_rotation'].cumsum()
   ring_net_relative_rotation=rotation_data['insta_ring_relative_rotation'].sum()
-  
+
+  rotation_data_file_path=os.path.join(output_dir_path,f'rotation_data_ring_atoms.csv')
+  rotation_data.to_csv(rotation_data_file_path,index=False)
+  close_atoms_data_file_path=os.path.join(output_dir_path,f'close_atoms_data.csv')
+  close_atoms_df=pd.DataFrame.from_dict(close_atoms_data)
+  close_atoms_df.to_csv(close_atoms_data_file_path,index=False)
+
   input_file.close()
 
   with open(output_file_path,'a') as output_file:
@@ -362,7 +372,11 @@ def task9():
   print(f'Ring Net Relative Rotaion(task9) = {ring_net_relative_rotation} degrees')
   return ring_net_relative_rotation
 
-
+def getNoOfRingAtomsCloseToXAxis(frame_cords):
+    ring_cords=frame_cords[frame_cords['atom_no'].isin(config.ring_atom_no_list)]
+    s=np.sqrt(ring_cords['y']**2+ring_cords['z']**2)
+    n=np.sum(s<config.x_axis_close_range)
+    return n
 #===================================================================================================
 tasks={'0':task0,'1':task1,'2':task2,'3':task3,'4':task4,'5':task5,'6':task6,'7':task7,'8':task8,'9':task9}
 task_name={'0':'Ring_Net_Relative_Rotation',
