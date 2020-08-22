@@ -17,7 +17,7 @@ ref_axis_atom2_no=105
 
 start_frame_no=0
 end_frame_no=65580
-step_size=1
+step_size=10
 frame_no_pos=2
 
 tasks='9'#'8+7'

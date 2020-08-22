@@ -1,5 +1,5 @@
 ################################################################################
-2020-08-19 22:17:12.621352
+2020-08-21 22:00:19.607626
 ****config.py****
 __version__='3.0.0'
 
@@ -20,7 +20,7 @@ ref_axis_atom2_no=105
 
 start_frame_no=0
 end_frame_no=86054
-step_size=1
+step_size=10
 frame_no_pos=2
 
 tasks='9'#'8+7'
@@ -44,6 +44,6 @@ track_atom_no_list=[72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 
 code_dir_path='/home/vanka/siddharth/molecular_machine_project/molecular_machine'
 --------------------------------------------------------------------------------
 TASK9 COMPLETE
-Ring Net Relative Rotaion (task9) = -116.3282388563322 degrees
+Ring Net Relative Rotaion (task9) = -76.85156296375922 degrees
 --------------------------------------------------------------------------------
 
